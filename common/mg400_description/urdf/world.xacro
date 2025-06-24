@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="dual_with_obstacles">
+
+  <!-- Define the world frame as a link, so it’s never a child -->
+  <link name="world"/>
+
+  <!-- include your mg400 macro -->
+  <xacro:include filename="mg400.urdf.xacro"/>
+  <xacro:mg400 prefix="left_"  xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  <xacro:mg400 prefix="right_" xyz="1.0 0.0 0.0" rpy="0 0 0"/>
+
+  <!-- floor -->
+  <link name="floor">
+    <visual>
+      <origin xyz="0 0 -0.01" rpy="0 0 0"/>
+      <geometry><box size="3 3 0.02"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.01" rpy="0 0 0"/>
+      <geometry><box size="3 3 0.02"/></geometry>
+    </collision>
+  </link>
+  <joint name="floor_fixed" type="fixed">
+    <parent link="world"/>
+    <child  link="floor"/>
+  </joint>
+
+  <!-- back wall -->
+  <link name="wall_back">
+    <visual>
+      <origin xyz="0 -1.5 1" rpy="0 0 0"/>
+      <geometry><box size="3 0.1 2"/></geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 -1.5 1" rpy="0 0 0"/>
+      <geometry><box size="3 0.1 2"/></geometry>
+    </collision>
+  </link>
+  <joint name="wall_back_fixed" type="fixed">
+    <parent link="world"/>
+    <child  link="wall_back"/>
+  </joint>
+
+  <!-- add side walls, table, etc. in the same pattern -->
+
+</robot>
