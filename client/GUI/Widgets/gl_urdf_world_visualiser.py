@@ -1,4 +1,3 @@
-
 """
 A 3D URDF/Xacro visualizer using PySide6 and PyOpenGL.
 
@@ -37,7 +36,6 @@ from xacrodoc import XacroDoc
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from OpenGL.GLUT import glutSolidCube
 
 # --- Helper Functions ---
 def create_translation_matrix(v):
@@ -297,17 +295,36 @@ class URDFOpenGLWidget(QOpenGLWidget):
         glEnable(GL_COLOR_MATERIAL)
         glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-        # create one quadric for cylinders / spheres
-        self.quad = gluNewQuadric()
         self._load_visuals()
 
     def _load_visuals(self):
         """Loads robot's visual geometries into OpenGL buffers or caches data."""
         for kind, vis, data in self.parser.get_visuals():
-            # Load mesh .STL/.DAE/ similar into OpenGL buffers using trimesh
+            mesh = None
             if kind == 'mesh':
                 try:
-                    mesh = trimesh.load(data, force='mesh')
+                    mesh = trimesh.load(data)
+                except Exception as e:
+                    print(f"Warning: could not load mesh {data}: {e}")
+                    self.visual_data[id(vis)] = None
+                    continue
+            else:  # Handle primitives by creating a trimesh representation
+                try:
+                    if kind == 'box':
+                        mesh = trimesh.creation.box(extents=data)
+                    elif kind == 'cylinder':
+                        length, radius = data
+                        mesh = trimesh.creation.cylinder(radius=radius, height=length)
+                    elif kind == 'sphere':
+                        radius = data
+                        mesh = trimesh.creation.icosphere(subdivisions=3, radius=radius)
+                except Exception as e:
+                    print(f"Warning: could not create primitive {kind}: {e}")
+                    self.visual_data[id(vis)] = None
+                    continue
+
+            if mesh:
+                try:
                     verts = np.array(mesh.vertices, dtype=np.float32)
                     vbo = glGenBuffers(1)
                     glBindBuffer(GL_ARRAY_BUFFER, vbo)
@@ -320,21 +337,15 @@ class URDFOpenGLWidget(QOpenGLWidget):
                     ebo = glGenBuffers(1)
                     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
                     glBufferData(GL_ELEMENT_ARRAY_BUFFER, faces.nbytes, faces, GL_STATIC_DRAW)
-                    color = (0.8,0.8,0.8,1.0)
+                    color = (0.8, 0.8, 0.8, 1.0)
                     if vis.material and vis.material.color:
                         color = vis.material.color.rgba
                     # Cache the VBO IDs and other info for rendering
-                    self.visual_data[id(vis)] = {'type':'mesh', 'vbo':vbo, 'nbo':nbo, 'ebo':ebo,
-                                                  'count':len(faces), 'color':color}
+                    self.visual_data[id(vis)] = {'type': 'mesh', 'vbo': vbo, 'nbo': nbo, 'ebo': ebo,
+                                                 'count': len(faces), 'color': color}
                 except Exception as e:
-                    print(f"Warning: could not load mesh {data}: {e}")
+                    print(f"Warning: could not process mesh for {kind}: {e}")
                     self.visual_data[id(vis)] = None
-            else:
-                # For primitives (box, sphere, etc), just cache their parameters and color
-                color = (0.8,0.8,0.8,1.0)
-                if vis.material and vis.material.color:
-                    color = vis.material.color.rgba
-                self.visual_data[id(vis)] = {'type':kind, 'params':data, 'color':color}
 
     def resizeGL(self, w, h):
         """Handles widget resize events by updating the perspective projection."""
@@ -403,21 +414,6 @@ class URDFOpenGLWidget(QOpenGLWidget):
                     glDrawElements(GL_TRIANGLES, data['count'], GL_UNSIGNED_INT, None)
                     glDisableClientState(GL_VERTEX_ARRAY)
                     glDisableClientState(GL_NORMAL_ARRAY)
-                elif data['type'] == 'box': # draw box
-                    sx, sy, sz = data['params']
-                    glPushMatrix()
-                    glScalef(sx, sy, sz)
-                    glutSolidCube(1.0)
-                    glPopMatrix()
-                elif data['type'] == 'cylinder': # draw cylinder
-                    length, radius = data['params']
-                    glPushMatrix()
-                    # cylinder axis is along z
-                    gluCylinder(self.quad, radius, radius, length, 20, 4)
-                    glPopMatrix()
-                elif data['type'] == 'sphere': # draw sphere
-                    radius = data['params']
-                    gluSphere(self.quad, radius, 20, 20)
                 glPopMatrix()
         # recurse children
         for jn in self.parser.kinematic_tree.get(link_name, []):
