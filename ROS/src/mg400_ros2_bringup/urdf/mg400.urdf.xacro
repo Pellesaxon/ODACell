@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="mg400">
+
+  <!-- Include the ros2_control definition -->
+  <xacro:include filename="$(find mg400_ros2_bringup)/urdf/mg400.ros2_control.xacro" />
+
+  <!-- ====================================================================== -->
+  <!-- Constants                                                              -->
+  <!-- ====================================================================== -->
+  <xacro:property name="SCALE_MM"   value="0.001" />
+  <xacro:property name="PI"         value="3.1415926535897931" />
+  <xacro:property name="TO_RADIAN"  value="${PI/180.0}" />
+
+  <!-- ====================================================================== -->
+  <!-- Mesh paths                                                             -->
+  <!-- ====================================================================== -->
+  <xacro:property name="BASE_PATH"       value="mg400_ros2_bringup/urdf/meshes" />
+  <xacro:property name="MESH_BASE_LINK"  value="${BASE_PATH}/base_link.dae" />
+  <xacro:property name="MESH_LINK_1"     value="${BASE_PATH}/link1.dae" />
+  <xacro:property name="MESH_LINK_2_1"   value="${BASE_PATH}/link2_1.dae" />
+  <xacro:property name="MESH_LINK_2_2"   value="${BASE_PATH}/link2_2.dae" />
+  <xacro:property name="MESH_LINK_3_1"   value="${BASE_PATH}/link3_1.dae" />
+  <xacro:property name="MESH_LINK_3_2"   value="${BASE_PATH}/link3_2.dae" />
+  <xacro:property name="MESH_LINK_4_1"   value="${BASE_PATH}/link4_1.dae" />
+  <xacro:property name="MESH_LINK_4_2"   value="${BASE_PATH}/link4_2.dae" />
+  <xacro:property name="MESH_LINK_4_3"   value="${BASE_PATH}/link4_3.dae" />
+  <xacro:property name="MESH_LINK_5"     value="${BASE_PATH}/link5.dae" />
+  <xacro:property name="MESH_FLANGE"     value="${BASE_PATH}/flange.dae" />
+
+  <!-- ====================================================================== -->
+  <!-- Macro to define the entire robot kinematics, attached to a parent link -->
+  <!-- ====================================================================== -->
+  <xacro:macro name="mg400_robot" params="parent *origin">
+    
+    <!-- This fixed joint connects the robot's base to the parent frame (e.g., 'world') -->
+    <joint name="base_mount_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child  link="base_link"/>
+      <xacro:insert_block name="origin"/>
+    </joint>
+
+    <link name="base_link">
+      <inertial>
+        <origin xyz="0.000600637 -2.53487e-07 0.0560928" rpy="0 0 0"/>
+        <mass value="3.621648"/>
+        <inertia ixx="0.0126582" ixy="6.66832e-08" ixz="-3.52548e-06" iyy="0.0145892" iyz="5.15902e-08" izz="0.0195045"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="package://${MESH_BASE_LINK}"/></geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="package://${MESH_BASE_LINK}"/></geometry>
+      </collision>
+    </link>
+
+    <!-- Define the rest of the links -->
+    <link name="link1">
+      <visual><geometry><mesh filename="package://${MESH_LINK_1}"/></geometry></visual>
+      <collision><geometry><mesh filename="package://${MESH_LINK_1}"/></geometry></collision>
+    </link>
+    <link name="link2_1">
+      <visual><geometry><mesh filename="package://${MESH_LINK_2_1}"/></geometry></visual>
+      <collision><geometry><mesh filename="package://${MESH_LINK_2_1}"/></geometry></collision>
+    </link>
+    <link name="link2_2">
+      <visual><geometry><mesh filename="package://${MESH_LINK_2_2}"/></geometry></visual>
+      <collision><geometry><mesh filename="package://${MESH_LINK_2_2}"/></geometry></collision>
+    </link>
+    <link name="link3_1">
+      <visual><geometry><mesh filename="package://${MESH_LINK_3_1}"/></geometry></visual>
+      <collision><geometry><mesh filename="package://${MESH_LINK_3_1}"/></geometry></collision>
+    </link>
+    <link name="link3_2">
+      <visual><geometry><mesh filename="package://${MESH_LINK_3_2}"/></geometry></visual>
+      <collision><geometry><mesh filename="package://${MESH_LINK_3_2}"/></geometry></collision>
+    </link>
+    <link name="link4_1">
+      <visual><geometry><mesh filename="package://${MESH_LINK_4_1}"/></geometry></visual>
+      <collision><geometry><mesh filename="package://${MESH_LINK_4_1}"/></geometry></collision>
+    </link>
+    <link name="link4_2">
+      <visual><geometry><mesh filename="package://${MESH_LINK_4_2}"/></geometry></visual>
+      <collision><geometry><mesh filename="package://${MESH_LINK_4_2}"/></geometry></collision>
+    </link>
+    <link name="link4_3">
+      <visual><geometry><mesh filename="package://${MESH_LINK_4_3}"/></geometry></visual>
+      <collision><geometry><mesh filename="package://${MESH_LINK_4_3}"/></geometry></collision>
+    </link>
+    <link name="link5">
+      <visual><geometry><mesh filename="package://${MESH_LINK_5}"/></geometry></visual>
+      <collision><geometry><mesh filename="package://${MESH_LINK_5}"/></geometry></collision>
+    </link>
+    <link name="flange">
+      <visual><geometry><mesh filename="package://${MESH_FLANGE}"/></geometry></visual>
+      <collision><geometry><mesh filename="package://${MESH_FLANGE}"/></geometry></collision>
+    </link>
+
+    <!-- ========================= Joints ========================= -->
+    <!-- J1: ±160° @ 300°/s -->
+    <joint name="j1" type="revolute">
+      <origin xyz="${-5.0*SCALE_MM} 0 ${109*SCALE_MM}" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child  link="link1"/>
+      <axis  xyz="0 0 1"/>
+      <limit lower="${-160.0 * TO_RADIAN}" upper="${160.0 * TO_RADIAN}" effort="0" velocity="${300.0 * TO_RADIAN}" acceleration="${300.0 * TO_RADIAN}"/>
+    </joint>
+
+    <!-- J2 (both sub-joints): –25° to +85° @ 300°/s -->
+    <joint name="j2_1" type="revolute">
+      <origin xyz="${43.5*SCALE_MM} ${-35.775*SCALE_MM} ${119*SCALE_MM}" rpy="0 0 0"/>
+      <parent link="link1"/>
+      <child  link="link2_1"/>
+      <axis  xyz="0 1 0"/>
+      <limit lower="${-25.0  * TO_RADIAN}" upper="${85.0  * TO_RADIAN}" effort="0" velocity="${300.0 * TO_RADIAN}" acceleration="${300.0 * TO_RADIAN}"/>
+    </joint>
+    <joint name="j2_2" type="revolute">
+      <origin xyz="${4.5289*SCALE_MM} ${-30.5*SCALE_MM} ${141.5*SCALE_MM}" rpy="0 0 0"/>
+      <parent link="link1"/>
+      <child  link="link2_2"/>
+      <axis  xyz="0 1 0"/>
+      <limit lower="${-25.0  * TO_RADIAN}" upper="${85.0  * TO_RADIAN}" effort="0" velocity="${300.0 * TO_RADIAN}" acceleration="${300.0 * TO_RADIAN}"/>
+    </joint>
+
+    <!-- J3 (both sub-joints): –25° to +105° @ 300°/s -->
+    <joint name="j3_1" type="revolute">
+      <origin xyz="${-1.0513*SCALE_MM} ${35.7749*SCALE_MM} ${175.001*SCALE_MM}" rpy="0 0 0"/>
+      <parent link="link2_1"/>
+      <child  link="link3_1"/>
+      <axis  xyz="0 1 0"/>
+      <limit lower="${-25.0  * TO_RADIAN}" upper="${105.0  * TO_RADIAN}" effort="0" velocity="${300.0 * TO_RADIAN}" acceleration="${300.0 * TO_RADIAN}"/>
+    </joint>
+    <joint name="j3_2" type="revolute">
+      <origin xyz="${-1.05*SCALE_MM} ${6.5*SCALE_MM} ${175*SCALE_MM}" rpy="0 0 0"/>
+      <parent link="link2_2"/>
+      <child  link="link3_2"/>
+      <axis  xyz="0 1 0"/>
+      <limit lower="${-25.0  * TO_RADIAN}" upper="${105.0  * TO_RADIAN}" effort="0" velocity="${300.0 * TO_RADIAN}" acceleration="${300.0 * TO_RADIAN}"/>
+    </joint>
+
+    <!-- J4 pitch (both sub-joints): ±180° @ 300°/s -->
+    <joint name="j4_1" type="revolute">
+      <origin xyz="${175*SCALE_MM} ${-17*SCALE_MM} ${3.25*SCALE_MM}" rpy="0 0 0"/>
+      <parent link="link3_1"/>
+      <child  link="link4_1"/>
+      <axis  xyz="0 1 0"/>
+      <limit lower="${-180.0 * TO_RADIAN}" upper="${180.0 * TO_RADIAN}" effort="0" velocity="${300.0 * TO_RADIAN}" acceleration="${300.0 * TO_RADIAN}"/>
+    </joint>
+    <joint name="j4_2" type="revolute">
+      <origin xyz="${67.9*SCALE_MM} ${0.5*SCALE_MM} ${11.972*SCALE_MM}" rpy="0 0 0"/>
+      <parent link="link3_2"/>
+      <child  link="link4_2"/>
+      <axis  xyz="0 1 0"/>
+      <limit lower="${-180.0 * TO_RADIAN}" upper="${180.0 * TO_RADIAN}" effort="0" velocity="${300.0 * TO_RADIAN}" acceleration="${300.0 * TO_RADIAN}"/>
+    </joint>
+
+    <!-- Fixed couplings -->
+    <joint name="link4_3_joint" type="fixed">
+      <origin xyz="0 0 ${2 * SCALE_MM}" rpy="0 0 0"/>
+      <parent link="link5"/>
+      <child  link="link4_3"/>
+    </joint>
+    <joint name="link5_coupling" type="fixed">
+      <origin xyz="${66*SCALE_MM} ${17*SCALE_MM} ${31*SCALE_MM}" rpy="0 0 0"/>
+      <parent link="link4_1"/>
+      <child  link="link5"/>
+    </joint>
+
+    <!-- J5 (wrist roll): ±360° @ 300°/s -->
+    <joint name="j5" type="revolute">
+      <origin xyz="0 0 ${(-70.0 - 14.0) * SCALE_MM}" rpy="0 0 0"/>
+      <parent link="link5"/>
+      <child  link="flange"/>
+      <axis  xyz="0 0 1"/>
+      <limit lower="${-360.0 * TO_RADIAN}" upper="${360.0 * TO_RADIAN}" effort="0" velocity="${300.0 * TO_RADIAN}"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- ====================================================================== -->
+  <!-- TOP-LEVEL ROBOT INSTANCE                                               -->
+  <!-- ====================================================================== -->
+  
+  <!-- This is the 'world' frame. It can be renamed or omitted if the robot is spawned into an existing world. -->
+  <link name="world"/>
+
+  <!-- Instantiate the robot kinematics, attaching it to the 'world' frame -->
+  <xacro:mg400_robot parent="world">
+    <!-- This origin block defines the robot's position and orientation in the world -->
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:mg400_robot>
+  
+  <!-- Instantiate the ros2_control interfaces for the robot instance we just created -->
+  <xacro:mg400_ros2_control/>
+
+</robot>

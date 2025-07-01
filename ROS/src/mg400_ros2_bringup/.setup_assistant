@@ -1,0 +1,28 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: mg400_ros2_bringup
+    relative_path: urdf/mg400.urdf.xacro
+    xacro_args: name:=mg400 prefix:=mg400_
+  srdf:
+    relative_path: config/mg400.srdf
+  package_settings:
+    author_name: ""
+    author_email: ""
+    generated_timestamp: 1751281118
+  control_xacro:
+    command:
+      - position
+      - velocity
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+      - velocity
+    state:
+      - position
+      - velocity

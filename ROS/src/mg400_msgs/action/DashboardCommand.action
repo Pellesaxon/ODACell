@@ -1,0 +1,9 @@
+# Goal: a dashboard command to execute, e.g., "ClearError()"
+string command
+---
+# Result: The response from the robot
+string response
+int32 error_id
+---
+# Feedback: The current status of execution
+string feedback_msg
