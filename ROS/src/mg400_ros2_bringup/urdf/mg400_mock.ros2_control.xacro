@@ -7,12 +7,20 @@
     The joint limit parameters are passed from the main URDF xacro.
   -->
 
-  <xacro:macro name="mg400_mock_ros2_control">
+  <xacro:macro name="mg400_mock_ros2_control" params="
+    j1_lower_limit
+    j1_upper_limit
+    j2_lower_limit
+    j2_upper_limit
+    j3_lower_limit
+    j3_upper_limit
+    j4_lower_limit
+    j4_upper_limit
+  ">
     <ros2_control name="MockMG400" type="system">
       <hardware>
+        <!-- This plugin connects ros2_control to a mock hardware interface -->
         <plugin>mock_components/GenericSystem</plugin>
-        <!-- This plugin connects ros2_control to the C++ hardware interface -->
-        <!-- <plugin>mg400_ros2_bringup/MockMG400SystemHardware</plugin> -->
       </hardware>
 
       <!-- Define the commandable joints for the controller manager -->
@@ -20,8 +28,8 @@
       <!-- Joint 1 -->
       <joint name="j1">
         <command_interface name="position">
-          <param name="min">${J1_MIN_RAD}</param>
-          <param name="max">${J1_MAX_RAD}</param>
+          <param name="min">${j1_lower_limit}</param>
+          <param name="max">${j1_upper_limit}</param>
         </command_interface>
         <command_interface name="velocity"/>
         <command_interface name="acceleration"/>
@@ -32,8 +40,8 @@
       <!-- Joint 2 -->
       <joint name="j2">
         <command_interface name="position">
-          <param name="min">${J2_MIN_RAD}</param>
-          <param name="max">${J2_MAX_RAD}</param>
+          <param name="min">${j2_lower_limit}</param>
+          <param name="max">${j2_upper_limit}</param>
         </command_interface>
         <command_interface name="velocity"/>
         <command_interface name="acceleration"/>
@@ -44,8 +52,8 @@
       <!-- Joint 3 -->
       <joint name="j3">
         <command_interface name="position">
-          <param name="min">${J3_MIN_RAD}</param>
-          <param name="max">${J3_MAX_RAD}</param>
+          <param name="min">${j3_lower_limit}</param>
+          <param name="max">${j3_upper_limit}</param>
         </command_interface>
         <command_interface name="velocity"/>
         <command_interface name="acceleration"/>
@@ -56,8 +64,8 @@
       <!-- Joint 4 -->
       <joint name="j4">
         <command_interface name="position">
-          <param name="min">${J4_MIN_RAD}</param>
-          <param name="max">${J4_MAX_RAD}</param>
+          <param name="min">${j4_lower_limit}</param>
+          <param name="max">${j4_upper_limit}</param>
         </command_interface>
         <command_interface name="velocity"/>
         <command_interface name="acceleration"/>
