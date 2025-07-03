@@ -336,17 +336,6 @@
     </joint>
 
     <!-- Instantiate ros2_control plugin -->
-    <xacro:mg400_ros2_control
-    j1_lower_limit="${j1_lower_limit}"
-    j1_upper_limit="${j1_upper_limit}"
-    j2_lower_limit="${j2_lower_limit}"
-    j2_upper_limit="${j2_upper_limit}"
-    j3_lower_limit="${j3_lower_limit}"
-    j3_upper_limit="${j3_upper_limit}"
-    j4_lower_limit="${j4_lower_limit}"
-    j4_upper_limit="${j4_upper_limit}"
-    />
-
     <xacro:if value="$(arg use_mock)">
         <xacro:mg400_mock_ros2_control
         j1_lower_limit="${j1_lower_limit}"
