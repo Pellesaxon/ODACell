@@ -335,6 +335,8 @@
         <mimic joint="j3"/>
     </joint>
 
+    <xacro:arg name="use_mock" default="false"/>
+    
     <!-- Instantiate ros2_control plugin -->
     <xacro:if value="$(arg use_mock)">
         <xacro:mg400_mock_ros2_control
