@@ -15,8 +15,8 @@
     j3_lower_limit
     j3_upper_limit
     j4_lower_limit
-    j4_upper_limit
-  ">
+    j4_upper_limit">
+    
     <ros2_control name="MG400SystemHardware" type="system">
       <hardware>
         <!-- This plugin connects ros2_control to the C++ hardware interface -->

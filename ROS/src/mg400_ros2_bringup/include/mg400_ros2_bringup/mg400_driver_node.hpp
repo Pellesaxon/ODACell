@@ -24,7 +24,20 @@
 #include "mg400_ros2_bringup/shared_memory_bridge.hpp"
 #include "mg400_msgs/action/dashboard_command.hpp"
 #include "mg400_msgs/msg/robot_status.hpp"
+#include "mg400_ros2_bringup/alarms/mg400_alarm_manager.hpp"
 #include "std_srvs/srv/trigger.hpp"
+
+/**
+ * @brief Holds the structured response from a dashboard command.
+ */
+struct DashboardResponse
+{
+    bool success = false;
+    int protocol_error_id = -999;
+    std::string raw_response;
+    std::string payload;
+    const alarms::ErrorInfo* error_info = nullptr;
+};
 
 namespace mg400_ros2_bringup
 {
@@ -102,9 +115,9 @@ namespace mg400_ros2_bringup
         /**
          * @brief Sends a command to the dashboard port (29999).
          * @param command The string command to send, e.g., "EnableRobot()".
-         * @return The robot's response string. Returns an empty string on failure.
+         * @return A DashboardResponse struct containing the result of the command execution.
          */
-        std::string send_dashboard_command(const std::string &command);
+        DashboardResponse send_dashboard_command(const std::string &command);
 
         /**
          * @brief Service callback to handle requests to clear robot errors.

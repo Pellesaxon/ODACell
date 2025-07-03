@@ -63,7 +63,7 @@ def generate_launch_description():
 
         # The ros2_control controller manager configuration file
         ros2_controllers_path = PathJoinSubstitution(
-            [FindPackageShare("mg400_ros2_bringup"), "config", "mg400_controllers.yaml"]
+            [FindPackageShare("mg400_ros2_bringup"), "config", "ros2_controllers.yaml"]
         )
 
         # The ros2_control manager node

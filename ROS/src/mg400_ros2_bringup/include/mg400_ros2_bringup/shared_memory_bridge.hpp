@@ -9,8 +9,8 @@
  * for inter-process communication between the high-speed ROS2 control loop and the asynchronous
  * TCP/IP communication with the MG400 robot.
  *
- * @version 1.0
- * @date 2025-06-25
+ * @version 1.1 (fixed num joints)
+ * @date 2025-07-02
  * @author LT
  *
  */
@@ -22,22 +22,24 @@
 #include <string>
 #include <iostream>
 
+#define NUM_JOINTS 4 // Number of joints in the MG400 robot
+
 struct RealTimeState
 {
     // State from robot -> ros2_control
-    double q_actual[6];  // Actual joint positions
-    double qd_actual[6]; // Actual joint velocities
+    double q_actual[NUM_JOINTS];  // Actual joint positions
+    double qd_actual[NUM_JOINTS]; // Actual joint velocities
 
     // Commands from ros2_control -> driver
-    double q_command[6];  // Target joint positions
-    double qd_command[6]; // Target joint velocities
-    double qdd_command[6]; // Target joint accelerations
+    double q_command[NUM_JOINTS];   // Target joint positions
+    double qd_command[NUM_JOINTS];  // Target joint velocities
+    double qdd_command[NUM_JOINTS]; // Target joint accelerations
     bool new_command_flag;
 };
 
 /**
  * Provides an interface for accessing and manipulating the shared memory segment.
- */ 
+ */
 class SharedMemoryBridge
 {
 public:
@@ -52,6 +54,7 @@ public:
      */
     SharedMemoryBridge(const std::string &name)
     {
+        std::string tmp = name; // TODO: Edit this back when we have one robot working
         shm_name = "/mg400_rt_state";
         std::cout << "Shared memory initalising with name: " << shm_name << std::endl;
     }

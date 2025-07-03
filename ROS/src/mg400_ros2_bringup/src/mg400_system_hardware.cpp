@@ -57,7 +57,6 @@ std::vector<hardware_interface::CommandInterface> MG400SystemHardware::export_co
   {
     command_interfaces.emplace_back(hardware_interface::CommandInterface(
         info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_commands_[i]));
-    
     command_interfaces.emplace_back(hardware_interface::CommandInterface(
         info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &hw_velocity_commands_[i]));
     command_interfaces.emplace_back(hardware_interface::CommandInterface(
@@ -75,14 +74,16 @@ hardware_interface::CallbackReturn MG400SystemHardware::on_activate(const rclcpp
         return hardware_interface::CallbackReturn::ERROR;
     }
 
+    if (shm_bridge_.shared_memory_ptr) { shm_bridge_.shared_memory_ptr->new_command_flag = false; } // Reset command flag
+    
+    // Initialize commands with zero, will return the robot to the "home" position
     for (size_t i = 0; i < hw_positions_.size(); i++)
     {
         hw_positions_[i] = shm_bridge_.shared_memory_ptr->q_actual[i];
-        hw_commands_[i] = hw_positions_[i]; // Initialize commands with current positions
-        hw_velocity_commands_[i] = 0.0;
-        hw_acceleration_commands_[i] = 0.0;
+        hw_commands_[i] = 0.0;
+        hw_velocity_commands_[i] = 300.0 * (M_PI / 180.0); // Return home at 80% of max speed (quickly)
+        hw_acceleration_commands_[i] = 300.0 * (M_PI / 180.0); // Return home at 80% of max acceleration (quickly)
     }
-    if (shm_bridge_.shared_memory_ptr) { shm_bridge_.shared_memory_ptr->new_command_flag = false; } // Reset command flag
     RCLCPP_INFO(rclcpp::get_logger("MG400SystemHardware"), "Successfully activated and attached to shared memory.");
     return hardware_interface::CallbackReturn::SUCCESS;
 }
@@ -101,7 +102,7 @@ hardware_interface::return_type MG400SystemHardware::read(const rclcpp::Time &, 
         {
             hw_positions_[i] = shm_bridge_.shared_memory_ptr->q_actual[i];
             hw_velocities_[i] = shm_bridge_.shared_memory_ptr->qd_actual[i];
-        }
+        }    
     }
     return hardware_interface::return_type::OK;
 }

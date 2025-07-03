@@ -1,0 +1,9 @@
+<library path="mg400_analytical_ik">
+  <class name="mg400_analytical_ik/MG400KinematicsPlugin"
+         type="mg400_analytical_ik::MG400KinematicsPlugin"
+         base_class_type="kinematics::KinematicsBase">
+    <description>
+      An analytical Inverse and Forward Kinematics solver for the Dobot MG400.
+    </description>
+  </class>
+</library>
