@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mg400">
 
 
@@ -346,4 +346,11 @@
     j4_upper_limit="${j4_upper_limit}"
     />
 
+    <!-- <xacro:if value="$(arg use_mock)">
+        <xacro:mg400_mock_ros2_control/>
+    </xacro:if>
+
+    <xacro:unless value="$(arg use_mock)">
+        <xacro:mg400_ros2_control/>
+    </xacro:unless> -->
 </robot>

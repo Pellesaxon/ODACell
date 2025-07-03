@@ -437,6 +437,8 @@ namespace mg400_ros2_bringup
                          accel_j_param,
                          cp_ratio);
 
+                // RCLCPP_INFO(get_logger(), "Sending motion command: %s", cmd_buffer);
+
                 if (send(motion_sock_, cmd_buffer, strlen(cmd_buffer), 0) < 0)
                 {
                     RCLCPP_WARN(get_logger(), "Failed to send motion command. Reconnecting...");

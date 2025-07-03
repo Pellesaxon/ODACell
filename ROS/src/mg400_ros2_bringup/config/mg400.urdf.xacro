@@ -347,3 +347,15 @@
     />
 
 </robot>
+    <!-- <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import mg400 urdf file -->
+    <xacro:include filename="$(find mg400_ros2_bringup)/urdf/mg400.urdf.xacro" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="mg400.ros2_control.xacro" />
+
+
+    <xacro:mg400_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot> -->

@@ -1,8 +1,8 @@
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, RegisterEventHandler, OpaqueFunction
-from launch.conditions import IfCondition
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
+from launch.conditions import IfCondition, UnlessCondition
+from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution, PythonExpression
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from moveit_configs_utils import MoveItConfigsBuilder
@@ -17,12 +17,16 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument("use_rviz", default_value="true", description="Whether to start RViz.")
     )
+    declared_arguments.append(
+        DeclareLaunchArgument("use_mock", default_value="false", description="Whether to use mock hardware.")
+    )
 
 
     def launch_setup(context, *args, **kwargs):
         # Initialize Arguments from launch context
         use_moveit = LaunchConfiguration("use_moveit")
         use_rviz = LaunchConfiguration("use_rviz")
+        use_mock = LaunchConfiguration("use_mock")
 
         # -------------------------------------------------------------------
         # ---- STEP 1: Build the MoveIt configuration object and dictionary ---
@@ -36,7 +40,7 @@ def generate_launch_description():
             )
             # This processes the xacro and applies the prefix
             .robot_description(
-                file_path="urdf/mg400.urdf.xacro",
+                file_path="urdf/mg400.urdf.xacro", mappings={"use_mock": use_mock}
             )
             .robot_description_semantic(
                 file_path="config/mg400.srdf",
@@ -80,6 +84,7 @@ def generate_launch_description():
             package="mg400_ros2_bringup",
             executable="mg400_driver_node",
             output="screen",
+            condition=UnlessCondition(use_mock),
         )
 
         # Robot state publisher
@@ -116,7 +121,6 @@ def generate_launch_description():
             executable="move_group",
             output="screen",
             parameters=[moveit_params_dict],
-            condition=IfCondition(use_moveit),
         )
 
         # RViz
