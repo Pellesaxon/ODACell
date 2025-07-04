@@ -34,6 +34,7 @@
     <xacro:property name="j4_1_xyz" value="0.174969784055705 -0.0170000000000335 0.00325187137614585"/>
     <xacro:property name="j4_xyz" value="0.0659996239003897 0.0170000000000371 0.031000800715573"/>
     <xacro:property name="j2_2_xyz" value="0.00452885682964267 -0.0305 0.141500000000001"/>
+    <xacro:property name="j2_3_xyz" value="-0.043 0.0 0.0"/>
     <xacro:property name="j3_2_xyz" value="-0.00105049750546494 0.00649999999999986 0.174996846985851"/>
     <xacro:property name="j4_2_xyz" value="0.0678965856063864 0.000500000000000073 0.0119719999403219"/>
 
@@ -171,7 +172,7 @@
         <child link="link3_1"/>
         <axis xyz="0 1 0"/>
         <limit lower="${-PI}" upper="${PI}" effort="0" velocity="${j_velocity_limit}"/>
-        <mimic joint="j3_2" />
+        <mimic joint="j2" multiplier="-1" />
     </joint>
 
     <link name="link4_1">
@@ -203,7 +204,7 @@
         <child link="link4_1"/>
         <axis xyz="0 1 0"/>
         <limit lower="${-PI}" upper="${PI}" effort="0" velocity="${j_velocity_limit}"/>
-        <mimic joint="j4_2" multiplier="-1" />
+        <mimic joint="j3" multiplier="-1" />
     </joint>
 
     <link name="link5">
@@ -271,6 +272,53 @@
         <mimic joint="j2" />
     </joint>
 
+    <!-- Parallel linkage chain in between outer and inner link-->    
+    <!-- TODO: Mass is just a random guess -->
+    <link name="link2_3">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+            <mass value="0.0062546292985346"/>
+            <inertia ixx="0.000218973873589181" ixy="3.0147933007673E-10" ixz="2.51402553227571E-06" iyy="0.000200510070261609" iyz="-1.41837669904595E-09" izz="3.74316777806776E-05"/>
+        </inertial>
+        <visual>
+            <origin xyz="0.001 -0.0035 -0.086" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.008 0.005 0.174"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.5 0.5 0 1"/>
+            </material>
+        </visual>
+        <!-- [x] 1mm larger per side collision  -->
+        <collision>
+            <origin xyz="0.002 -0.0036 -0.086" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.010 0.005 0.174"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- The fake_link is an intermediate frame to correctly model the parallelogram linkage -->
+    <link name="fake_link_2" />
+
+    <joint name="j2_3" type="revolute">
+        <origin xyz="${j2_3_xyz}" rpy="0 0 0"/>
+        <parent link="link3_1"/>
+        <child link="fake_link_2"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="${-PI}" upper="${PI}" effort="0" velocity="${j_velocity_limit}"/>
+        <mimic joint="j2" />
+    </joint>
+
+    <joint name="j2_4" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="fake_link_2"/>
+        <child link="link2_3"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="${-PI}" upper="${PI}" effort="0" velocity="${j_velocity_limit}"/>
+        <mimic joint="j3" multiplier="-1"/>
+    </joint>
+
     <link name="link3_2">
         <inertial>
             <origin xyz="0.0338566736074436 0.0240208873857428 0.00452229895926692" rpy="0 0 0"/>
@@ -300,7 +348,7 @@
         <child link="link3_2"/>
         <axis xyz="0 1 0"/>
         <limit lower="${-PI}" upper="${PI}" effort="0" velocity="${j_velocity_limit}"/>
-        <mimic joint="j2_2" multiplier="-1" />
+        <mimic joint="j2" multiplier="-1" />
     </joint>
 
     <link name="link4_2">
