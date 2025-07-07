@@ -225,26 +225,46 @@ async def handle_motion_client(reader, writer, state: RobotState):
 
     try:
         while True:
-            data = await reader.read(1024)
+            data = await reader.read(2048) # Increased buffer size just in case
             if not data:
                 print("MOTION: Client disconnected.")
                 break
 
             command_str = data.decode().strip()
-            print(f"MOTION: Received command: {command_str}")
-            
-            match = re.match(r"JointMovJ\(([^,]+),([^,]+),([^,]+),([^,]+).*\)", command_str)
-            if match:
+            print(f"MOTION: Received buffer with {len(command_str.split(')'))-1} potential commands.")
+
+            # This regex is non-greedy `(.*?)` to ensure it stops at the first closing parenthesis
+            pattern = re.compile(r"JointMovJ\((.*?)\)")
+            matches_found = 0
+            for match in pattern.finditer(command_str):
+                params_str = match.group(1)
+                params = params_str.split(',')
+                
                 try:
+                    # Extract positions, speed, and acceleration
+                    positions = [float(p) for p in params[:4]]
+                    speed_search = re.search(r"SpeedJ=(\d+)", params_str)
+                    accel_search = re.search(r"AccJ=(\d+)", params_str)
+
+                    speed = int(speed_search.group(1)) if speed_search else 100
+                    accel = int(accel_search.group(1)) if accel_search else 100
+
                     target = {
-                        "positions": [float(p) for p in match.groups()],
-                        "speed": int(re.search(r"SpeedJ=(\d+)", command_str).group(1))
+                        "positions": positions,
+                        "speed": speed,
+                        "accel": accel
                     }
                     await state.motion_queue.put(target)
+                    matches_found += 1
                 except (ValueError, IndexError, AttributeError) as e:
-                    print(f"MOTION: Error parsing JointMovJ params from '{command_str}': {e}")
+                    full_cmd = f"JointMovJ({params_str})"
+                    print(f"MOTION: Error parsing JointMovJ params from '{full_cmd}': {e}")
+            
+            if matches_found > 0:
+                print(f"MOTION: Successfully parsed and queued {matches_found} commands.")
             else:
-                print(f"MOTION: Unhandled command '{command_str}'")
+                 print(f"MOTION: No valid JointMovJ commands found in buffer: {command_str}")
+
 
     except asyncio.CancelledError:
         print("MOTION: Connection handler cancelled.")
