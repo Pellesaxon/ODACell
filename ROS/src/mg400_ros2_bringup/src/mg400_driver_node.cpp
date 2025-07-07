@@ -68,8 +68,8 @@ namespace mg400_ros2_bringup
         RCLCPP_INFO(this->get_logger(), "Starting MG400 driver for robot %s at IP: %s", robot_name_.c_str(), robot_ip_.c_str());
 
         // Initialize ROS interfaces
-        status_publisher_ = this->create_publisher<mg400_msgs::msg::RobotStatus>("/" + robot_name_ + "/robot_status", 10);
-        joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/" + robot_name_ + "/joint_states", 10);
+        status_publisher_ = this->create_publisher<mg400_msgs::msg::RobotStatus>("/mg400/robot_status", 10);
+        joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/mg400/joint_states", 10);
 
         dashboard_action_server_ = rclcpp_action::create_server<DashboardCommand>(
             this, "mg400/dashboard_command",
@@ -217,7 +217,7 @@ namespace mg400_ros2_bringup
     bool MG400DriverNode::check_initial_connection()
     {
         const int max_retries = 3;
-        const int retry_delay_ms = 2500; // 2.5 seconds
+        const int retry_delay_ms = 5000; // 2.5 seconds
         RCLCPP_INFO(this->get_logger(), "Checking initial connection to robot...");
         for (int attempt = 1; attempt <= max_retries; ++attempt)
         {
@@ -444,6 +444,18 @@ namespace mg400_ros2_bringup
         memcpy(q_actual_deg, &buffer[432], sizeof(q_actual_deg));
         memcpy(qd_actual_deg, &buffer[480], sizeof(qd_actual_deg));
 
+        uint64_t timestamp_ms_unix;
+        memcpy(&timestamp_ms_unix, &buffer[32], sizeof(timestamp_ms_unix));
+        if (init_timestamp_ms_unix_ == 0 || init_wall_time_ms_unix_ == 0)
+        {
+            init_timestamp_ms_unix_ = timestamp_ms_unix;
+            init_wall_time_ms_unix_ = this->get_clock().get()->now().nanoseconds() / 1e6; // Convert to milliseconds
+            RCLCPP_INFO(get_logger(), "Initial wall time set to %lu ms since epoch.", init_wall_time_ms_unix_);
+            RCLCPP_INFO(get_logger(), "Initial timestamp set to %lu ms since epoch.", init_timestamp_ms_unix_);
+        }
+        uint64_t elapsed_time_ms_unix_robot = timestamp_ms_unix - init_timestamp_ms_unix_;
+        uint64_t current_timestamp_ms_unix = init_wall_time_ms_unix_ + elapsed_time_ms_unix_robot;
+
         std::lock_guard<std::mutex> lock(robot_state_mutex_);
         for (int i = 0; i < NUM_JOINTS; ++i)
         {
@@ -452,7 +464,8 @@ namespace mg400_ros2_bringup
         }
 
         auto joint_state_msg = sensor_msgs::msg::JointState();
-        joint_state_msg.header.stamp = this->get_clock().get()->now();
+        //joint_state_msg.header.stamp = this->get_clock().get()->now(); // Try using robot's elapsed time, revert if synchronisation issues arise.
+        joint_state_msg.header.stamp = rclcpp::Time(current_timestamp_ms_unix * 1e6, RCL_ROS_TIME);
         joint_state_msg.name = {JOINT_NAMES[0], JOINT_NAMES[1], JOINT_NAMES[2], JOINT_NAMES[3]};
         joint_state_msg.position = joint_positions_;
         joint_state_msg.velocity = joint_velocities_;

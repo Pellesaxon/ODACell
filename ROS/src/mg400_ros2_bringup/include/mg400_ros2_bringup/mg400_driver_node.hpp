@@ -80,6 +80,8 @@ namespace mg400_ros2_bringup
         std::vector<double> joint_velocities_ = {0.0, 0.0, 0.0, 0.0}; // Joint velocities in radians/s
         std::atomic<bool> run_queued_cmd_flag_ = false;
         std::atomic<bool> queue_paused_flag_ = false; // Flag to pause the command queue
+        uint64_t init_timestamp_ms_unix_ = 0; // Timestamp in milliseconds since epoch
+        uint64_t init_wall_time_ms_unix_ = 0;
 
         // Sockets
         int feedback_sock_ = -1;
