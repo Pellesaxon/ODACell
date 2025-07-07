@@ -109,6 +109,12 @@ namespace mg400_ros2_bringup
         int connect_socket(int port);
 
         /**
+         * @brief Checks if the initial connection to the robot is successful.
+         * @return True if the connection is established, false otherwise.
+         */
+        bool check_initial_connection();
+
+        /**
          * @brief The main loop for the feedback thread. Continuously reads and parses data from port 30004.
          */
         void feedback_loop();

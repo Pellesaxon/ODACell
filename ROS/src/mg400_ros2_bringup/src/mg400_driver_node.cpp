@@ -17,7 +17,10 @@
 #include <cstring> // For memcpy
 #include <regex>   // Error parsing
 
-// Define constants from the documentation
+#define DEFAULT_ROBOT_NAME "mg400"
+#define DEFAULT_ROBOT_IP "192.168.1.6"
+
+// Defined constants
 #define REALTIME_FEEDBACK_PORT 30004
 #define MOTION_COMMAND_PORT 30003
 #define DASHBOARD_COMMAND_PORT 29999
@@ -59,8 +62,8 @@ namespace mg400_ros2_bringup
         : Node("mg400_driver_node", options)
     {
 
-        robot_name_ = "mg400";
-        robot_ip_ = "192.168.1.6";
+        robot_name_ = this->declare_parameter<std::string>("robot_name", DEFAULT_ROBOT_NAME);
+        robot_ip_ = this->declare_parameter<std::string>("robot_ip", DEFAULT_ROBOT_IP);
 
         RCLCPP_INFO(this->get_logger(), "Starting MG400 driver for robot %s at IP: %s", robot_name_.c_str(), robot_ip_.c_str());
 
@@ -87,8 +90,15 @@ namespace mg400_ros2_bringup
 
         RCLCPP_INFO(this->get_logger(), "ROS interfaces are ready.");
 
-        // --- STARTUP SEQUENCE (unchanged) ---
+        // --- STARTUP SEQUENCE ---
         //
+
+        bool initial_connection_success = check_initial_connection();
+        if (!initial_connection_success)
+        {
+            RCLCPP_FATAL(this->get_logger(), "CRITICAL: Failed to establish initial connection to the robot. Driver cannot continue.");
+            throw std::runtime_error("Failed to connect to robot on startup.");
+        }
 
         RCLCPP_INFO(this->get_logger(), "Setting collision level to %d...", COLLISION_LEVEL);
         auto set_collision_response = send_dashboard_command("SetCollisionLevel(" + std::to_string(COLLISION_LEVEL) + ")");
@@ -171,7 +181,6 @@ namespace mg400_ros2_bringup
         feedback_thread_ = std::thread(&MG400DriverNode::feedback_loop, this);
         // motion_thread_ is no longer needed
 
-        // <<< NEW >>>: Establish motion socket connection at startup
         motion_sock_ = connect_socket(MOTION_COMMAND_PORT);
         if (motion_sock_ < 0)
         {
@@ -203,6 +212,33 @@ namespace mg400_ros2_bringup
             close(motion_sock_);
         if (feedback_sock_ >= 0)
             close(feedback_sock_);
+    }
+
+    bool MG400DriverNode::check_initial_connection()
+    {
+        const int max_retries = 3;
+        const int retry_delay_ms = 2500; // 2.5 seconds
+        RCLCPP_INFO(this->get_logger(), "Checking initial connection to robot...");
+        for (int attempt = 1; attempt <= max_retries; ++attempt)
+        {
+            auto response = send_dashboard_command("GetErrorID()");
+            if (response.success)
+            {
+                RCLCPP_INFO(this->get_logger(), "Initial connection check successful. Robot is ready.");
+                return true;
+            }
+            else
+            {
+                RCLCPP_ERROR(this->get_logger(), "Initial connection check failed (attempt %d/%d). Reason: %s (ID: %d)",
+                             attempt, max_retries,
+                             response.error_info->en.description.data(), response.protocol_error_id);
+                if (attempt < max_retries)
+                {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(retry_delay_ms));
+                }
+            }
+        }
+        return false;
     }
 
     DashboardResponse MG400DriverNode::send_dashboard_command(const std::string &command)
