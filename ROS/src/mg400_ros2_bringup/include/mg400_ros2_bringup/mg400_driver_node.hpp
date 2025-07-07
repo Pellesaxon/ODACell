@@ -6,26 +6,31 @@
  * @brief Header for the MG400DriverNode class.
  *
  * This class encapsulates all logic for communicating with the Dobot MG400 robot
- * over TCP/IP and bridging its state to the ros2_control framework via shared memory.
+ * over TCP/IP. It provides a feedback loop for robot state and implements the
+ * FollowJointTrajectory action server for MoveIt 2 integration.
  *
- * @version 1.1
- * @date 2025-06-25
+ * @version 2.0 (FollowJointTrajectory implementation)
+ * @date 2025-07-03
  * @author LT
  */
 
 #include <thread>
 #include <string>
 #include <vector>
+#include <array>
 #include <map>
 #include <atomic>
+#include <mutex>
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-#include "mg400_ros2_bringup/shared_memory_bridge.hpp"
 #include "mg400_msgs/action/dashboard_command.hpp"
 #include "mg400_msgs/msg/robot_status.hpp"
 #include "mg400_ros2_bringup/alarms/mg400_alarm_manager.hpp"
 #include "std_srvs/srv/trigger.hpp"
+
+#include "control_msgs/action/follow_joint_trajectory.hpp" 
+#include "sensor_msgs/msg/joint_state.hpp"
 
 /**
  * @brief Holds the structured response from a dashboard command.
@@ -36,7 +41,7 @@ struct DashboardResponse
     int protocol_error_id = -999;
     std::string raw_response;
     std::string payload;
-    const alarms::ErrorInfo* error_info = nullptr;
+    const alarms::ErrorInfo *error_info = nullptr;
 };
 
 namespace mg400_ros2_bringup
@@ -45,8 +50,11 @@ namespace mg400_ros2_bringup
     class MG400DriverNode : public rclcpp::Node
     {
     public:
+        // Action definitions
         using DashboardCommand = mg400_msgs::action::DashboardCommand;
         using GoalHandleDashboardCommand = rclcpp_action::ServerGoalHandle<DashboardCommand>;
+        using FollowJointTrajectory = control_msgs::action::FollowJointTrajectory; 
+        using GoalHandleFJT = rclcpp_action::ServerGoalHandle<FollowJointTrajectory>;
 
         /**
          * @brief Construct a new MG400DriverNode object
@@ -58,34 +66,38 @@ namespace mg400_ros2_bringup
          */
         ~MG400DriverNode();
 
-    private:
+        private:
         // --- Member Variables ---
         std::string robot_name_;
         std::string robot_ip_;
-        SharedMemoryBridge shm_bridge_;
-        std::atomic<bool> is_running_;
+        std::atomic<bool> is_running_ = false;
+        std::atomic<bool> is_robot_connected_and_enabled_ = false;
+        std::atomic<bool> is_robot_in_error_ = false;
+
+        // Robot state variables
+        std::mutex robot_state_mutex_;
+        std::vector<double> joint_positions_ = {0.0, 0.0, 0.0, 0.0}; // Joint positions in radians
+        std::vector<double> joint_velocities_ = {0.0, 0.0, 0.0, 0.0}; // Joint velocities in radians/s
+        std::atomic<bool> run_queued_cmd_flag_ = false;
+        std::atomic<bool> queue_paused_flag_ = false; // Flag to pause the command queue
 
         // Sockets
         int feedback_sock_ = -1;
         int motion_sock_ = -1;
+        std::mutex motion_socket_mutex_; // <<< NEW: To protect the motion socket
 
         // Communication threads
         std::thread feedback_thread_;
-        std::thread motion_thread_;
-
-        std::atomic<bool> is_robot_connected_and_enabled_;
-        std::atomic<bool> is_robot_in_error_;
-
-        std::map<int, std::string> controller_alarm_map_;
-        std::map<int, std::string> servo_alarm_map_;
 
         // Periodically query detailed errors
         rclcpp::TimerBase::SharedPtr error_query_timer_;
 
         // ROS interfaces
         rclcpp::Publisher<mg400_msgs::msg::RobotStatus>::SharedPtr status_publisher_;
-        rclcpp_action::Server<DashboardCommand>::SharedPtr dashboard_action_server_;
+        rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_state_publisher_;
 
+        rclcpp_action::Server<DashboardCommand>::SharedPtr dashboard_action_server_;
+        rclcpp_action::Server<FollowJointTrajectory>::SharedPtr fjt_action_server_; // <<< NEW
         rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr clear_error_service_;
 
         // --- Private Methods ---
@@ -101,6 +113,8 @@ namespace mg400_ros2_bringup
          */
         void feedback_loop();
 
+        void parse_detailed_error_string(const std::string &error_string, mg400_msgs::msg::RobotStatus &status_msg);
+
         /**
          * @brief Parses the 1440-byte feedback packet and updates shared memory and ROS publishers.
          * @param buffer The raw byte buffer received from the robot.
@@ -108,9 +122,11 @@ namespace mg400_ros2_bringup
         void parse_feedback_and_update(const std::vector<char> &buffer);
 
         /**
-         * @brief The main loop for the motion command thread. Watches for new commands in shared memory and sends them to port 30003.
+         * @brief Sends a high-level motion command to the robot's motion port (30003).
+         * @param command The string command to send (e.g., "JointMovJ(...)").
+         * @return True on success, false on failure.
          */
-        void motion_command_loop();
+        bool send_motion_command(const std::string &command); // <<< NEW HELPER
 
         /**
          * @brief Sends a command to the dashboard port (29999).
@@ -126,27 +142,21 @@ namespace mg400_ros2_bringup
                                   std::shared_ptr<std_srvs::srv::Trigger::Response> response);
 
         /**
-         * @brief Populates the internal maps with known error codes and descriptions.
-         */
-        void initialize_error_maps();
-
-        /**
-         * @brief Parses the complex string response from a GetErrorID command.
-         * @param error_string The raw string response from the robot.
-         * @param status_msg The RobotStatus message to populate.
-         */
-        void parse_detailed_error_string(const std::string &error_string, mg400_msgs::msg::RobotStatus &status_msg);
-
-        /**
-         * @brief Periodically called by a timer to query for detailed errors if the robot is in an error state.
-         */
+        * @brief Periodically called by a timer to query for detailed errors if the robot is in an error state.
+        */
         void query_detailed_errors();
-
+        
         // --- Dashboard Action Server Callbacks ---
         rclcpp_action::GoalResponse handle_dashboard_goal(const rclcpp_action::GoalUUID &, std::shared_ptr<const DashboardCommand::Goal>);
         rclcpp_action::CancelResponse handle_dashboard_cancel(const std::shared_ptr<GoalHandleDashboardCommand>);
         void handle_dashboard_accepted(const std::shared_ptr<GoalHandleDashboardCommand>);
         void execute_dashboard_command(const std::shared_ptr<GoalHandleDashboardCommand>);
+
+        // --- FollowJointTrajectory Action Server Callbacks ---
+        rclcpp_action::GoalResponse handle_fjt_goal(const rclcpp_action::GoalUUID &, std::shared_ptr<const FollowJointTrajectory::Goal> goal);
+        rclcpp_action::CancelResponse handle_fjt_cancel(const std::shared_ptr<GoalHandleFJT>);
+        void handle_fjt_accepted(const std::shared_ptr<GoalHandleFJT>);
+        void execute_trajectory(const std::shared_ptr<GoalHandleFJT> goal_handle);
     };
 
 } // namespace mg400_ros2_bringup

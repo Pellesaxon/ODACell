@@ -3,7 +3,7 @@ moveit_setup_assistant_config:
     package: mg400_ros2_bringup
     relative_path: urdf/mg400.urdf.xacro
   srdf:
-    relative_path: config/mg400_description.srdf
+    relative_path: config/mg400.srdf
   package_settings:
     author_name: lt
     author_email: lt@epic.mail

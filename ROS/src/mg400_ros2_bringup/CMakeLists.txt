@@ -8,26 +8,10 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
-find_package(hardware_interface REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(mg400_msgs REQUIRED)
 find_package(std_srvs REQUIRED) #
-
-# Build the hardware interface plugin
-add_library(mg400_system_hardware SHARED
-  src/mg400_system_hardware.cpp
-)
-ament_target_dependencies(mg400_system_hardware
-  rclcpp
-  hardware_interface
-  pluginlib
-)
-# Make sure the plugin can find its own header
-target_include_directories(mg400_system_hardware PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
-pluginlib_export_plugin_description_file(hardware_interface src/ros2_control.xml)
+find_package(control_msgs REQUIRED)
 
 # Build the driver node executable
 add_executable(mg400_driver_node src/mg400_driver_node.cpp)
@@ -36,6 +20,7 @@ ament_target_dependencies(mg400_driver_node
   rclcpp_action
   mg400_msgs
   std_srvs
+  control_msgs
 )
 target_include_directories(mg400_driver_node PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -50,7 +35,6 @@ target_link_libraries(mg400_driver_node rt)
 
 # Install targets
 install(TARGETS
-  mg400_system_hardware
   mg400_driver_node
   DESTINATION lib/${PROJECT_NAME}
 )
@@ -73,11 +57,6 @@ install(
 
 install(
   DIRECTORY config
-  DESTINATION share/${PROJECT_NAME}
-)
-
-install(
-  FILES src/ros2_control.xml
   DESTINATION share/${PROJECT_NAME}
 )
 

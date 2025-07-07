@@ -1,9 +1,0 @@
-<library path="mg400_system_hardware">
-  <class name="mg400_ros2_bringup/MG400SystemHardware"
-         type="mg400_ros2_bringup::MG400SystemHardware"
-         base_class_type="hardware_interface::SystemInterface">
-    <description>
-      A ros2_control hardware interface for the Dobot MG400 robot.
-    </description>
-  </class>
-</library>

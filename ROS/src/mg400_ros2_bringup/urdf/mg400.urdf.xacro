@@ -38,10 +38,6 @@
     <xacro:property name="j3_2_xyz" value="-0.00105049750546494 0.00649999999999986 0.174996846985851"/>
     <xacro:property name="j4_2_xyz" value="0.0678965856063864 0.000500000000000073 0.0119719999403219"/>
 
-    <!-- Import ros2_control configuration -->
-    <xacro:include filename="$(find mg400_ros2_bringup)/urdf/mg400.ros2_control.xacro" />
-    <xacro:include filename="$(find mg400_ros2_bringup)/urdf/mg400_mock.ros2_control.xacro" />
-
     <!-- =================================================================================== -->
     <!-- |                                     ROBOT                                       | -->
     <!-- =================================================================================== -->
@@ -382,33 +378,4 @@
         <limit lower="${-PI}" upper="${PI}" effort="0" velocity="${j_velocity_limit}"/>
         <mimic joint="j3"/>
     </joint>
-
-    <xacro:arg name="use_mock" default="false"/>
-    
-    <!-- Instantiate ros2_control plugin -->
-    <xacro:if value="$(arg use_mock)">
-        <xacro:mg400_mock_ros2_control
-        j1_lower_limit="${j1_lower_limit}"
-        j1_upper_limit="${j1_upper_limit}"
-        j2_lower_limit="${j2_lower_limit}"
-        j2_upper_limit="${j2_upper_limit}"
-        j3_lower_limit="${j3_lower_limit}"
-        j3_upper_limit="${j3_upper_limit}"
-        j4_lower_limit="${j4_lower_limit}"
-        j4_upper_limit="${j4_upper_limit}"
-        />
-    </xacro:if>
-
-    <xacro:unless value="$(arg use_mock)">
-        <xacro:mg400_ros2_control
-        j1_lower_limit="${j1_lower_limit}"
-        j1_upper_limit="${j1_upper_limit}"
-        j2_lower_limit="${j2_lower_limit}"
-        j2_upper_limit="${j2_upper_limit}"
-        j3_lower_limit="${j3_lower_limit}"
-        j3_upper_limit="${j3_upper_limit}"
-        j4_lower_limit="${j4_lower_limit}"
-        j4_upper_limit="${j4_upper_limit}"
-        />
-    </xacro:unless>
 </robot>

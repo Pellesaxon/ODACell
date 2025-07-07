@@ -1,14 +1,21 @@
-# MoveIt uses this configuration for controller management
-
 moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControllerManager
 
 moveit_simple_controller_manager:
-  controller_names:
-    - joint_trajectory_controller
 
-  joint_trajectory_controller:
+  ros__parameters:
+      joint_state_topic: /mg400/joint_states
+      allowed_start_tolerance: 1
+
+  controller_names:
+    - mg400_arm_controller
+
+  mg400_arm_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
+    allowed_execution_duration_scaling: 100.0
+    allowed_goal_duration_margin: 100.0
+    allowed_start_tolerance: 1 
+    default: true
     joints:
       - j1
       - j2

@@ -12,19 +12,19 @@ joint_limits:
     has_velocity_limits: true
     max_velocity: 5.2359877559829888
     has_acceleration_limits: true
-    max_acceleration: 5.2359877559829888
+    max_acceleration: 10.471975512
   j2:
     has_velocity_limits: true
     max_velocity: 5.2359877559829888
     has_acceleration_limits: true
-    max_acceleration: 5.2359877559829888
+    max_acceleration: 10.471975512
   j3:
     has_velocity_limits: true
     max_velocity: 5.2359877559829888
     has_acceleration_limits: true
-    max_acceleration: 5.2359877559829888
+    max_acceleration: 10.471975512
   j4:
     has_velocity_limits: true
     max_velocity: 5.2359877559829888
     has_acceleration_limits: true
-    max_acceleration: 5.2359877559829888
+    max_acceleration: 10.471975512

@@ -10,14 +10,12 @@
 
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
-  <depend>hardware_interface</depend>
-  <depend>controller_manager</depend>
   <depend>joint_trajectory_controller</depend>
   <depend>joint_state_broadcaster</depend>
-  <depend>ros2_control</depend>
   <depend>pluginlib</depend>
   <depend>mg400_msgs</depend>
   <depend>std_srvs</depend>
+  <depend>control_msgs</depend>
 
   <exec_depend>moveit_ros_move_group</exec_depend>
   <exec_depend>moveit_kinematics</exec_depend>
