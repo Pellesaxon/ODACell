@@ -80,6 +80,8 @@ namespace mg400_ros2_bringup
         std::vector<double> joint_velocities_ = {0.0, 0.0, 0.0, 0.0}; // Joint velocities in radians/s
         std::atomic<bool> run_queued_cmd_flag_ = false;
         std::atomic<bool> queue_paused_flag_ = false; // Flag to pause the command queue
+        uint64_t init_timestamp_ms_unix_ = 0; // Timestamp in milliseconds since epoch
+        uint64_t init_wall_time_ms_unix_ = 0;
 
         // Sockets
         int feedback_sock_ = -1;
@@ -107,6 +109,12 @@ namespace mg400_ros2_bringup
          * @return The socket file descriptor on success, -1 on failure.
          */
         int connect_socket(int port);
+
+        /**
+         * @brief Checks if the initial connection to the robot is successful.
+         * @return True if the connection is established, false otherwise.
+         */
+        bool check_initial_connection();
 
         /**
          * @brief The main loop for the feedback thread. Continuously reads and parses data from port 30004.

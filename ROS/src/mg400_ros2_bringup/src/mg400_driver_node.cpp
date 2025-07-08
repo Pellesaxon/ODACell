@@ -17,7 +17,10 @@
 #include <cstring> // For memcpy
 #include <regex>   // Error parsing
 
-// Define constants from the documentation
+#define DEFAULT_ROBOT_NAME "mg400"
+#define DEFAULT_ROBOT_IP "192.168.1.6"
+
+// Defined constants
 #define REALTIME_FEEDBACK_PORT 30004
 #define MOTION_COMMAND_PORT 30003
 #define DASHBOARD_COMMAND_PORT 29999
@@ -59,14 +62,14 @@ namespace mg400_ros2_bringup
         : Node("mg400_driver_node", options)
     {
 
-        robot_name_ = "mg400";
-        robot_ip_ = "192.168.1.6";
+        robot_name_ = this->declare_parameter<std::string>("robot_name", DEFAULT_ROBOT_NAME);
+        robot_ip_ = this->declare_parameter<std::string>("robot_ip", DEFAULT_ROBOT_IP);
 
         RCLCPP_INFO(this->get_logger(), "Starting MG400 driver for robot %s at IP: %s", robot_name_.c_str(), robot_ip_.c_str());
 
         // Initialize ROS interfaces
-        status_publisher_ = this->create_publisher<mg400_msgs::msg::RobotStatus>("/" + robot_name_ + "/robot_status", 10);
-        joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/" + robot_name_ + "/joint_states", 10);
+        status_publisher_ = this->create_publisher<mg400_msgs::msg::RobotStatus>("/mg400/robot_status", 10);
+        joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/mg400/joint_states", 10);
 
         dashboard_action_server_ = rclcpp_action::create_server<DashboardCommand>(
             this, "mg400/dashboard_command",
@@ -87,8 +90,15 @@ namespace mg400_ros2_bringup
 
         RCLCPP_INFO(this->get_logger(), "ROS interfaces are ready.");
 
-        // --- STARTUP SEQUENCE (unchanged) ---
+        // --- STARTUP SEQUENCE ---
         //
+
+        bool initial_connection_success = check_initial_connection();
+        if (!initial_connection_success)
+        {
+            RCLCPP_FATAL(this->get_logger(), "CRITICAL: Failed to establish initial connection to the robot. Driver cannot continue.");
+            throw std::runtime_error("Failed to connect to robot on startup.");
+        }
 
         RCLCPP_INFO(this->get_logger(), "Setting collision level to %d...", COLLISION_LEVEL);
         auto set_collision_response = send_dashboard_command("SetCollisionLevel(" + std::to_string(COLLISION_LEVEL) + ")");
@@ -171,7 +181,6 @@ namespace mg400_ros2_bringup
         feedback_thread_ = std::thread(&MG400DriverNode::feedback_loop, this);
         // motion_thread_ is no longer needed
 
-        // <<< NEW >>>: Establish motion socket connection at startup
         motion_sock_ = connect_socket(MOTION_COMMAND_PORT);
         if (motion_sock_ < 0)
         {
@@ -203,6 +212,33 @@ namespace mg400_ros2_bringup
             close(motion_sock_);
         if (feedback_sock_ >= 0)
             close(feedback_sock_);
+    }
+
+    bool MG400DriverNode::check_initial_connection()
+    {
+        const int max_retries = 3;
+        const int retry_delay_ms = 5000; // 2.5 seconds
+        RCLCPP_INFO(this->get_logger(), "Checking initial connection to robot...");
+        for (int attempt = 1; attempt <= max_retries; ++attempt)
+        {
+            auto response = send_dashboard_command("GetErrorID()");
+            if (response.success)
+            {
+                RCLCPP_INFO(this->get_logger(), "Initial connection check successful. Robot is ready.");
+                return true;
+            }
+            else
+            {
+                RCLCPP_ERROR(this->get_logger(), "Initial connection check failed (attempt %d/%d). Reason: %s (ID: %d)",
+                             attempt, max_retries,
+                             response.error_info->en.description.data(), response.protocol_error_id);
+                if (attempt < max_retries)
+                {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(retry_delay_ms));
+                }
+            }
+        }
+        return false;
     }
 
     DashboardResponse MG400DriverNode::send_dashboard_command(const std::string &command)
@@ -408,6 +444,18 @@ namespace mg400_ros2_bringup
         memcpy(q_actual_deg, &buffer[432], sizeof(q_actual_deg));
         memcpy(qd_actual_deg, &buffer[480], sizeof(qd_actual_deg));
 
+        uint64_t timestamp_ms_unix;
+        memcpy(&timestamp_ms_unix, &buffer[32], sizeof(timestamp_ms_unix));
+        if (init_timestamp_ms_unix_ == 0 || init_wall_time_ms_unix_ == 0)
+        {
+            init_timestamp_ms_unix_ = timestamp_ms_unix;
+            init_wall_time_ms_unix_ = this->get_clock().get()->now().nanoseconds() / 1e6; // Convert to milliseconds
+            RCLCPP_INFO(get_logger(), "Initial wall time set to %lu ms since epoch.", init_wall_time_ms_unix_);
+            RCLCPP_INFO(get_logger(), "Initial timestamp set to %lu ms since epoch.", init_timestamp_ms_unix_);
+        }
+        uint64_t elapsed_time_ms_unix_robot = timestamp_ms_unix - init_timestamp_ms_unix_;
+        uint64_t current_timestamp_ms_unix = init_wall_time_ms_unix_ + elapsed_time_ms_unix_robot;
+
         std::lock_guard<std::mutex> lock(robot_state_mutex_);
         for (int i = 0; i < NUM_JOINTS; ++i)
         {
@@ -416,7 +464,8 @@ namespace mg400_ros2_bringup
         }
 
         auto joint_state_msg = sensor_msgs::msg::JointState();
-        joint_state_msg.header.stamp = this->get_clock().get()->now();
+        //joint_state_msg.header.stamp = this->get_clock().get()->now(); // Try using robot's elapsed time, revert if synchronisation issues arise.
+        joint_state_msg.header.stamp = rclcpp::Time(current_timestamp_ms_unix * 1e6, RCL_ROS_TIME);
         joint_state_msg.name = {JOINT_NAMES[0], JOINT_NAMES[1], JOINT_NAMES[2], JOINT_NAMES[3]};
         joint_state_msg.position = joint_positions_;
         joint_state_msg.velocity = joint_velocities_;

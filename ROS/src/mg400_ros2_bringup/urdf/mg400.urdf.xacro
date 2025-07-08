@@ -15,14 +15,14 @@
 
     <!-- Joint Limits from Manual (Appendix A, page 41) -->
     <!-- Position Limits (rad) -->
-    <xacro:property name="j1_lower_limit" value="${-160 * deg_to_rad}"/>
-    <xacro:property name="j1_upper_limit" value="${160 * deg_to_rad}"/>
-    <xacro:property name="j2_lower_limit" value="${-25 * deg_to_rad}"/>
-    <xacro:property name="j2_upper_limit" value="${85 * deg_to_rad}"/>
-    <xacro:property name="j3_lower_limit" value="${-25 * deg_to_rad}"/>
-    <xacro:property name="j3_upper_limit" value="${105 * deg_to_rad}"/>
-    <xacro:property name="j4_lower_limit" value="${-360 * deg_to_rad}"/>
-    <xacro:property name="j4_upper_limit" value="${360 * deg_to_rad}"/>
+    <xacro:property name="j1_lower_limit" value="${-158 * deg_to_rad}"/> <!-- Original limit: -160 -->
+    <xacro:property name="j1_upper_limit" value="${158 * deg_to_rad}"/> <!-- Original limit: 160 -->
+    <xacro:property name="j2_lower_limit" value="${-23 * deg_to_rad}"/> <!-- Original limit: -25 -->
+    <xacro:property name="j2_upper_limit" value="${83 * deg_to_rad}"/> <!-- Original limit: 85 -->
+    <xacro:property name="j3_lower_limit" value="${-23 * deg_to_rad}"/> <!-- Original limit: -25 -->
+    <xacro:property name="j3_upper_limit" value="${103 * deg_to_rad}"/> <!-- Original limit: 105 -->
+    <xacro:property name="j4_lower_limit" value="${-358 * deg_to_rad}"/> <!-- Original limit: -360 -->
+    <xacro:property name="j4_upper_limit" value="${358 * deg_to_rad}"/> <!-- Original limit: 360 -->
 
     <!-- Velocity Limits (rad/s) -->
     <xacro:property name="j_velocity_limit" value="${300 * deg_to_rad}"/>
@@ -287,9 +287,9 @@
         </visual>
         <!-- [x] 1mm larger per side collision  -->
         <collision>
-            <origin xyz="0.002 -0.0036 -0.086" rpy="0 0 0"/>
+            <origin xyz="0.000 -0.0036 -0.086" rpy="0 0 0"/>
             <geometry>
-                <box size="0.010 0.005 0.174"/>
+                <box size="0.024 0.005 0.174"/>
             </geometry>
         </collision>
     </link>

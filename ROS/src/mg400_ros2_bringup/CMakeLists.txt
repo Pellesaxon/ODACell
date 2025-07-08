@@ -60,4 +60,9 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
+install(
+  DIRECTORY mock
+  DESTINATION share/${PROJECT_NAME}
+)
+
 ament_package()

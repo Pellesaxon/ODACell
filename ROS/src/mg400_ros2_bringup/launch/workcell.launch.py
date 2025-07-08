@@ -1,12 +1,18 @@
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, ExecuteProcess
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from moveit_configs_utils import MoveItConfigsBuilder
 import pprint
+
+MOCK_NAME = "mg400_mock"
+MOCK_IP = "127.0.0.1"
+
+DEFAULT_ROBOT_NAME = "mg400"
+DEFAULT_ROBOT_IP = "192.168.1.6"
 
 def generate_launch_description():
     # Declare arguments for the launch file
@@ -15,6 +21,22 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "driver_only", default_value="false",
             description="Whether to launch only the driver node without MoveIt or RViz."
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument("use_mock", default_value="false",
+            description="Use a mock implementation of the MG400 driver instead of the real one."
+        ))
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "robot_ip", default_value=DEFAULT_ROBOT_IP,
+            description="IP address of the MG400 robot. Default is '192.168.1.6'"
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "robot_name", default_value=DEFAULT_ROBOT_NAME,
+            description="Name of the robot. Default is 'mg400'."
         )
     )
 
@@ -44,12 +66,48 @@ def generate_launch_description():
     # ===                     NODES TO LAUNCH                                       ===
     # =================================================================================
 
+    # Launch mock server if use_mock is true
+    mock_server_process = ExecuteProcess(
+    cmd=[
+        "python3",
+        #"-u",
+        PathJoinSubstitution([
+            FindPackageShare("mg400_ros2_bringup"),
+            "mock",
+            "mock.py"
+        ])
+    ],
+    output="screen",
+    condition=IfCondition(LaunchConfiguration("use_mock")),
+    emulate_tty=True
+    )
+    
+
+
     # ---- MG400 Driver Node ----
-    driver_node = Node(
+    driver_node_real = Node(
         package="mg400_ros2_bringup",
         executable="mg400_driver_node",
         output="screen",
+        parameters=[{
+        "robot_ip": LaunchConfiguration("robot_ip"),
+        "robot_name": LaunchConfiguration("robot_name")}],
+        condition=UnlessCondition(LaunchConfiguration("use_mock")),
     )
+
+    # Mock node
+    driver_node_mock = Node(
+        package="mg400_ros2_bringup",
+        executable="mg400_driver_node",
+        output="screen",
+        parameters=[{
+            "robot_ip": MOCK_IP,
+            "robot_name": MOCK_NAME,
+            "use_sim_time": False
+        }],
+        condition=IfCondition(LaunchConfiguration("use_mock")),
+    )
+
 
     # ---- Robot State Publisher ----
     # Publishes TF transforms for the robot based on joint states.
@@ -96,7 +154,9 @@ def generate_launch_description():
 
     # The final list of nodes to launch
     nodes_to_start = [
-        driver_node,
+        mock_server_process,
+        driver_node_real,
+        driver_node_mock,
         robot_state_publisher_node,
         rviz_node,
         move_group_node,
