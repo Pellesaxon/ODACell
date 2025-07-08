@@ -13,7 +13,8 @@ Visualization Manager:
     - Class: rviz_default_plugins/Grid
       Name: Grid
       Value: true
-    - Class: moveit_rviz_plugin/MotionPlanning
+    - Acceleration_Scaling_Factor: 1
+      Class: moveit_rviz_plugin/MotionPlanning
       Name: MotionPlanning
       Planned Path:
         Loop Animation: true
@@ -26,6 +27,7 @@ Visualization Manager:
       Scene Robot:
         Robot Alpha: 0.5
       Value: true
+      Velocity_Scaling_Factor: 1
   Global Options:
     Fixed Frame: base_link
   Tools:

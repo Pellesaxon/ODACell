@@ -56,7 +56,8 @@ def generate_launch_description():
         .robot_description_semantic(file_path="config/mg400.srdf")
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
         .planning_pipelines(
-            pipelines=["ompl", "chomp", "pilz_industrial_motion_planner", "stomp"]
+            # pipelines=["stomp", "chomp", "pilz_industrial_motion_planner", "ompl"]
+            pipelines=["stomp"]
         )
         .to_moveit_configs()
     )
