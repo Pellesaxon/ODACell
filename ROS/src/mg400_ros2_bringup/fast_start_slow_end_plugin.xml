@@ -1,0 +1,8 @@
+<library path="fast_start_slow_end_adapter_lib">
+  <class
+    name="mg400_ros2_bringup/FastStartSlowEndAdapter"
+    type="mg400_ros2_bringup::FastStartSlowEndAdapter"
+    base_class_type="planning_interface::PlanningResponseAdapter">
+    <description>Applies fast start and slow end time parameterization</description>
+  </class>
+</library>
