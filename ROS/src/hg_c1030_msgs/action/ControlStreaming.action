@@ -1,0 +1,7 @@
+# Goal: control the streaming state of the sensor
+bool start_streaming
+---
+# Result: confirmation of the final state
+bool success
+string message
+---
