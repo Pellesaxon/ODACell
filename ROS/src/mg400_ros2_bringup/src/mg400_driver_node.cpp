@@ -17,6 +17,8 @@
 #include <cstring> // For memcpy
 #include <regex>   // Error parsing
 
+#define AUTO_HOME_ON_INIT true
+
 #define DEFAULT_ROBOT_NAME "mg400"
 #define DEFAULT_ROBOT_IP "192.168.1.6"
 
@@ -186,6 +188,11 @@ namespace mg400_ros2_bringup
         {
             RCLCPP_ERROR(this->get_logger(), "Failed to connect to motion port on startup. Trajectory execution will fail.");
         }
+
+        #ifdef AUTO_HOME_ON_INIT
+        RCLCPP_INFO(this->get_logger(), "Auto-homing robot on startup...");
+        send_dashboard_command("JointMovJ(0,0,0,0,100,100,10)");
+        #endif
 
         RCLCPP_INFO(this->get_logger(), "Startup sequence complete. Driver is running.");
     }
