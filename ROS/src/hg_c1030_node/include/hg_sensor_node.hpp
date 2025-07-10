@@ -5,6 +5,7 @@
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <sensor_msgs/msg/range.hpp>
 #include "hg_c1030_msgs/action/control_streaming.hpp"
+#include "std_srvs/srv/set_bool.hpp"
 
 #include <string>
 #include <thread>
@@ -67,6 +68,13 @@ private:
    */
   void execute_goal(const std::shared_ptr<GoalHandleControlStreaming> goal_handle);
 
+  /**
+   * @brief Sets the auxiliary power (digital output) on or off (this will toggle the lasers on/off).
+   * @param on true to turn on the auxiliary power, false to turn it off.
+   * @return true if the command was sent successfully, false otherwise.
+   */
+  bool set_aux_power(bool on);
+
   // Serial port
   int serial_fd_;
   std::string port_;
@@ -81,6 +89,9 @@ private:
   // Map of publishers by sensor ID, e.g. 0, 1, 2, etc.
   std::map<int, rclcpp::Publisher<sensor_msgs::msg::Range>::SharedPtr> publishers_;
   rclcpp_action::Server<ControlStreaming>::SharedPtr action_server_;
+
+  // Service to control laser power
+  rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr aux_power_client_;
 };
 
 #endif // HG_SENSOR_NODE_HPP_

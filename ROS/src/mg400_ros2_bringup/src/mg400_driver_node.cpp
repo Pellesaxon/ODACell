@@ -17,7 +17,7 @@
 #include <cstring> // For memcpy
 #include <regex>   // Error parsing
 
-#define AUTO_HOME_ON_INIT true
+#define AUTO_HOME_ON_INIT false
 
 #define DEFAULT_ROBOT_NAME "mg400"
 #define DEFAULT_ROBOT_IP "192.168.1.6"
@@ -31,7 +31,7 @@
 #define NUM_JOINTS 4      // Number of joints in the MG400 robot
 #define COLLISION_LEVEL 2 // Default collision level for fail-safe
 #define GLOBAL_SPEED_ACC_FACTOR 100
-#define CONTINUOUS_PATH_SMOOTHING 10               // Default CP value for continuous path motion
+#define CONTINUOUS_PATH_SMOOTHING 10                // Default CP value for continuous path motion
 #define TRAJECTORY_EXECUTION_AUTO_TIMEOUT_MULT 30.0 // Multiplier for trajectory execution timeout (very generous)
 #define END_POS_DEG_TOLERANCE 0.1                   // Default end position tolerance in degrees
 #define STARTED_MOVING_DEG_TOL 0.05
@@ -89,6 +89,10 @@ namespace mg400_ros2_bringup
         clear_error_service_ = this->create_service<std_srvs::srv::Trigger>(
             "mg400/clear_error",
             std::bind(&MG400DriverNode::clear_error_callback, this, std::placeholders::_1, std::placeholders::_2));
+
+        auxiliary_power_service_ = this->create_service<std_srvs::srv::SetBool>(
+            "mg400/auxiliary_power",
+            std::bind(&MG400DriverNode::auxiliary_power_callback, this, std::placeholders::_1, std::placeholders::_2));
 
         RCLCPP_INFO(this->get_logger(), "ROS interfaces are ready.");
 
@@ -157,7 +161,6 @@ namespace mg400_ros2_bringup
             throw std::runtime_error("Failed to clear previous errors on startup.");
         }
 
-
         RCLCPP_INFO(this->get_logger(), "Enabling robot...");
         auto enable_response = send_dashboard_command("EnableRobot()");
         if (enable_response.success)
@@ -189,10 +192,10 @@ namespace mg400_ros2_bringup
             RCLCPP_ERROR(this->get_logger(), "Failed to connect to motion port on startup. Trajectory execution will fail.");
         }
 
-        #ifdef AUTO_HOME_ON_INIT
+#if AUTO_HOME_ON_INIT
         RCLCPP_INFO(this->get_logger(), "Auto-homing robot on startup...");
         send_dashboard_command("JointMovJ(0,0,0,0,100,100,10)");
-        #endif
+#endif
 
         RCLCPP_INFO(this->get_logger(), "Startup sequence complete. Driver is running.");
     }
@@ -379,6 +382,38 @@ namespace mg400_ros2_bringup
         }
     }
 
+    void MG400DriverNode::auxiliary_power_callback(const std::shared_ptr<std_srvs::srv::SetBool::Request> request,
+                                                   std::shared_ptr<std_srvs::srv::SetBool::Response> response)
+    {
+        const int aux_power_pin = 1;
+        const std::string on_command = "DOExecute(" + std::to_string(aux_power_pin) + ",1)";
+        const std::string off_command = "DOExecute(" + std::to_string(aux_power_pin) + ",0)";
+
+        RCLCPP_INFO(this->get_logger(), "Auxiliary power service called with request: %s", request->data ? "ON" : "OFF");
+
+        auto robot_response = send_dashboard_command(request->data ? on_command : off_command);
+
+        if (!robot_response.success)
+        {
+            response->success = false;
+            response->message = "Failed to send command to robot.";
+        }
+        else
+        {
+            if (robot_response.success)
+            {
+                response->success = true;
+                response->message = request->data ? "Auxiliary power enabled." : "Auxiliary power disabled.";
+            }
+            else
+            {
+                std::string error_description = robot_response.error_info->en.description.data();
+                response->success = false;
+                response->message = "Robot indicated an error in response: " + error_description;
+            }
+        }
+    }
+
     int MG400DriverNode::connect_socket(int port)
     {
         int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -471,7 +506,7 @@ namespace mg400_ros2_bringup
         }
 
         auto joint_state_msg = sensor_msgs::msg::JointState();
-        //joint_state_msg.header.stamp = this->get_clock().get()->now(); // Try using robot's elapsed time, revert if synchronisation issues arise.
+        // joint_state_msg.header.stamp = this->get_clock().get()->now(); // Try using robot's elapsed time, revert if synchronisation issues arise.
         joint_state_msg.header.stamp = rclcpp::Time(current_timestamp_ms_unix * 1e6, RCL_ROS_TIME);
         joint_state_msg.name = {JOINT_NAMES[0], JOINT_NAMES[1], JOINT_NAMES[2], JOINT_NAMES[3]};
         joint_state_msg.position = joint_positions_;

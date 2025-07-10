@@ -6,26 +6,40 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-
-// For synchronous Dashboard command calls
 #include <future>
-#include "rclcpp/executor.hpp"
 
 // For serial port communication (Linux/macOS)
-#include <fcntl.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <limits>
 #include <termios.h>
 #include <unistd.h>
-#include <limits>
 
-#define LASER_ON_CMD "DoExecute(1,0)"
-#define LASER_OFF_CMD "DoExecute(1,1)"
 #define LASER_OFF_ON_INIT true
 
 #define SENSOR_MAX_RANGE 0.035f
 #define SENSOR_MIN_RANGE 0.025f
 
 using namespace std::chrono_literals;
+
+speed_t get_baud_rate_flag(int baud)
+{
+  switch (baud)
+  {
+  case 9600:
+    return B9600;
+  case 19200:
+    return B19200;
+  case 38400:
+    return B38400;
+  case 57600:
+    return B57600;
+  case 115200:
+    return B115200;
+  default:
+    return B115200;
+  }
+}
 
 HGSensorNode::HGSensorNode(const rclcpp::NodeOptions &options)
     : Node("hg_sensor_node", options), serial_fd_(-1), is_streaming_(false)
@@ -35,7 +49,7 @@ HGSensorNode::HGSensorNode(const rclcpp::NodeOptions &options)
   this->declare_parameter<int>("baud_rate", 115200);
   this->declare_parameter<int>("num_sensors", 2);
   this->declare_parameter<std::string>("topic_prefix", "distance");
-  this->declare_parameter<std::vector<std::string>>("frame_ids", std::vector<std::string>({"world", "world"})); // Put them somewhere meaningful later
+  this->declare_parameter<std::vector<std::string>>("frame_ids", std::vector<std::string>({"world", "world"}));
 
   port_ = this->get_parameter("port").as_string();
   baud_rate_ = this->get_parameter("baud_rate").as_int();
@@ -63,7 +77,7 @@ HGSensorNode::HGSensorNode(const rclcpp::NodeOptions &options)
   if (!connect_to_device())
   {
     RCLCPP_ERROR(this->get_logger(), "Failed to connect to device. Shutting down.");
-    this->create_timer(1s, []()
+    this->create_timer(1ms, []()
                        { rclcpp::shutdown(); });
     return;
   }
@@ -74,6 +88,45 @@ HGSensorNode::HGSensorNode(const rclcpp::NodeOptions &options)
       std::bind(&HGSensorNode::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
       std::bind(&HGSensorNode::handle_cancel, this, std::placeholders::_1),
       std::bind(&HGSensorNode::handle_accepted, this, std::placeholders::_1));
+
+  aux_power_client_ = this->create_client<std_srvs::srv::SetBool>("/mg400/auxiliary_power");
+
+#if LASER_OFF_ON_INIT
+  RCLCPP_INFO(this->get_logger(), "Requesting to turn off laser power on startup...");
+  if (!aux_power_client_->wait_for_service(3s))
+  {
+    RCLCPP_WARN(this->get_logger(),
+                "Auxiliary power service not available on startup. Laser may remain on.");
+  }
+  else
+  {
+    auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
+    request->data = false; // Set to FALSE to turn power OFF.
+
+    using ServiceResponseFuture = rclcpp::Client<std_srvs::srv::SetBool>::SharedFuture;
+    auto response_received_callback = [this](ServiceResponseFuture future)
+    {
+      try
+      {
+        auto result = future.get();
+        if (result->success)
+        {
+          RCLCPP_INFO(this->get_logger(), "Aux power successfully turned off on init: %s", result->message.c_str());
+        }
+        else
+        {
+          RCLCPP_WARN(this->get_logger(), "Aux power init call failed: %s", result->message.c_str());
+        }
+      }
+      catch (const std::exception &e)
+      {
+        RCLCPP_ERROR(this->get_logger(), "Exception while handling aux power init response: %s", e.what());
+      }
+    };
+
+    aux_power_client_->async_send_request(request, response_received_callback);
+  }
+#endif
 
   RCLCPP_INFO(this->get_logger(), "Node initialized successfully. Ready to accept commands.");
 }
@@ -120,8 +173,13 @@ bool HGSensorNode::connect_to_device()
     return false;
   }
 
-  cfsetispeed(&tty, B115200);
-  cfsetospeed(&tty, B115200);
+  speed_t baud_flag = get_baud_rate_flag(baud_rate_);
+  if (baud_flag != static_cast<speed_t>(baud_rate_))
+  {
+    RCLCPP_WARN(this->get_logger(), "Unsupported baud rate %d. Defaulting to 115200.", baud_rate_);
+  }
+  cfsetispeed(&tty, baud_flag);
+  cfsetospeed(&tty, baud_flag);
 
   tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;
   tty.c_iflag &= ~IGNBRK;
@@ -142,15 +200,12 @@ bool HGSensorNode::connect_to_device()
     return false;
   }
 
-  // Wait for Arduino to reset.
   RCLCPP_INFO(this->get_logger(), "Waiting for Arduino to reset...");
   std::this_thread::sleep_for(2s);
 
-  // Flush data that was sent during startup (the banner).
   RCLCPP_INFO(this->get_logger(), "Flushing serial buffer...");
   tcflush(serial_fd_, TCIOFLUSH);
 
-  // Send the ID command to ask the device to identify itself.
   RCLCPP_INFO(this->get_logger(), "Sending 'ID' command for handshake...");
   try
   {
@@ -168,14 +223,14 @@ bool HGSensorNode::connect_to_device()
   auto start_time = std::chrono::steady_clock::now();
   while (std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - start_time).count() < 3)
   {
-    std::string line = read_line(1000); // Read one line at a time
+    std::string line = read_line(1000);
     if (!line.empty())
     {
       RCLCPP_INFO(this->get_logger(), "Handshake response received: \"%s\"", line.c_str());
       if (line.find("VERSION") != std::string::npos)
       {
         handshake_success = true;
-        break; // Success! Exit the loop.
+        break;
       }
     }
   }
@@ -199,10 +254,14 @@ void HGSensorNode::send_command(const std::string &cmd)
   if (serial_fd_ == -1)
     throw std::runtime_error("Serial port not open.");
 
-  int bytes_written = write(serial_fd_, cmd.c_str(), cmd.length());
+  ssize_t bytes_written = write(serial_fd_, cmd.c_str(), cmd.length());
   if (bytes_written < 0)
   {
     throw std::runtime_error("Failed to write to serial port.");
+  }
+  if (static_cast<size_t>(bytes_written) != cmd.length())
+  {
+    RCLCPP_WARN(this->get_logger(), "Could not write full command to serial port.");
   }
   RCLCPP_DEBUG(this->get_logger(), "Sent command: %s", cmd.c_str());
 }
@@ -214,6 +273,7 @@ std::string HGSensorNode::read_line(int timeout_ms)
   {
     std::string line = serial_buffer_.substr(0, newline_pos);
     serial_buffer_.erase(0, newline_pos + 1);
+    // Trim trailing whitespace and carriage returns
     line.erase(line.find_last_not_of("\r\n \t") + 1);
     return line;
   }
@@ -223,7 +283,7 @@ std::string HGSensorNode::read_line(int timeout_ms)
 
   while (rclcpp::ok())
   {
-    int bytes_read = read(serial_fd_, &read_buf, sizeof(read_buf));
+    ssize_t bytes_read = read(serial_fd_, &read_buf, sizeof(read_buf));
 
     if (bytes_read > 0)
     {
@@ -245,7 +305,7 @@ std::string HGSensorNode::read_line(int timeout_ms)
 
     auto current_time = std::chrono::steady_clock::now();
     auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - start_time);
-    if (elapsed_time.count() > timeout_ms)
+    if (timeout_ms > 0 && elapsed_time.count() > timeout_ms)
     {
       RCLCPP_WARN_ONCE(this->get_logger(), "Read timeout after %d ms", timeout_ms);
       return "";
@@ -255,20 +315,55 @@ std::string HGSensorNode::read_line(int timeout_ms)
   return "";
 }
 
+bool HGSensorNode::set_aux_power(bool on)
+{
+  if (!aux_power_client_->wait_for_service(2s))
+  {
+    RCLCPP_ERROR(this->get_logger(), "auxiliary_power service not available.");
+    return false;
+  }
+
+  auto req = std::make_shared<std_srvs::srv::SetBool::Request>();
+  req->data = on;
+
+  auto future = aux_power_client_->async_send_request(req);
+
+  if (future.wait_for(2s) == std::future_status::ready)
+  {
+    auto res = future.get();
+    if (!res->success)
+    {
+      RCLCPP_WARN(this->get_logger(),
+                  "auxiliary_power service responded 'false': %s",
+                  res->message.c_str());
+    }
+    return res->success;
+  }
+  else
+  {
+    // The wait timed out.
+    RCLCPP_ERROR(this->get_logger(),
+                 "auxiliary_power service call timed out");
+    return false;
+  }
+}
+
 void HGSensorNode::read_loop()
 {
   RCLCPP_INFO(this->get_logger(), "Read thread started.");
 
   while (rclcpp::ok())
   {
-    std::string line = read_line(1000);
+    std::string line = read_line(0); // indefinite wait, relying on rclcpp::ok()
+
+    if (!rclcpp::ok())
+      break; // Exit immediately if shutdown is requested
 
     if (line.empty())
     {
       continue;
     }
 
-    // Find the comma that separates ID and value
     size_t comma_pos = line.find(',');
     if (comma_pos == std::string::npos)
     {
@@ -278,25 +373,23 @@ void HGSensorNode::read_loop()
 
     try
     {
-
       std::string id_str = line.substr(0, comma_pos);
       std::string val_str = line.substr(comma_pos + 1);
       int sensor_id = std::stoi(id_str);
       float distance = std::stof(val_str); // Distance in meters
 
-      // Check if we have a publisher for this sensor ID
       if (publishers_.count(sensor_id))
       {
         auto msg = std::make_unique<sensor_msgs::msg::Range>();
         msg->header.stamp = this->get_clock()->now();
-        msg->header.frame_id = frame_ids_[sensor_id]; // Use the specific frame_id
+        msg->header.frame_id = frame_ids_[sensor_id];
         msg->radiation_type = sensor_msgs::msg::Range::INFRARED;
         msg->min_range = SENSOR_MIN_RANGE;
         msg->max_range = SENSOR_MAX_RANGE;
 
-        if (distance < 0.0f || distance > SENSOR_MAX_RANGE || distance < SENSOR_MIN_RANGE)
+        if (distance < SENSOR_MIN_RANGE || distance > SENSOR_MAX_RANGE)
         {
-          RCLCPP_WARN(this->get_logger(), "Sensor %d: Received out-of-range distance: %f m", sensor_id, distance);
+          RCLCPP_WARN(this->get_logger(), "Sensor %d: Received out-of-range or error distance: %.4f m", sensor_id, distance);
           msg->range = std::numeric_limits<float>::infinity();
         }
         else
@@ -304,7 +397,6 @@ void HGSensorNode::read_loop()
           msg->range = distance;
         }
 
-        // Publish on the correct topic for this sensor
         publishers_[sensor_id]->publish(std::move(msg));
       }
       else
@@ -365,9 +457,19 @@ void HGSensorNode::execute_goal(const std::shared_ptr<GoalHandleControlStreaming
       }
       else
       {
-        send_command("START\n");
-        is_streaming_ = true;
-        result->message = "OK: Streaming started.";
+        if (set_aux_power(true))
+        {
+          send_command("START\n");
+          is_streaming_ = true;
+          result->message = "OK: Streaming started.";
+        }
+        else
+        {
+          result->message = "ERROR: Failed to turn on auxiliary power (laser).";
+          RCLCPP_ERROR(this->get_logger(), "%s", result->message.c_str());
+          goal_handle->abort(result);
+          return;
+        }
       }
     }
     else
@@ -378,6 +480,10 @@ void HGSensorNode::execute_goal(const std::shared_ptr<GoalHandleControlStreaming
       }
       else
       {
+        if (!set_aux_power(false))
+        {
+          RCLCPP_WARN(this->get_logger(), "Failed to turn off auxiliary power (laser). Continuing to stop streaming data.");
+        }
         send_command("STOP\n");
         is_streaming_ = false;
         result->message = "OK: Streaming stopped.";
