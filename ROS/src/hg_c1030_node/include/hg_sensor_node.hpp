@@ -8,13 +8,14 @@
 
 #include <string>
 #include <thread>
+#include <vector>
+#include <map>
 
 class HGSensorNode : public rclcpp::Node
 {
 public:
   using ControlStreaming = hg_c1030_msgs::action::ControlStreaming;
   using GoalHandleControlStreaming = rclcpp_action::ServerGoalHandle<ControlStreaming>;
-
   /**
    * @brief Construct a new HGSensorNode object
    * @param options Node options for rclcpp::Node
@@ -74,9 +75,11 @@ private:
   bool is_streaming_;
   std::thread read_thread_;
   std::string serial_buffer_;
-
+  
+  std::vector<std::string> frame_ids_;
   // Publisher and action server interfaces
-  rclcpp::Publisher<sensor_msgs::msg::Range>::SharedPtr publisher_;
+  // Map of publishers by sensor ID, e.g. 0, 1, 2, etc.
+  std::map<int, rclcpp::Publisher<sensor_msgs::msg::Range>::SharedPtr> publishers_;
   rclcpp_action::Server<ControlStreaming>::SharedPtr action_server_;
 };
 

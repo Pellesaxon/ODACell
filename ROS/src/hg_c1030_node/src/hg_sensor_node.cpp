@@ -1,15 +1,26 @@
+// hg_sensor_node.cpp
 
 #include "hg_sensor_node.hpp"
 
 #include <chrono>
 #include <stdexcept>
+#include <string>
+#include <vector>
+
+// For synchronous Dashboard command calls
+#include <future>
+#include "rclcpp/executor.hpp"
 
 // For serial port communication (Linux/macOS)
-#include <fcntl.h>   // Contains file controls like O_RDWR
-#include <errno.h>   // Error number definitions
-#include <termios.h> // POSIX terminal control definitions
-#include <unistd.h>  // write(), read(), close()
+#include <fcntl.h>
+#include <errno.h>
+#include <termios.h>
+#include <unistd.h>
 #include <limits>
+
+#define LASER_ON_CMD "DoExecute(1,0)"
+#define LASER_OFF_CMD "DoExecute(1,1)"
+#define LASER_OFF_ON_INIT true
 
 #define SENSOR_MAX_RANGE 0.035f
 #define SENSOR_MIN_RANGE 0.025f
@@ -22,16 +33,32 @@ HGSensorNode::HGSensorNode(const rclcpp::NodeOptions &options)
 
   this->declare_parameter<std::string>("port", "/dev/ttyACM0");
   this->declare_parameter<int>("baud_rate", 115200);
-  this->declare_parameter<std::string>("frame_id", "laser_link");
+  this->declare_parameter<int>("num_sensors", 2);
+  this->declare_parameter<std::string>("topic_prefix", "distance");
+  this->declare_parameter<std::vector<std::string>>("frame_ids", std::vector<std::string>({"world", "world"})); // Put them somewhere meaningful later
 
   port_ = this->get_parameter("port").as_string();
   baud_rate_ = this->get_parameter("baud_rate").as_int();
-  frame_id_ = this->get_parameter("frame_id").as_string();
+  int num_sensors = this->get_parameter("num_sensors").as_int();
+  std::string topic_prefix = this->get_parameter("topic_prefix").as_string();
+  frame_ids_ = this->get_parameter("frame_ids").as_string_array();
 
-  RCLCPP_INFO(this->get_logger(), "Starting HG Sensor Node...");
+  RCLCPP_INFO(this->get_logger(), "Starting HG Multi-Sensor Node...");
   RCLCPP_INFO(this->get_logger(), "Port: %s, Baud Rate: %d", port_.c_str(), baud_rate_);
 
-  publisher_ = this->create_publisher<sensor_msgs::msg::Range>("distance", 10);
+  if (frame_ids_.size() != static_cast<size_t>(num_sensors))
+  {
+    RCLCPP_FATAL(this->get_logger(), "The number of 'frame_ids' (%zu) does not match 'num_sensors' (%d). Shutting down.", frame_ids_.size(), num_sensors);
+    rclcpp::shutdown();
+    return;
+  }
+
+  for (int i = 0; i < num_sensors; ++i)
+  {
+    std::string topic_name = topic_prefix + "/sensor_" + std::to_string(i);
+    publishers_[i] = this->create_publisher<sensor_msgs::msg::Range>(topic_name, 10);
+    RCLCPP_INFO(this->get_logger(), "Creating publisher for Sensor ID %d on topic '%s' with frame_id '%s'", i, topic_name.c_str(), frame_ids_[i].c_str());
+  }
 
   if (!connect_to_device())
   {
@@ -234,25 +261,42 @@ void HGSensorNode::read_loop()
 
   while (rclcpp::ok())
   {
-
     std::string line = read_line(1000);
 
-    if (!line.empty())
+    if (line.empty())
     {
-      try
+      continue;
+    }
+
+    // Find the comma that separates ID and value
+    size_t comma_pos = line.find(',');
+    if (comma_pos == std::string::npos)
+    {
+      RCLCPP_INFO(this->get_logger(), "Arduino Status: %s", line.c_str());
+      continue;
+    }
+
+    try
+    {
+
+      std::string id_str = line.substr(0, comma_pos);
+      std::string val_str = line.substr(comma_pos + 1);
+      int sensor_id = std::stoi(id_str);
+      float distance = std::stof(val_str); // Distance in meters
+
+      // Check if we have a publisher for this sensor ID
+      if (publishers_.count(sensor_id))
       {
-        float distance = std::stof(line); // Distance in meters
         auto msg = std::make_unique<sensor_msgs::msg::Range>();
         msg->header.stamp = this->get_clock()->now();
-        msg->header.frame_id = frame_id_;
+        msg->header.frame_id = frame_ids_[sensor_id]; // Use the specific frame_id
         msg->radiation_type = sensor_msgs::msg::Range::INFRARED;
         msg->min_range = SENSOR_MIN_RANGE;
         msg->max_range = SENSOR_MAX_RANGE;
 
         if (distance < 0.0f || distance > SENSOR_MAX_RANGE || distance < SENSOR_MIN_RANGE)
         {
-          // Indicates invalid reading from the sensor, out of range, poor reflection, etc.
-          RCLCPP_WARN(this->get_logger(), "Received out-of-range distance: %f m", distance);
+          RCLCPP_WARN(this->get_logger(), "Sensor %d: Received out-of-range distance: %f m", sensor_id, distance);
           msg->range = std::numeric_limits<float>::infinity();
         }
         else
@@ -260,16 +304,21 @@ void HGSensorNode::read_loop()
           msg->range = distance;
         }
 
-        publisher_->publish(std::move(msg));
+        // Publish on the correct topic for this sensor
+        publishers_[sensor_id]->publish(std::move(msg));
       }
-      catch (const std::invalid_argument &)
+      else
       {
-        RCLCPP_INFO(this->get_logger(), "Arduino Status: %s", line.c_str());
+        RCLCPP_WARN_ONCE(this->get_logger(), "Received data for unconfigured sensor ID: %d. Ignoring.", sensor_id);
       }
-      catch (const std::out_of_range &)
-      {
-        RCLCPP_WARN(this->get_logger(), "Received out-of-range value: %s", line.c_str());
-      }
+    }
+    catch (const std::invalid_argument &e)
+    {
+      RCLCPP_WARN(this->get_logger(), "Could not parse line from Arduino: '%s'. Invalid argument: %s", line.c_str(), e.what());
+    }
+    catch (const std::out_of_range &e)
+    {
+      RCLCPP_WARN(this->get_logger(), "Could not parse line from Arduino: '%s'. Out of range: %s", line.c_str(), e.what());
     }
   }
   RCLCPP_INFO(this->get_logger(), "Read thread finished.");
