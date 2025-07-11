@@ -386,8 +386,8 @@ namespace mg400_ros2_bringup
                                                    std::shared_ptr<std_srvs::srv::SetBool::Response> response)
     {
         const int aux_power_pin = 1;
-        const std::string on_command = "DOExecute(" + std::to_string(aux_power_pin) + ",1)";
-        const std::string off_command = "DOExecute(" + std::to_string(aux_power_pin) + ",0)";
+        const std::string on_command = "DOExecute(" + std::to_string(aux_power_pin) + ",0)";
+        const std::string off_command = "DOExecute(" + std::to_string(aux_power_pin) + ",1)";
 
         RCLCPP_INFO(this->get_logger(), "Auxiliary power service called with request: %s", request->data ? "ON" : "OFF");
 
