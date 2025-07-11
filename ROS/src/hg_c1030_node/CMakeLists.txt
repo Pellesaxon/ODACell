@@ -10,6 +10,7 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(hg_c1030_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 
 add_executable(hg_sensor_node src/hg_sensor_node.cpp)
 
@@ -23,6 +24,7 @@ ament_target_dependencies(hg_sensor_node
   rclcpp_action
   sensor_msgs
   hg_c1030_msgs
+  std_srvs
 )
 
 install(TARGETS

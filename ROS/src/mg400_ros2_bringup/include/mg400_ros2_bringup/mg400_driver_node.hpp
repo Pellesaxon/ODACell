@@ -28,6 +28,7 @@
 #include "mg400_msgs/msg/robot_status.hpp"
 #include "mg400_ros2_bringup/alarms/mg400_alarm_manager.hpp"
 #include "std_srvs/srv/trigger.hpp"
+#include "std_srvs/srv/set_bool.hpp"
 
 #include "control_msgs/action/follow_joint_trajectory.hpp" 
 #include "sensor_msgs/msg/joint_state.hpp"
@@ -98,9 +99,13 @@ namespace mg400_ros2_bringup
         rclcpp::Publisher<mg400_msgs::msg::RobotStatus>::SharedPtr status_publisher_;
         rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_state_publisher_;
 
+        // Action servers
         rclcpp_action::Server<DashboardCommand>::SharedPtr dashboard_action_server_;
-        rclcpp_action::Server<FollowJointTrajectory>::SharedPtr fjt_action_server_; // <<< NEW
+        rclcpp_action::Server<FollowJointTrajectory>::SharedPtr fjt_action_server_;
+
+        // Services
         rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr clear_error_service_;
+        rclcpp::Service<std_srvs::srv::SetBool>::SharedPtr auxiliary_power_service_;
 
         // --- Private Methods ---
         /**
@@ -148,6 +153,12 @@ namespace mg400_ros2_bringup
          */
         void clear_error_callback(const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
                                   std::shared_ptr<std_srvs::srv::Trigger::Response> response);
+
+        /**
+         * @brief Service callback to handle requests to toggle auxiliary power (digital output).
+         */
+        void auxiliary_power_callback(const std::shared_ptr<std_srvs::srv::SetBool::Request> request,
+                                        std::shared_ptr<std_srvs::srv::SetBool::Response> response);
 
         /**
         * @brief Periodically called by a timer to query for detailed errors if the robot is in an error state.
