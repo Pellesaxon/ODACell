@@ -196,7 +196,7 @@ void handleSerialCommands()
       Serial.println("ID      - Get program name, version, and sensor count.");
       Serial.println("HELP    - Show this help message.");
       Serial.println("--- Output Format ---");
-      Serial.println("SensorID,Value (e.g., '0,0.031254')");
+      Serial.println("SensorID,Value[m] (e.g., '0,0.031254')");
       Serial.println("--------------------------");
     }
     else
