@@ -15,6 +15,8 @@ find_package(std_srvs REQUIRED)
 find_package(control_msgs REQUIRED)
 find_package(moveit_core REQUIRED)
 find_package(moveit_ros_planning REQUIRED)
+find_package(moveit_ros_planning_interface REQUIRED)
+find_package(hg_c1030_msgs REQUIRED)
 
 # --- Plugin Library (fast_start_slow_end_adapter) ---
 add_library(fast_start_slow_end_adapter_lib SHARED
@@ -31,6 +33,26 @@ target_include_directories(fast_start_slow_end_adapter_lib PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 pluginlib_export_plugin_description_file(moveit_core fast_start_slow_end_plugin.xml)
+
+# --- Precision Homing Node Executable ---
+add_executable(precision_homing_node src/precision_homing_node.cpp)
+ament_target_dependencies(precision_homing_node
+  rclcpp
+  rclcpp_action
+  moveit_ros_planning_interface
+  sensor_msgs
+  std_srvs
+  control_msgs
+  hg_c1030_msgs
+)
+target_include_directories(precision_homing_node PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
+install(TARGETS
+  precision_homing_node
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 # --- Driver Node Executable ---
 add_executable(mg400_driver_node src/mg400_driver_node.cpp)

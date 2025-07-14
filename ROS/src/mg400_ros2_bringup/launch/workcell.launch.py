@@ -5,6 +5,7 @@ from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
 from moveit_configs_utils import MoveItConfigsBuilder
 import pprint
 
@@ -151,7 +152,23 @@ def generate_launch_description():
         condition=UnlessCondition(LaunchConfiguration("driver_only")),
         remappings=[("joint_states", "mg400/joint_states")],
     )
-
+    
+    
+    precision_homing_node = Node(
+        package='mg400_ros2_bringup', # Or your package name
+        executable='precision_homing_node',
+        name='precision_homing_node',
+        output='screen',
+        parameters=[
+            moveit_config.robot_description_kinematics,
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+        ],
+        remappings=[
+            ("joint_states", "mg400/joint_states"),
+            ("mg400_arm_controller/follow_joint_trajectory", "mg400_arm_controller/follow_joint_trajectory"),
+        ],
+    )
 
     # The final list of nodes to launch
     nodes_to_start = [
@@ -161,6 +178,7 @@ def generate_launch_description():
         robot_state_publisher_node,
         rviz_node,
         move_group_node,
+        precision_homing_node,
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_start)
