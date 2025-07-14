@@ -15,6 +15,11 @@ MOCK_IP = "127.0.0.1"
 DEFAULT_ROBOT_NAME = "mg400"
 DEFAULT_ROBOT_IP = "192.168.1.6"
 
+DEFAULT_PORT = '/dev/ttyACM0'
+DEFAULT_NUM_SENSORS = '2'
+DEFAULT_FRAME_IDS = ["distance_sensor_0", "distance_sensor_1"]
+
+
 def generate_launch_description():
     # Declare arguments for the launch file
     declared_arguments = []
@@ -38,6 +43,27 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "robot_name", default_value=DEFAULT_ROBOT_NAME,
             description="Name of the robot. Default is 'mg400'."
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'port',
+            default_value=DEFAULT_PORT,
+            description='The serial port the Arduino is connected to.'
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'frame_ids',
+            default_value=[str(item) for item in DEFAULT_FRAME_IDS], # Ensure default is list of strings
+            description='A list of TF frame_ids for the sensor readings.'
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'num_sensors',
+            default_value=DEFAULT_NUM_SENSORS,
+            description='The number of sensors to use.'
         )
     )
 
@@ -153,20 +179,31 @@ def generate_launch_description():
         remappings=[("joint_states", "mg400/joint_states")],
     )
     
+    port = LaunchConfiguration('port')
+    num_sensors = LaunchConfiguration('num_sensors')
+    
+    sensor_node = Node(
+        package='hg_c1030_node',
+        executable='hg_sensor_node',
+        name='hg_sensor_node',
+        output='screen',
+        emulate_tty=True,
+        parameters=[{
+            'port': port,
+            'num_sensors': num_sensors,
+            'frame_ids': DEFAULT_FRAME_IDS
+        }]
+    )
     
     precision_homing_node = Node(
         package='mg400_ros2_bringup', # Or your package name
         executable='precision_homing_node',
-        name='precision_homing_node',
         output='screen',
         parameters=[
-            moveit_config.robot_description_kinematics,
-            moveit_config.robot_description,
-            moveit_config.robot_description_semantic,
+            moveit_config.to_dict(),
         ],
         remappings=[
-            ("joint_states", "mg400/joint_states"),
-            ("mg400_arm_controller/follow_joint_trajectory", "mg400_arm_controller/follow_joint_trajectory"),
+            ("joint_states", "mg400/joint_states")
         ],
     )
 
@@ -178,6 +215,7 @@ def generate_launch_description():
         robot_state_publisher_node,
         rviz_node,
         move_group_node,
+        sensor_node,
         precision_homing_node,
     ]
 

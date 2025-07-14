@@ -64,8 +64,8 @@ private:
 
     // --- Core Logic ---
     void controlLoop();
-    void sendCorrectionCommand(const std::vector<double>& joint_positions);
-    
+    void sendCorrectionCommand(const std::vector<std::string>& joint_names, const std::vector<double>& joint_positions);
+        
     /**
      * @brief Asynchronously calls the laser control action server.
      * @param power_on True to start streaming, false to stop.
