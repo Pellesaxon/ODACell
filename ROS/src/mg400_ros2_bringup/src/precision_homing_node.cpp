@@ -283,6 +283,8 @@ void PrecisionHomingNode::sendCorrectionCommand(const std::vector<std::string>& 
     trajectory_msgs::msg::JointTrajectoryPoint point;
     point.positions = joint_positions;
     point.time_from_start = rclcpp::Duration::from_seconds(0.5);
+    point.velocities.resize(joint_positions.size(), 10.0);
+    point.accelerations.resize(joint_positions.size(), 10.0);
     goal_msg.trajectory.points.push_back(point);
 
     fjt_action_client_->async_send_goal(goal_msg);

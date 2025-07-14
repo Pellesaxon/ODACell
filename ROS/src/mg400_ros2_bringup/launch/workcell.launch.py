@@ -144,9 +144,6 @@ def generate_launch_description():
         executable="robot_state_publisher",
         output="screen",
         parameters=[moveit_config.robot_description],
-        remappings=[
-            ("joint_states", "mg400/joint_states"),
-        ]
     )
 
     # ---- RViz ----
@@ -176,7 +173,6 @@ def generate_launch_description():
         output="screen",
         parameters=[moveit_config.to_dict(), trajectory_execution, {"use_sim_time": False}],
         condition=UnlessCondition(LaunchConfiguration("driver_only")),
-        remappings=[("joint_states", "mg400/joint_states")],
     )
     
     port = LaunchConfiguration('port')
@@ -201,9 +197,6 @@ def generate_launch_description():
         output='screen',
         parameters=[
             moveit_config.to_dict(),
-        ],
-        remappings=[
-            ("joint_states", "mg400/joint_states")
         ],
     )
 

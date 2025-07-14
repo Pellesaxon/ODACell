@@ -71,7 +71,11 @@ namespace mg400_ros2_bringup
 
         // Initialize ROS interfaces
         status_publisher_ = this->create_publisher<mg400_msgs::msg::RobotStatus>("/mg400/robot_status", 10);
-        joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/mg400/joint_states", 10);
+        
+        rclcpp::QoS joint_state_qos(rclcpp::KeepLast(10));
+        joint_state_qos.transient_local();
+        joint_state_qos.best_effort();
+        joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states", joint_state_qos);
 
         dashboard_action_server_ = rclcpp_action::create_server<DashboardCommand>(
             this, "mg400/dashboard_command",
