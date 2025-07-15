@@ -1,5 +1,6 @@
+
 #include "mg400_ros2_bringup/precision_homing_node.hpp"
-#include <algorithm> // For std::copy, std::clamp
+#include <algorithm>
 #include <vector>
 
 static double to_rad(double deg) { return deg * M_PI / 180.0; }
