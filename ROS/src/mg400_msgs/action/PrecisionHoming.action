@@ -1,0 +1,22 @@
+# Goal
+# Target distances in meters for the X and Z sensors
+float32 target_distance_x
+float32 target_distance_z
+# Tolerances in meters
+float32 tolerance
+# Max time to wait for the homing procedure to complete
+builtin_interfaces/Duration timeout
+# Pre-homing joint state to get close before fine-tuning
+float64[] pre_homing_joint_state
+---
+# Result
+bool success
+string message
+---
+# Feedback
+# Current distances from the sensors
+float32 current_distance_x
+float32 current_distance_z
+# Current error from target
+float32 error_x
+float32 error_z

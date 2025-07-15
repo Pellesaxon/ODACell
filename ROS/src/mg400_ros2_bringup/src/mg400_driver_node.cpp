@@ -71,17 +71,16 @@ namespace mg400_ros2_bringup
 
         // Initialize ROS interfaces
         status_publisher_ = this->create_publisher<mg400_msgs::msg::RobotStatus>("/mg400/robot_status", 10);
-        
-        rclcpp::QoS joint_state_qos(rclcpp::KeepLast(10));
-        joint_state_qos.transient_local();
-        joint_state_qos.best_effort();
-        joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states", joint_state_qos);
+        RCLCPP_INFO(this->get_logger(), "Robot status publisher initialized.");
+        joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states", 10);
+        RCLCPP_INFO(this->get_logger(), "Joint state publisher initialized.");
 
         dashboard_action_server_ = rclcpp_action::create_server<DashboardCommand>(
             this, "mg400/dashboard_command",
             std::bind(&MG400DriverNode::handle_dashboard_goal, this, std::placeholders::_1, std::placeholders::_2),
             std::bind(&MG400DriverNode::handle_dashboard_cancel, this, std::placeholders::_1),
             std::bind(&MG400DriverNode::handle_dashboard_accepted, this, std::placeholders::_1));
+        RCLCPP_INFO(this->get_logger(), "Dashboard command action server is ready.");
 
         fjt_action_server_ = rclcpp_action::create_server<FollowJointTrajectory>(
             this,
@@ -89,16 +88,26 @@ namespace mg400_ros2_bringup
             std::bind(&MG400DriverNode::handle_fjt_goal, this, std::placeholders::_1, std::placeholders::_2),
             std::bind(&MG400DriverNode::handle_fjt_cancel, this, std::placeholders::_1),
             std::bind(&MG400DriverNode::handle_fjt_accepted, this, std::placeholders::_1));
+        RCLCPP_INFO(this->get_logger(), "FollowJointTrajectory action server is ready.");
 
         clear_error_service_ = this->create_service<std_srvs::srv::Trigger>(
             "mg400/clear_error",
             std::bind(&MG400DriverNode::clear_error_callback, this, std::placeholders::_1, std::placeholders::_2));
+        RCLCPP_INFO(this->get_logger(), "Clear error service is ready.");
 
         auxiliary_power_service_ = this->create_service<std_srvs::srv::SetBool>(
             "mg400/auxiliary_power",
             std::bind(&MG400DriverNode::auxiliary_power_callback, this, std::placeholders::_1, std::placeholders::_2));
+        RCLCPP_INFO(this->get_logger(), "Auxiliary power service is ready.");
 
-        RCLCPP_INFO(this->get_logger(), "ROS interfaces are ready.");
+        move_to_joint_action_server_ = rclcpp_action::create_server<MoveToJointAction>(
+            this, "mg400/move_to_joint",
+            std::bind(&MG400DriverNode::handle_move_to_joint_goal, this, std::placeholders::_1, std::placeholders::_2),
+            std::bind(&MG400DriverNode::handle_move_to_joint_cancel, this, std::placeholders::_1),
+            std::bind(&MG400DriverNode::handle_move_to_joint_accepted, this, std::placeholders::_1));
+        RCLCPP_INFO(this->get_logger(), "MoveToJoint action server is ready.");
+
+        RCLCPP_INFO(this->get_logger(), "ROS interfaces initialized.");
 
         // --- STARTUP SEQUENCE ---
         //
@@ -930,6 +939,112 @@ namespace mg400_ros2_bringup
             {
                 status_publisher_->publish(detailed_status_msg);
             }
+        }
+    }
+
+    rclcpp_action::GoalResponse MG400DriverNode::handle_move_to_joint_goal(
+        const rclcpp_action::GoalUUID &, std::shared_ptr<const MoveToJointAction::Goal> goal)
+    {
+        RCLCPP_INFO(get_logger(), "Received MoveToJoint goal request.");
+        if (goal->joint_angles.size() != NUM_JOINTS)
+        {
+            RCLCPP_ERROR(get_logger(), "Rejecting goal: Incorrect number of joints. Expected %d, got %zu.", NUM_JOINTS, goal->joint_angles.size());
+            return rclcpp_action::GoalResponse::REJECT;
+        }
+        return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+    }
+
+    rclcpp_action::CancelResponse MG400DriverNode::handle_move_to_joint_cancel(
+        const std::shared_ptr<GoalHandleMoveToJoint>)
+    {
+        RCLCPP_INFO(get_logger(), "Received request to cancel MoveToJoint goal.");
+        send_dashboard_command("ResetRobot()");
+        return rclcpp_action::CancelResponse::ACCEPT;
+    }
+
+    void MG400DriverNode::handle_move_to_joint_accepted(const std::shared_ptr<GoalHandleMoveToJoint> goal_handle)
+    {
+        std::thread{std::bind(&MG400DriverNode::execute_move_to_joint, this, std::placeholders::_1), goal_handle}.detach();
+    }
+
+    void MG400DriverNode::execute_move_to_joint(const std::shared_ptr<GoalHandleMoveToJoint> goal_handle)
+    {
+        auto goal = goal_handle->get_goal();
+        auto result = std::make_shared<MoveToJointAction::Result>();
+        auto feedback = std::make_shared<MoveToJointAction::Feedback>();
+
+        RCLCPP_INFO(this->get_logger(), "Executing MoveToJoint goal: [%.2f, %.2f, %.2f, %.2f]",
+                    to_deg(goal->joint_angles[0]), to_deg(goal->joint_angles[1]), to_deg(goal->joint_angles[2]), to_deg(goal->joint_angles[3]));
+
+        // 1. Format the command
+        char cmd_buffer[256];
+        snprintf(cmd_buffer, sizeof(cmd_buffer), "JointMovJ(%.4f,%.4f,%.4f,%.4f,SpeedJ=%d,AccJ=%d,CP=0)",
+                 to_deg(goal->joint_angles[0]), to_deg(goal->joint_angles[1]),
+                 to_deg(goal->joint_angles[2]), to_deg(goal->joint_angles[3]),
+                 static_cast<int>(goal->speed_percent), static_cast<int>(goal->acc_percent));
+
+        // 2. Send the motion command
+        if (!send_motion_command(std::string(cmd_buffer)))
+        {
+            result->error_code = -1;
+            result->error_string = "Failed to send motion command to robot.";
+            goal_handle->abort(result);
+            return;
+        }
+
+        // 3. Monitor for completion
+        rclcpp::Rate loop_rate(100);             // Check status at 100 Hz
+        const double goal_tolerance_rad = 0.001; // ~0.05 degrees tolerance
+        int stable_counter = 0;
+        const int stability_threshold = 20; // Must be stable for 20*10ms = 200ms
+
+        while (rclcpp::ok())
+        {
+            if (goal_handle->is_canceling())
+            {
+                RCLCPP_INFO(get_logger(), "MoveToJoint goal canceled.");
+                result->error_code = 1; // CANCELED
+                result->error_string = "Goal was canceled by client.";
+                goal_handle->canceled(result);
+                return;
+            }
+
+            // Get current state from the feedback loop's shared variables
+            std::vector<double> current_positions;
+            current_positions = joint_positions_; // Copy current joint positions
+
+            // Check if we have reached the destination
+            bool all_joints_in_position = true;
+
+            for (size_t i = 0; i < NUM_JOINTS; ++i)
+            {
+                feedback->current_angles[i] = current_positions[i];
+                feedback->distance_to_goal[i] = std::abs(goal->joint_angles[i] - current_positions[i]);
+                if (feedback->distance_to_goal[i] > goal_tolerance_rad)
+                {
+                    all_joints_in_position = false;
+                }
+            }
+            goal_handle->publish_feedback(feedback);
+
+            if (all_joints_in_position)
+            {
+                stable_counter++;
+                if (stable_counter >= stability_threshold)
+                {
+                    RCLCPP_INFO(get_logger(), "MoveToJoint goal succeeded.");
+                    result->error_code = 0; // SUCCESS
+                    result->error_string = "Successfully reached target joint configuration.";
+                    goal_handle->succeed(result);
+                    return;
+                }
+            }
+            else
+            {
+                stable_counter = 0; // Reset counter if we move out of tolerance
+            }
+
+            loop_rate.sleep();
         }
     }
 

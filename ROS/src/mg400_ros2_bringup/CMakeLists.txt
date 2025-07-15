@@ -44,6 +44,7 @@ ament_target_dependencies(precision_homing_node
   std_srvs
   control_msgs
   hg_c1030_msgs
+  mg400_msgs
 )
 target_include_directories(precision_homing_node PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

@@ -1,308 +1,329 @@
-#include "mg400_ros2_bringup/precision_homing_node.hpp" // Use your package name
+#include "mg400_ros2_bringup/precision_homing_node.hpp"
+#include <algorithm> // For std::copy, std::clamp
+#include <vector>
 
-#include <trajectory_msgs/msg/joint_trajectory_point.hpp>
-#include <algorithm> // For std::clamp
-#include <cmath>     // For std::isinf
+static double to_rad(double deg) { return deg * M_PI / 180.0; }
+static double to_deg(double rad) { return rad * 180.0 / M_PI; }
 
-// Use a constexpr for compile-time constants instead of a C-style macro.
-constexpr size_t K_NUM_JOINTS = 4;
-
+// Constructor
 PrecisionHomingNode::PrecisionHomingNode(const rclcpp::NodeOptions &options)
     : Node("precision_homing_node", options),
-      pid_x_(declare_parameter<double>("pid.x.p", 0.05),
-             declare_parameter<double>("pid.x.i", 0.01),
-             declare_parameter<double>("pid.x.d", 0.005),
-             this->get_clock()),
-      pid_z_(declare_parameter<double>("pid.z.p", 0.05),
-             declare_parameter<double>("pid.z.i", 0.01),
-             declare_parameter<double>("pid.z.d", 0.005),
-             this->get_clock())
+      pid_x_(
+          this->declare_parameter<double>("pid.x.kp", 0.5),                  // Proportional gain
+          this->declare_parameter<double>("pid.x.ki", 0.02),                 // Integral gain
+          this->declare_parameter<double>("pid.x.kd", 0.05),                 // Derivative gain
+          this->declare_parameter<double>("pid.x.min_output", -to_rad(0.1)), // Min correction in rad
+          this->declare_parameter<double>("pid.x.max_output", to_rad(0.1)),  // Max correction in rad
+          this->get_clock()),
+      pid_z_(
+          this->declare_parameter<double>("pid.z.kp", 0.5),
+          this->declare_parameter<double>("pid.z.ki", 0.02),
+          this->declare_parameter<double>("pid.z.kd", 0.05),
+          this->declare_parameter<double>("pid.z.min_output", -to_rad(0.1)),
+          this->declare_parameter<double>("pid.z.max_output", to_rad(0.1)),
+          this->get_clock())
 {
-    // Declare parameters that will be used by the node.
-    this->declare_parameter<std::string>("robot_name", "mg400");
-    this->declare_parameter<std::string>("move_group_name", "mg400_arm");
-    target_distance_x_ = this->declare_parameter<double>("target_distance.x", 0.027);
-    target_distance_z_ = this->declare_parameter<double>("target_distance.z", 0.027);
-    position_tolerance_ = this->declare_parameter<double>("tolerance.position", 0.0005);
-    max_correction_step_ = this->declare_parameter<double>("max_correction_step", 0.001);
+    RCLCPP_INFO(this->get_logger(), "Initializing Precision Homing Node (Direct Joint Control)...");
 
-    // Initialize ROS 2 clients, servers, and subscriptions.
-    fjt_action_client_ = rclcpp_action::create_client<control_msgs::action::FollowJointTrajectory>(
-        this, "/mg400_arm_controller/follow_joint_trajectory");
-        
+    current_distance_x_.store(-1.0);
+    current_distance_z_.store(-1.0);
+
+    action_server_cb_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+    client_cb_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+
+    // --- Initialize Subscriptions ---
+    rclcpp::SubscriptionOptions sub_options;
     sensor_x_sub_ = this->create_subscription<sensor_msgs::msg::Range>(
-        "/distance/sensor_0", 10, std::bind(&PrecisionHomingNode::sensorXCallback, this, std::placeholders::_1));
+        "/distance/sensor_0", 10, std::bind(&PrecisionHomingNode::sensorXCallback, this, std::placeholders::_1), sub_options);
     sensor_z_sub_ = this->create_subscription<sensor_msgs::msg::Range>(
-        "/distance/sensor_1", 10, std::bind(&PrecisionHomingNode::sensorZCallback, this, std::placeholders::_1));
-    
-    homing_service_ = this->create_service<std_srvs::srv::Trigger>(
-        "~/start_homing", std::bind(&PrecisionHomingNode::startHomingCallback, this, std::placeholders::_1, std::placeholders::_2));
-    
-    control_streaming_client_ = rclcpp_action::create_client<hg_c1030_msgs::action::ControlStreaming>(
-        this, "/control_streaming");
+        "/distance/sensor_1", 10, std::bind(&PrecisionHomingNode::sensorZCallback, this, std::placeholders::_1), sub_options);
 
-    // The control loop timer is created but not started until the homing service is called.
-    control_loop_timer_ = this->create_wall_timer(
-        std::chrono::milliseconds(100), std::bind(&PrecisionHomingNode::controlLoop, this));
-    control_loop_timer_->cancel();
+    // --- Initialize Action Clients & Servers ---
+    laser_control_client_ = rclcpp_action::create_client<LaserControlAction>(this, "/control_streaming", client_cb_group_);
 
-    RCLCPP_INFO(this->get_logger(), "Precision Homing Node is ready. Call the '~/start_homing' service to begin.");
+    move_to_joint_client_ = rclcpp_action::create_client<MoveToJointAction>(this, "mg400/move_to_joint", client_cb_group_);
+    if (!move_to_joint_client_->wait_for_action_server(std::chrono::seconds(10)))
+    {
+        RCLCPP_FATAL(this->get_logger(), "MoveToJoint action server not available! Is the driver running?");
+        throw std::runtime_error("MoveToJoint action server not available.");
+    }
+
+    homing_action_server_ = rclcpp_action::create_server<HomingAction>(
+        this, "precision_homing",
+        std::bind(&PrecisionHomingNode::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
+        std::bind(&PrecisionHomingNode::handle_cancel, this, std::placeholders::_1),
+        std::bind(&PrecisionHomingNode::handle_accepted, this, std::placeholders::_1),
+        rcl_action_server_get_default_options(),
+        action_server_cb_group_);
+
+    RCLCPP_INFO(this->get_logger(), "Precision Homing Node is ready and waiting for goals.");
 }
 
-void PrecisionHomingNode::init()
-{
-    const auto move_group_name = this->get_parameter("move_group_name").as_string();
-    const std::string robot_description_param = "robot_description";
+// Destructor
+PrecisionHomingNode::~PrecisionHomingNode() {}
 
-    RCLCPP_INFO(this->get_logger(), "Initializing MoveGroupInterface for group '%s' using parameter '%s'.",
-                move_group_name.c_str(), robot_description_param.c_str());
-
-    moveit::planning_interface::MoveGroupInterface::Options options(move_group_name, robot_description_param);
-    move_group_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(shared_from_this(), options);
-
-    if (move_group_->getPlanningFrame().empty())
-    {
-        RCLCPP_FATAL(this->get_logger(), "MoveGroupInterface failed to initialize. Check that the 'robot_description' parameter is set and the group name '%s' exists.", move_group_name.c_str());
-        rclcpp::shutdown();
-        return;
-    }
-
-    RCLCPP_INFO(this->get_logger(), "MoveGroupInterface successfully initialized.");
-
-    // Log joint information for debugging and verification.
-    const auto& all_joint_names = move_group_->getJointNames();
-    std::string all_joints_list_str;
-    for (const auto& name : all_joint_names) { all_joints_list_str += " " + name; }
-    RCLCPP_INFO(this->get_logger(), "Total joints in group '%s' kinematic chain (%zu): [%s ]",
-                move_group_name.c_str(), all_joint_names.size(), all_joints_list_str.c_str());
-
-    const auto& active_joint_names = move_group_->getActiveJoints();
-    std::string active_joints_list_str;
-    for (const auto& name : active_joint_names) { active_joints_list_str += " " + name; }
-    RCLCPP_INFO(this->get_logger(), "ACTIVE joints for planning and control (%zu): [%s ]",
-                active_joint_names.size(), active_joints_list_str.c_str());
-
-    if (active_joint_names.size() != K_NUM_JOINTS)
-    {
-        RCLCPP_WARN(this->get_logger(), "Expected %zu active joints but found %zu. Check SRDF and URDF files.",
-                    K_NUM_JOINTS, active_joint_names.size());
-    }
-
-    RCLCPP_INFO(this->get_logger(), "Precision Homing Node is fully initialized.");
-}
-
-void PrecisionHomingNode::setLaserStreamingState(bool power_on)
-{
-    if (!control_streaming_client_->wait_for_action_server(std::chrono::seconds(2)))
-    {
-        RCLCPP_ERROR(this->get_logger(), "Control streaming action server not available!");
-        if (pending_homing_response_)
-        {
-            pending_homing_response_->success = false;
-            pending_homing_response_->message = "Action server for laser control not available.";
-            pending_homing_response_ = nullptr;
-        }
-        return;
-    }
-
-    auto goal_msg = hg_c1030_msgs::action::ControlStreaming::Goal();
-    goal_msg.start_streaming = power_on;
-
-    auto send_goal_options = rclcpp_action::Client<hg_c1030_msgs::action::ControlStreaming>::SendGoalOptions();
-    send_goal_options.goal_response_callback =
-        [this](const rclcpp_action::ClientGoalHandle<hg_c1030_msgs::action::ControlStreaming>::SharedPtr &goal_handle)
-    {
-        if (!goal_handle) {
-            RCLCPP_ERROR(this->get_logger(), "Laser control goal was rejected by server.");
-            if (pending_homing_response_) {
-                pending_homing_response_->success = false;
-                pending_homing_response_->message = "Laser control goal was rejected.";
-                pending_homing_response_ = nullptr;
-            }
-        } else {
-            RCLCPP_INFO(this->get_logger(), "Laser control goal accepted by server, waiting for result...");
-        }
-    };
-
-    send_goal_options.result_callback =
-        [this, power_on](const rclcpp_action::ClientGoalHandle<hg_c1030_msgs::action::ControlStreaming>::WrappedResult &result)
-    {
-        bool success = false;
-        std::string message;
-
-        switch (result.code)
-        {
-        case rclcpp_action::ResultCode::SUCCEEDED:
-            RCLCPP_INFO(this->get_logger(), "Successfully set laser power %s.", power_on ? "ON" : "OFF");
-            if (power_on && pending_homing_response_) {
-                RCLCPP_INFO(this->get_logger(), "Laser is ON. Starting homing control loop.");
-                pid_x_.reset();
-                pid_z_.reset();
-                is_homing_active_ = true;
-                control_loop_timer_->reset();
-                success = true;
-                message = "Precision homing started.";
-            }
-            break;
-        case rclcpp_action::ResultCode::ABORTED:
-            message = "Laser control goal was aborted.";
-            break;
-        case rclcpp_action::ResultCode::CANCELED:
-            message = "Laser control goal was canceled.";
-            break;
-        default:
-            message = "Unknown error in laser control.";
-            break;
-        }
-
-        if (!message.empty() && result.code != rclcpp_action::ResultCode::SUCCEEDED) {
-            RCLCPP_ERROR(this->get_logger(), "%s", message.c_str());
-        }
-
-        if (pending_homing_response_) {
-            pending_homing_response_->success = success;
-            pending_homing_response_->message = message;
-            pending_homing_response_ = nullptr;
-        }
-    };
-
-    control_streaming_client_->async_send_goal(goal_msg, send_goal_options);
-}
-
-void PrecisionHomingNode::startHomingCallback(
-    [[maybe_unused]] const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
-    std::shared_ptr<std_srvs::srv::Trigger::Response> response)
-{
-    if (is_homing_active_)
-    {
-        RCLCPP_WARN(this->get_logger(), "Homing is already active.");
-        response->success = false;
-        response->message = "Homing process is already running.";
-        return;
-    }
-
-    RCLCPP_INFO(this->get_logger(), "Request received to start homing. Turning on laser power...");
-    pending_homing_response_ = response;
-    setLaserStreamingState(true);
-}
-
-void PrecisionHomingNode::controlLoop()
-{
-    if (!is_homing_active_ || !move_group_) return;
-
-    double error_x = target_distance_x_ - latest_distance_x_;
-    double error_z = target_distance_z_ - latest_distance_z_;
-
-    if (std::abs(error_x) < position_tolerance_ && std::abs(error_z) < position_tolerance_)
-    {
-        RCLCPP_INFO(this->get_logger(), "Homing successful! Position within tolerance.");
-        is_homing_active_ = false;
-        control_loop_timer_->cancel();
-        setLaserStreamingState(false);
-        return;
-    }
-
-    double correction_x = std::clamp(pid_x_.compute(error_x), -max_correction_step_, max_correction_step_);
-    double correction_z = std::clamp(pid_z_.compute(error_z), -max_correction_step_, max_correction_step_);
-    
-    auto current_pose = move_group_->getCurrentPose().pose;
-    geometry_msgs::msg::Pose target_pose = current_pose;
-    target_pose.position.x += correction_x;
-    target_pose.position.z += correction_z;
-    move_group_->setPoseTarget(target_pose);
-
-    // To handle mimic/passive joints, we must filter the full joint solution from MoveIt
-    // to get values for only the active, controllable joints.
-    const auto& active_joint_names = move_group_->getActiveJoints();
-    std::vector<double> all_target_joints;
-    move_group_->getJointValueTarget(all_target_joints);
-
-    const auto* joint_model_group = move_group_->getRobotModel()->getJointModelGroup(move_group_->getName());
-    if (!joint_model_group) {
-        RCLCPP_ERROR(this->get_logger(), "FATAL: Could not get JointModelGroup. Aborting.");
-        is_homing_active_ = false;
-        control_loop_timer_->cancel();
-        return;
-    }
-    const auto& all_joint_names = joint_model_group->getJointModelNames();
-    
-    std::map<std::string, double> joint_value_map;
-    for (size_t i = 0; i < all_joint_names.size(); ++i) {
-        joint_value_map[all_joint_names[i]] = all_target_joints[i];
-    }
-    
-    std::vector<double> active_target_joints;
-    active_target_joints.reserve(active_joint_names.size());
-    for (const auto& name : active_joint_names) {
-        active_target_joints.push_back(joint_value_map.at(name));
-    }
-
-    sendCorrectionCommand(active_joint_names, active_target_joints);
-}
-
+// --- Sensor Callbacks ---
 void PrecisionHomingNode::sensorXCallback(const sensor_msgs::msg::Range::SharedPtr msg)
 {
-    if (std::isinf(msg->range)) {
-        if (is_homing_active_.load()) {
-            RCLCPP_ERROR(this->get_logger(), "Invalid 'inf' reading from X sensor. Aborting homing procedure.");
-            is_homing_active_ = false;
-            control_loop_timer_->cancel();
-            setLaserStreamingState(false);
-        }
-        return; // Do not update state with an invalid value.
+    if (msg->range < msg->max_range && msg->range > msg->min_range)
+    {
+        current_distance_x_.store(msg->range);
     }
-    latest_distance_x_ = msg->range;
+    else
+    {
+        current_distance_x_.store(-1.0);
+    }
 }
 
 void PrecisionHomingNode::sensorZCallback(const sensor_msgs::msg::Range::SharedPtr msg)
 {
-    if (std::isinf(msg->range)) {
-        if (is_homing_active_.load()) {
-            RCLCPP_ERROR(this->get_logger(), "Invalid 'inf' reading from Z sensor. Aborting homing procedure.");
-            is_homing_active_ = false;
-            control_loop_timer_->cancel();
-            setLaserStreamingState(false);
-        }
-        return; // Do not update state with an invalid value.
+    if (msg->range < msg->max_range && msg->range > msg->min_range)
+    {
+        current_distance_z_.store(msg->range);
     }
-    latest_distance_z_ = msg->range;
+    else
+    {
+        current_distance_z_.store(-1.0);
+    }
 }
 
-void PrecisionHomingNode::sendCorrectionCommand(const std::vector<std::string>& joint_names, const std::vector<double>& joint_positions)
+bool PrecisionHomingNode::setLaserStreamingState(bool power_on)
 {
-    if (!fjt_action_client_->wait_for_action_server(std::chrono::seconds(1)))
+    if (!laser_control_client_->wait_for_action_server(std::chrono::seconds(5))) {
+        RCLCPP_ERROR(this->get_logger(), "Laser control action server not available!");
+        return false;
+    }
+    auto goal_msg = LaserControlAction::Goal();
+    goal_msg.start_streaming = power_on;
+    RCLCPP_INFO(this->get_logger(), "Requesting to %s laser streaming...", power_on ? "START" : "STOP");
+
+    auto goal_handle_future = laser_control_client_->async_send_goal(goal_msg);
+
+    if (goal_handle_future.wait_for(std::chrono::seconds(5)) != std::future_status::ready) {
+        RCLCPP_ERROR(this->get_logger(), "Failed to get goal handle from laser control server.");
+        return false;
+    }
+
+    auto goal_handle = goal_handle_future.get();
+    if (!goal_handle) {
+        RCLCPP_ERROR(this->get_logger(), "Laser control goal was rejected by server.");
+        return false;
+    }
+
+    // 2. Now wait for the result
+    auto result_future = laser_control_client_->async_get_result(goal_handle);
+    if (result_future.wait_for(std::chrono::seconds(10)) != std::future_status::ready) {
+        RCLCPP_ERROR(this->get_logger(), "Failed to get result from laser control server.");
+        return false;
+    }
+    
+    auto result_wrapper = result_future.get();
+    if (result_wrapper.code == rclcpp_action::ResultCode::SUCCEEDED) {
+        RCLCPP_INFO(this->get_logger(), "Laser control action succeeded: %s", result_wrapper.result->message.c_str());
+        return result_wrapper.result->success;
+    }
+
+    RCLCPP_ERROR(this->get_logger(), "Laser control action failed with code %d", static_cast<int>(result_wrapper.code));
+    return false;
+}
+
+// --- Homing Action Server Handlers ---
+rclcpp_action::GoalResponse PrecisionHomingNode::handle_goal(
+    const rclcpp_action::GoalUUID &, std::shared_ptr<const HomingAction::Goal>)
+{
+    RCLCPP_INFO(this->get_logger(), "Received homing goal request. Accepting.");
+    return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+}
+
+rclcpp_action::CancelResponse PrecisionHomingNode::handle_cancel(
+    const std::shared_ptr<GoalHandleHoming>)
+{
+    RCLCPP_INFO(this->get_logger(), "Received request to cancel homing goal.");
+    return rclcpp_action::CancelResponse::ACCEPT;
+}
+
+void PrecisionHomingNode::handle_accepted(
+    const std::shared_ptr<GoalHandleHoming> goal_handle)
+{
+    std::thread{std::bind(&PrecisionHomingNode::execute_homing, this, std::placeholders::_1), goal_handle}.detach();
+}
+
+void PrecisionHomingNode::execute_homing(const std::shared_ptr<GoalHandleHoming> goal_handle)
+{
+    RCLCPP_INFO(this->get_logger(), "Executing precision homing using DIRECT JOINT control...");
+    const auto goal = goal_handle->get_goal();
+    auto result = std::make_shared<HomingAction::Result>();
+    auto feedback = std::make_shared<HomingAction::Feedback>();
+
+    if (!setLaserStreamingState(true))
     {
-        RCLCPP_ERROR(this->get_logger(), "FollowJointTrajectory action server not available!");
-        is_homing_active_ = false;
-        control_loop_timer_->cancel();
+        result->success = false;
+        result->message = "Failed to turn on laser sensors.";
+        goal_handle->abort(result);
         return;
     }
 
-    control_msgs::action::FollowJointTrajectory::Goal goal_msg;
-    goal_msg.trajectory.joint_names = joint_names;
-    trajectory_msgs::msg::JointTrajectoryPoint point;
-    point.positions = joint_positions;
-    point.time_from_start = rclcpp::Duration::from_seconds(0.5);
-    point.velocities.resize(joint_positions.size(), 10.0);
-    point.accelerations.resize(joint_positions.size(), 10.0);
-    goal_msg.trajectory.points.push_back(point);
+    rclcpp::Rate wait_rate(10);
+    auto start_wait = this->get_clock()->now();
+    while (rclcpp::ok() && (current_distance_x_.load() < 0 || current_distance_z_.load() < 0))
+    {
+        if ((this->get_clock()->now() - start_wait).seconds() > 5.0)
+        {
+            RCLCPP_ERROR(this->get_logger(), "Timeout waiting for valid in-range sensor data.");
+            setLaserStreamingState(false);
+            result->success = false;
+            result->message = "Timeout waiting for sensor data.";
+            goal_handle->abort(result);
+            return;
+        }
+        if (goal_handle->is_canceling())
+        { // Check for cancel during wait
+            goal_handle->canceled(result);
+            return;
+        }
+        wait_rate.sleep();
+    }
+    RCLCPP_INFO(this->get_logger(), "Initial sensor data received and is in valid range.");
 
-    fjt_action_client_->async_send_goal(goal_msg);
+    // --- CONTROL LOOP ---
+    RCLCPP_INFO(this->get_logger(), "Starting micro-move (Direct Joint PID loop).");
+    pid_x_.reset();
+    pid_z_.reset();
+
+    rclcpp::Rate loop_rate(5); // Loop at 5 Hz
+    int consecutive_successes = 0;
+    const int success_threshold = 5; // Needs ~0.5s of stability
+    auto loop_start_time = this->get_clock()->now();
+    const double timeout_seconds = rclcpp::Duration(goal->timeout).seconds();
+
+    std::vector<double> current_joint_angles(4, 0.0);
+
+    while (rclcpp::ok())
+    {
+
+        if (goal_handle->is_canceling())
+        {
+            RCLCPP_INFO(this->get_logger(), "Homing canceled by client.");
+            setLaserStreamingState(false);
+            result->success = false;
+            result->message = "Homing canceled by client.";
+            goal_handle->canceled(result);
+            return;
+        }
+        if ((this->get_clock()->now() - loop_start_time).seconds() > timeout_seconds)
+        {
+            RCLCPP_ERROR(this->get_logger(), "Homing timed out.");
+            setLaserStreamingState(false);
+            result->success = false;
+            result->message = "Homing timed out.";
+            goal_handle->abort(result);
+            return;
+        }
+
+        double dist_x = current_distance_x_.load();
+        double dist_z = current_distance_z_.load();
+
+        if (dist_x < 0 || dist_z < 0)
+        {
+            RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 2000, "Sensor data is out of range, pausing PID.");
+            loop_rate.sleep();
+            continue;
+        }
+
+        double error_x = goal->target_distance_x - dist_x;
+        double error_z = goal->target_distance_z - dist_z;
+
+        feedback->current_distance_x = dist_x;
+        feedback->current_distance_z = dist_z;
+        feedback->error_x = error_x;
+        feedback->error_z = error_z;
+        goal_handle->publish_feedback(feedback);
+
+        if (std::abs(error_x) < goal->tolerance && std::abs(error_z) < goal->tolerance)
+        {
+            consecutive_successes++;
+            if (consecutive_successes >= success_threshold)
+            {
+                RCLCPP_INFO(this->get_logger(), "Homing successful! Position stable within tolerance.");
+                break; 
+            }
+            loop_rate.sleep();
+            continue; // close, just wait for stability
+        }
+        else
+        {
+            consecutive_successes = 0;
+        }
+
+        // --- DIRECT JOINT MOVE EXECUTION ---
+
+        // Assumption: Positive X error (too far) needs positive J2 angle to move forward.
+        // Assumption: Positive Z error (too high) needs positive J3 angle to move "down".
+        double dj2 = pid_x_.compute(error_x);
+        double dj3 = pid_z_.compute(error_z);
+
+        // 2. Define the target joint angles based on the last known position
+        std::vector<double> target_joints = current_joint_angles;
+        target_joints[1] += dj2; // Apply correction to J2
+        target_joints[2] += dj3; // Apply correction to J3
+        // Keep J1 and J4 constant
+        target_joints[0] = current_joint_angles[0];
+        target_joints[3] = current_joint_angles[3];
+
+        auto move_goal = MoveToJointAction::Goal();
+        std::copy(target_joints.begin(), target_joints.end(), move_goal.joint_angles.begin());
+        move_goal.speed_percent = 2.0f; // Use very slow moves
+        move_goal.acc_percent = 2.0f;
+
+        RCLCPP_INFO(this->get_logger(), "Sending correction: dJ2=%.4f deg, dJ3=%.4f deg", to_deg(dj2), to_deg(dj3));
+
+        auto goal_handle_future = move_to_joint_client_->async_send_goal(move_goal);
+        if (goal_handle_future.wait_for(std::chrono::seconds(1)) != std::future_status::ready) {
+            RCLCPP_ERROR(this->get_logger(), "MoveToJoint goal send timed out.");
+            continue; // Skip to next loop iteration
+        }
+        
+        auto goal_handle_move = goal_handle_future.get();
+        if (!goal_handle_move) {
+            RCLCPP_ERROR(this->get_logger(), "MoveToJoint goal was rejected by the server.");
+            continue; // Skip to next loop iteration
+        }
+
+        //Wait for the action to complete
+        RCLCPP_INFO(this->get_logger(), "Waiting for micro-move to complete...");
+        auto result_future = move_to_joint_client_->async_get_result(goal_handle_move);
+        if (result_future.wait_for(std::chrono::seconds(5)) != std::future_status::ready) {
+            RCLCPP_ERROR(this->get_logger(), "Timed out waiting for MoveToJoint action result.");
+        } else {
+            auto result_wrapper = result_future.get();
+            if (result_wrapper.code == rclcpp_action::ResultCode::SUCCEEDED) {
+                RCLCPP_INFO(this->get_logger(), "Micro-move step completed.");
+            } else {
+                RCLCPP_WARN(this->get_logger(), "Micro-move step failed, was canceled, or aborted. Code: %d", static_cast<int>(result_wrapper.code));
+            }
+
+        }
+    }
+
+    // --- Cleanup ---
+    setLaserStreamingState(false);
+    result->success = true;
+    result->message = "Precision homing completed successfully.";
+    goal_handle->succeed(result);
 }
 
+// --- Main function ---
 int main(int argc, char *argv[])
 {
     rclcpp::init(argc, argv);
-    rclcpp::executors::MultiThreadedExecutor executor;
-    rclcpp::NodeOptions node_options;
-    node_options.automatically_declare_parameters_from_overrides(true);
-
-    auto homing_node = std::make_shared<PrecisionHomingNode>(node_options);
     
-    homing_node->init(); 
-
-    executor.add_node(homing_node);
+    auto node = std::make_shared<PrecisionHomingNode>();
+    rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 4);
+    executor.add_node(node);
+    
+    RCLCPP_INFO(rclcpp::get_logger("main"), "Spinning precision_homing_node with MultiThreadedExecutor.");
     executor.spin();
+    
     rclcpp::shutdown();
     return 0;
 }

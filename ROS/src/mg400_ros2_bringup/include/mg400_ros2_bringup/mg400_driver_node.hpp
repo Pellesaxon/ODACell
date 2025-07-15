@@ -26,6 +26,7 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "mg400_msgs/action/dashboard_command.hpp"
 #include "mg400_msgs/msg/robot_status.hpp"
+#include "mg400_msgs/action/move_to_joint.hpp"
 #include "mg400_ros2_bringup/alarms/mg400_alarm_manager.hpp"
 #include "std_srvs/srv/trigger.hpp"
 #include "std_srvs/srv/set_bool.hpp"
@@ -56,6 +57,8 @@ namespace mg400_ros2_bringup
         using GoalHandleDashboardCommand = rclcpp_action::ServerGoalHandle<DashboardCommand>;
         using FollowJointTrajectory = control_msgs::action::FollowJointTrajectory; 
         using GoalHandleFJT = rclcpp_action::ServerGoalHandle<FollowJointTrajectory>;
+        using MoveToJointAction = mg400_msgs::action::MoveToJoint;
+        using GoalHandleMoveToJoint = rclcpp_action::ServerGoalHandle<MoveToJointAction>;
 
         /**
          * @brief Construct a new MG400DriverNode object
@@ -102,6 +105,7 @@ namespace mg400_ros2_bringup
         // Action servers
         rclcpp_action::Server<DashboardCommand>::SharedPtr dashboard_action_server_;
         rclcpp_action::Server<FollowJointTrajectory>::SharedPtr fjt_action_server_;
+        rclcpp_action::Server<MoveToJointAction>::SharedPtr move_to_joint_action_server_;
 
         // Services
         rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr clear_error_service_;
@@ -176,6 +180,12 @@ namespace mg400_ros2_bringup
         rclcpp_action::CancelResponse handle_fjt_cancel(const std::shared_ptr<GoalHandleFJT>);
         void handle_fjt_accepted(const std::shared_ptr<GoalHandleFJT>);
         void execute_trajectory(const std::shared_ptr<GoalHandleFJT> goal_handle);
+
+        rclcpp_action::GoalResponse handle_move_to_joint_goal(const rclcpp_action::GoalUUID &, std::shared_ptr<const MoveToJointAction::Goal>);
+        rclcpp_action::CancelResponse handle_move_to_joint_cancel(const std::shared_ptr<GoalHandleMoveToJoint>);
+        void handle_move_to_joint_accepted(const std::shared_ptr<GoalHandleMoveToJoint>);
+        void execute_move_to_joint(const std::shared_ptr<GoalHandleMoveToJoint>);
+        
     };
 
 } // namespace mg400_ros2_bringup
