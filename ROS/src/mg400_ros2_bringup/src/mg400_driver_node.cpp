@@ -33,7 +33,7 @@
 #define GLOBAL_SPEED_ACC_FACTOR 100
 #define CONTINUOUS_PATH_SMOOTHING 10                // Default CP value for continuous path motion
 #define TRAJECTORY_EXECUTION_AUTO_TIMEOUT_MULT 30.0 // Multiplier for trajectory execution timeout (very generous)
-#define END_POS_DEG_TOLERANCE 0.1                   // Default end position tolerance in degrees
+#define END_POS_DEG_TOLERANCE 0.05                   // Default end position tolerance in degrees
 #define STARTED_MOVING_DEG_TOL 0.05
 
 constexpr std::array<const char *, 4> JOINT_NAMES = {"j1", "j2", "j3", "j4"};

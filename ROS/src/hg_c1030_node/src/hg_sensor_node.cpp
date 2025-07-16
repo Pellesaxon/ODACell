@@ -389,7 +389,8 @@ void HGSensorNode::read_loop()
 
         if (distance < SENSOR_MIN_RANGE || distance > SENSOR_MAX_RANGE)
         {
-          RCLCPP_WARN(this->get_logger(), "Sensor %d: Received out-of-range or error distance: %.4f m", sensor_id, distance);
+          RCLCPP_WARN_THROTTLE(this->get_logger(), *(this->get_clock()), 5000,
+                               "Sensor ID %d reported out-of-range value: %.3f m. Publishing infinity.", sensor_id, distance);
           msg->range = std::numeric_limits<float>::infinity();
         }
         else

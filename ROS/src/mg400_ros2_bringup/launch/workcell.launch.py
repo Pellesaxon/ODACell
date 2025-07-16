@@ -192,12 +192,13 @@ def generate_launch_description():
     )
     
     precision_homing_node = Node(
-        package='mg400_ros2_bringup', # Or your package name
+        package='mg400_ros2_bringup',
         executable='precision_homing_node',
         output='screen',
         parameters=[
             moveit_config.to_dict(),
         ],
+        arguments=['--ros-args', '--log-level', 'debug'],
     )
 
     # The final list of nodes to launch

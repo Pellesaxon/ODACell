@@ -1,7 +1,7 @@
 # Goal
 # Target distances in meters for the X and Z sensors
 float32 target_distance_x
-float32 target_distance_z
+float32 target_distance_y
 # Tolerances in meters
 float32 tolerance
 # Max time to wait for the homing procedure to complete
@@ -16,7 +16,7 @@ string message
 # Feedback
 # Current distances from the sensors
 float32 current_distance_x
-float32 current_distance_z
+float32 current_distance_y
 # Current error from target
 float32 error_x
-float32 error_z
+float32 error_y
