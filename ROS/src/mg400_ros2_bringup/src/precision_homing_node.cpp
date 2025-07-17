@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <vector>
 
-#define USE_SKRRRRR 0 // Set to 1 to use the skrrrrr method, 0 for PID
+#define USE_SKRRRRR 1 // Set to 1 to use the skrrrrr method, 0 for PID
 
 static double to_rad(double deg) { return deg * M_PI / 180.0; }
 static double to_deg(double rad) { return rad * 180.0 / M_PI; }
@@ -75,11 +75,15 @@ void PrecisionHomingNode::sensorXCallback(const sensor_msgs::msg::Range::SharedP
 {
     if (!std::isinf(msg->range))
     {
+        if (current_distance_x_.load() == -1.0)
+        {
+            RCLCPP_INFO(this->get_logger(), "X sensor back in-range, initial distance: %.2f", msg->range);
+        }
         current_distance_x_.store(msg->range);
     }
     else
     {
-        RCLCPP_DEBUG(this->get_logger(), "X sensor range is infinite, resetting to -1.0");
+        RCLCPP_WARN_THROTTLE(this->get_logger(), *(this->get_clock()), 5000, "X sensor range is infinite, resetting to -1.0");
         current_distance_x_.store(-1.0);
     }
 }
@@ -88,11 +92,15 @@ void PrecisionHomingNode::sensorYCallback(const sensor_msgs::msg::Range::SharedP
 {
     if (!std::isinf(msg->range))
     {
+        if (current_distance_y_.load() == -1.0)
+        {
+            RCLCPP_INFO(this->get_logger(), "Y sensor back in-range, initial distance: %.2f", msg->range);
+        }
         current_distance_y_.store(msg->range);
     }
     else
     {
-        RCLCPP_DEBUG(this->get_logger(), "Y sensor range is infinite, resetting to -1.0");
+        RCLCPP_WARN_THROTTLE(this->get_logger(), *(this->get_clock()), 5000, "Y sensor range is infinite, resetting to -1.0");
         current_distance_y_.store(-1.0);
     }
 }
@@ -461,6 +469,18 @@ void PrecisionHomingNode::execute_homing_skrrrrr(const std::shared_ptr<GoalHandl
         last_known_good_joint_angles = current_joint_angles_;
     }
 
+    double correction_step_deg = 0.5;
+    double correction_step_rad = to_rad(correction_step_deg);
+
+    const double target_distance_x = goal->target_distance_x;
+    const double target_distance_y = goal->target_distance_y;
+    const double tolerance = goal->tolerance;
+
+    const int correction_speed = 5; // 5%
+    const int correction_acc = 5; // 5%
+
+    const int settle_sleep_ms = 500; // 100 ms settle time after each move to let sensor readings settle.
+
     while (rclcpp::ok())
     {
         if (goal_handle->is_canceling())
@@ -482,14 +502,154 @@ void PrecisionHomingNode::execute_homing_skrrrrr(const std::shared_ptr<GoalHandl
             return;
         }
 
+        { // Load current joint angles
+            std::lock_guard<std::mutex> lock(joint_state_mutex_);
+            local_current_joints = current_joint_angles_;
+        }
+
         double dist_x = current_distance_x_.load();
         double dist_y = current_distance_y_.load();
 
+        double error_x = target_distance_x - dist_x;
+        double error_y = target_distance_y - dist_y;
+
         RCLCPP_INFO(this->get_logger(), "Current distances: X=%.4f m, Y=%.4f m", dist_x, dist_y);
-        break;
+        RCLCPP_INFO(this->get_logger(), "Current errors: X=%.4f m, Y=%.4f m", error_x, error_y);
+
+        // Publish feedback
+        feedback->current_distance_x = dist_x;
+        feedback->current_distance_y = dist_y;
+        feedback->error_x = error_x;
+        feedback->error_y = error_y;
+        goal_handle->publish_feedback(feedback);
+
+        // Check for success condition
+        if (std::abs(error_x) < tolerance && std::abs(error_y) < tolerance)
+        {
+            RCLCPP_INFO(this->get_logger(), "Homing successful! Position stable.");
+            result->success = true;
+            result->message = "Precision homing completed successfully.";
+            goal_handle->succeed(result);
+            setLaserStreamingState(false);
+            return;
+        }
+
+        std::vector<double> target_joints = local_current_joints;
+        if (error_x > 0)
+        {
+            target_joints[1] += correction_step_rad; // Move J2 forward
+            // Account height for J2 forward move
+            target_joints[2] += correction_step_rad; // Adjust J3 to maintain height TODO: Check if this is sensible at all
+        }
+        else if (error_x < 0)
+        {
+            target_joints[1] -= correction_step_rad; // Move J2 backward
+            // Account height for J2 backward move
+            target_joints[2] -= correction_step_rad; // Adjust J3 to maintain height
+        }
+        if (error_y > 0)
+        {
+            target_joints[0] -= correction_step_rad; // Move J1 left
+        }
+        else if (error_y < 0)
+        {
+            target_joints[0] += correction_step_rad; // Move J1 right
+        }
+
+        auto move_goal = MoveToJointAction::Goal();
+        std::copy(target_joints.begin(), target_joints.end(), move_goal.joint_angles.begin());
+        move_goal.speed_percent = correction_speed;
+        move_goal.acc_percent = correction_acc;
+        RCLCPP_INFO(this->get_logger(), "Sending SKRRRRR correction: J1=%.4f, J2=%.4f", to_deg(target_joints[0]), to_deg(target_joints[1]));
+
+        auto goal_handle_future = move_to_joint_client_->async_send_goal(move_goal);
+        if (goal_handle_future.wait_for(std::chrono::seconds(1)) != std::future_status::ready)
+        {
+            RCLCPP_ERROR(this->get_logger(), "MoveToJoint goal send timed out.");
+            continue;
+        }
+
+        auto goal_handle_move = goal_handle_future.get();
+        if (!goal_handle_move)
+        {
+            RCLCPP_ERROR(this->get_logger(), "MoveToJoint goal was rejected by the server.");
+            continue;
+        }
+
+        RCLCPP_INFO(this->get_logger(), "Waiting for SKRRRRR move to complete...");
+        auto result_future = move_to_joint_client_->async_get_result(goal_handle_move);
+        if (result_future.wait_for(std::chrono::seconds(30)) != std::future_status::ready)
+        {
+            RCLCPP_ERROR(this->get_logger(), "Timed out waiting for MoveToJoint action result. (>30 seconds)");
+            continue;
+        }
+        auto result_wrapper = result_future.get();
+        if (result_wrapper.code == rclcpp_action::ResultCode::SUCCEEDED)
+        {
+            RCLCPP_INFO(this->get_logger(), "SKRRRRR micro-move step completed.");
+        }
+        else
+        {
+            RCLCPP_WARN(this->get_logger(), "SKRRRRR micro-move step did not succeed.");
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(settle_sleep_ms));
+        RCLCPP_INFO(this->get_logger(), "SKRRRRR move completed, re-evaluating sensor data...");
+        // Re-check sensor data after each move
+        double new_dist_x = current_distance_x_.load();
+        double new_dist_y = current_distance_y_.load();
+        if (new_dist_x < 0 || new_dist_y < 0)
+        {
+            RCLCPP_WARN(this->get_logger(), "Sensor data out of range after SKRRRRR move! Attempting to recover.");
+            // Attempt to recover by moving back to last known good position
+            auto move_goal = MoveToJointAction::Goal();
+            std::copy(last_known_good_joint_angles.begin(), last_known_good_joint_angles.end(), move_goal.joint_angles.begin());
+            move_goal.speed_percent = 5.0f; // Use a slightly faster speed for recovery
+            move_goal.acc_percent = 5.0f;
+
+            RCLCPP_INFO(this->get_logger(), "Sending recovery command and waiting for completion...");
+
+            auto goal_handle_future = move_to_joint_client_->async_send_goal(move_goal);
+            if (goal_handle_future.wait_for(std::chrono::seconds(1)) == std::future_status::ready)
+            {
+                auto goal_handle_move = goal_handle_future.get();
+                if (goal_handle_move)
+                {
+                    auto result_future = move_to_joint_client_->async_get_result(goal_handle_move);
+                    result_future.wait_for(std::chrono::seconds(10));
+                }
+            }
+
+            RCLCPP_INFO(this->get_logger(), "Recovery move sent. Pausing to re-acquire sensors.");
+            std::this_thread::sleep_for(std::chrono::milliseconds(settle_sleep_ms));
+
+            double dist_x_after_recovery = current_distance_x_.load();
+            double dist_y_after_recovery = current_distance_y_.load();
+            RCLCPP_INFO(this->get_logger(), "Post-recovery distances: X=%.4f m, Y=%.4f m", dist_x_after_recovery, dist_y_after_recovery);
+
+            if (dist_x_after_recovery < 0 || dist_y_after_recovery < 0)
+            {
+                RCLCPP_ERROR(this->get_logger(), "Recovery failed, sensors still out of range.");
+                result->success = false;
+                result->message = "Recovery failed, sensors still out of range.";
+                goal_handle->abort(result);
+                setLaserStreamingState(false);
+                return;
+            }
+
+            continue; // Restart the main control loop
+        }
+        else
+        {
+            last_known_good_joint_angles = current_joint_angles_; // Update last known good position
+        }
     }
 
-    return;
+    setLaserStreamingState(false);
+    result->success = true;
+    result->message = "Precision homing completed successfully.";
+    goal_handle->succeed(result);
+    RCLCPP_INFO(this->get_logger(), "SKRRRRR homing execution completed.");
 }
 
 void PrecisionHomingNode::execute_homing(const std::shared_ptr<GoalHandleHoming> goal_handle)

@@ -1,6 +1,6 @@
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, SetEnvironmentVariable
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
@@ -153,8 +153,8 @@ def generate_launch_description():
         name="rviz2",
         output="log",
         arguments=["-d", PathJoinSubstitution(
-            [FindPackageShare("mg400_ros2_bringup"), "config", "moveit.rviz"]
-        )],
+            [FindPackageShare("mg400_ros2_bringup"), "config", "moveit.rviz"],),
+            "--ros-args", "--log-level", "fatal"],
         parameters=[
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
@@ -195,10 +195,12 @@ def generate_launch_description():
         package='mg400_ros2_bringup',
         executable='precision_homing_node',
         output='screen',
-        parameters=[
-            moveit_config.to_dict(),
-        ],
-        arguments=['--ros-args', '--log-level', 'debug'],
+    )
+
+    world_creator = Node(
+        package='mg400_ros2_bringup',
+        executable='world_creator',
+        output='screen',
     )
 
     # The final list of nodes to launch
@@ -211,6 +213,7 @@ def generate_launch_description():
         move_group_node,
         sensor_node,
         precision_homing_node,
+        world_creator
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_start)

@@ -17,6 +17,7 @@ find_package(moveit_core REQUIRED)
 find_package(moveit_ros_planning REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(hg_c1030_msgs REQUIRED)
+find_package(geometric_shapes REQUIRED)
 
 # --- Plugin Library (fast_start_slow_end_adapter) ---
 add_library(fast_start_slow_end_adapter_lib SHARED
@@ -55,6 +56,36 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
+# -- Install World Creator Node ---
+add_executable(world_creator src/world_creator.cpp)
+ament_target_dependencies(world_creator
+    rclcpp
+    moveit_ros_planning_interface
+    geometric_shapes
+    ament_index_cpp
+)
+target_link_libraries(world_creator
+    ${moveit_ros_planning_interface_LIBRARIES}
+    ${geometric_shapes_LIBRARIES}
+)
+install(TARGETS
+    world_creator
+    DESTINATION lib/${PROJECT_NAME}
+)
+
+# -- Benchmarking Node Executable ---
+add_executable(benchmark_cpp src/benchmark.cpp)
+ament_target_dependencies(
+  benchmark_cpp
+  rclcpp
+  sensor_msgs
+)
+
+install(
+  TARGETS benchmark_cpp
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 # --- Driver Node Executable ---
 add_executable(mg400_driver_node src/mg400_driver_node.cpp)
 ament_target_dependencies(mg400_driver_node
@@ -70,7 +101,7 @@ ament_target_dependencies(mg400_driver_node
 target_include_directories(mg400_driver_node PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
-# Link against the real-time library for shared memory
+# Link against the real-time library (TODO: don't think we need this anymore)
 target_link_libraries(mg400_driver_node rt)
 
 # --- Install Rules ---
