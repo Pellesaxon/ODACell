@@ -15,7 +15,7 @@ MOCK_IP = "127.0.0.1"
 DEFAULT_ROBOT_NAME = "mg400"
 DEFAULT_ROBOT_IP = "192.168.1.6"
 
-DEFAULT_PORT = '/dev/ttyACM0'
+DEFAULT_PORT = '/dev/ttyACM1'
 DEFAULT_NUM_SENSORS = '2'
 DEFAULT_FRAME_IDS = ["distance_sensor_0", "distance_sensor_1"]
 

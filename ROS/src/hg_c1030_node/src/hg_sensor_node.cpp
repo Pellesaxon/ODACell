@@ -45,7 +45,7 @@ HGSensorNode::HGSensorNode(const rclcpp::NodeOptions &options)
     : Node("hg_sensor_node", options), serial_fd_(-1), is_streaming_(false)
 {
 
-  this->declare_parameter<std::string>("port", "/dev/ttyACM0");
+  this->declare_parameter<std::string>("port", "/dev/ttyACM1");
   this->declare_parameter<int>("baud_rate", 115200);
   this->declare_parameter<int>("num_sensors", 2);
   this->declare_parameter<std::string>("topic_prefix", "distance");

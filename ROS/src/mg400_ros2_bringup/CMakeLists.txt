@@ -82,6 +82,7 @@ ament_target_dependencies(
   sensor_msgs
   moveit_ros_planning_interface
   mg400_msgs
+  hg_c1030_msgs
 )
 
 install(
