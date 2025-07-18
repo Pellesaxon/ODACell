@@ -1,0 +1,10 @@
+# Goal: The duration to run the benchmark for
+float32 duration_minutes
+---
+# Result: A summary after the benchmark is complete
+uint32 total_runs
+string results_filepath
+---
+# Feedback: Progress updates during the benchmark
+uint32 runs_completed
+string status

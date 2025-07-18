@@ -203,6 +203,21 @@ def generate_launch_description():
         output='screen',
     )
 
+    benchmark_node = Node(
+        package='mg400_ros2_bringup',
+        executable='benchmark',
+        output='screen',
+        condition=UnlessCondition(LaunchConfiguration("driver_only")),
+        parameters=[
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics,
+            moveit_config.planning_pipelines,
+            moveit_config.joint_limits,
+            {"use_sim_time": False}
+        ]
+    )
+
     # The final list of nodes to launch
     nodes_to_start = [
         mock_server_process,
@@ -213,7 +228,8 @@ def generate_launch_description():
         move_group_node,
         sensor_node,
         precision_homing_node,
-        world_creator
+        world_creator,
+        benchmark_node
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_start)

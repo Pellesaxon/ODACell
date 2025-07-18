@@ -199,6 +199,10 @@ async def handle_dashboard_client(reader, writer, state: RobotState):
                 # Respond with the detailed error format expected by the C++ driver's regex
                 response_str = "0,{[[],[],[],[],[],[]]},GetErrorID();"
 
+            elif command_name == "DoExecute":
+                # Acknowledge toggling digital outputs
+                response_str = "0,{},DoExecute();"
+
             elif command_name in ["SetCollisionLevel", "SpeedFactor", "SpeedJ", "AccJ"]:
                 # Acknowledge startup commands with success
                 pass

@@ -18,6 +18,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "action/DashboardCommand.action"
   "action/PrecisionHoming.action"
   "action/MoveToJoint.action"
+  "action/Benchmark.action"
 )
 ##
 

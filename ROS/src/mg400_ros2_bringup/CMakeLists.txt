@@ -18,6 +18,7 @@ find_package(moveit_ros_planning REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(hg_c1030_msgs REQUIRED)
 find_package(geometric_shapes REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 # --- Plugin Library (fast_start_slow_end_adapter) ---
 add_library(fast_start_slow_end_adapter_lib SHARED
@@ -74,15 +75,17 @@ install(TARGETS
 )
 
 # -- Benchmarking Node Executable ---
-add_executable(benchmark_cpp src/benchmark.cpp)
+add_executable(benchmark src/benchmark.cpp)
 ament_target_dependencies(
-  benchmark_cpp
+  benchmark
   rclcpp
   sensor_msgs
+  moveit_ros_planning_interface
+  mg400_msgs
 )
 
 install(
-  TARGETS benchmark_cpp
+  TARGETS benchmark
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -95,8 +98,8 @@ ament_target_dependencies(mg400_driver_node
   std_srvs
   control_msgs
   pluginlib
-  moveit_core
-  moveit_ros_planning
+  #moveit_core
+  #moveit_ros_planning
 )
 target_include_directories(mg400_driver_node PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
