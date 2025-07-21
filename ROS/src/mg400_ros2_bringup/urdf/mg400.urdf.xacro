@@ -15,14 +15,14 @@
 
     <!-- Joint Limits from Manual (Appendix A, page 41) -->
     <!-- Position Limits (rad) -->
-    <xacro:property name="j1_lower_limit" value="${-158 * deg_to_rad}"/> <!-- Original limit: -160 -->
-    <xacro:property name="j1_upper_limit" value="${158 * deg_to_rad}"/> <!-- Original limit: 160 -->
-    <xacro:property name="j2_lower_limit" value="${-23 * deg_to_rad}"/> <!-- Original limit: -25 -->
-    <xacro:property name="j2_upper_limit" value="${83 * deg_to_rad}"/> <!-- Original limit: 85 -->
-    <xacro:property name="j3_lower_limit" value="${-23 * deg_to_rad}"/> <!-- Original limit: -25 -->
-    <xacro:property name="j3_upper_limit" value="${103 * deg_to_rad}"/> <!-- Original limit: 105 -->
-    <xacro:property name="j4_lower_limit" value="${-358 * deg_to_rad}"/> <!-- Original limit: -360 -->
-    <xacro:property name="j4_upper_limit" value="${358 * deg_to_rad}"/> <!-- Original limit: 360 -->
+    <xacro:property name="j1_lower_limit" value="${-155 * deg_to_rad}"/> <!-- Original limit: -160 -->
+    <xacro:property name="j1_upper_limit" value="${155 * deg_to_rad}"/> <!-- Original limit: 160 -->
+    <xacro:property name="j2_lower_limit" value="${-20 * deg_to_rad}"/> <!-- Original limit: -25 -->
+    <xacro:property name="j2_upper_limit" value="${80 * deg_to_rad}"/> <!-- Original limit: 85 -->
+    <xacro:property name="j3_lower_limit" value="${-20 * deg_to_rad}"/> <!-- Original limit: -25 -->
+    <xacro:property name="j3_upper_limit" value="${100 * deg_to_rad}"/> <!-- Original limit: 105 -->
+    <xacro:property name="j4_lower_limit" value="${-355 * deg_to_rad}"/> <!-- Original limit: -360 -->
+    <xacro:property name="j4_upper_limit" value="${355 * deg_to_rad}"/> <!-- Original limit: 360 -->
 
     <!-- Velocity Limits (rad/s) -->
     <xacro:property name="j_velocity_limit" value="${300 * deg_to_rad}"/>

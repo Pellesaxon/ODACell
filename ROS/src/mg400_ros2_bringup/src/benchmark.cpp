@@ -1,5 +1,3 @@
-// src/benchmark.cpp
-
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <moveit/move_group_interface/move_group_interface.hpp>
@@ -24,49 +22,14 @@ using namespace std::chrono_literals;
 struct BenchmarkResult
 {
     double speed_scale;
-    double time_to_laser_test;
-    double time_to_home;
     float sensor_0_distance;
     float sensor_1_distance;
+    std::string start_position;
 };
 
 class BenchmarkActionServer : public rclcpp::Node
 {
 private:
-    class SensorSubscriber : public rclcpp::Node
-    {
-    public:
-        SensorSubscriber() : Node("sensor_subscriber_node")
-        {
-            sensor_0_dist_.store(-1.0f);
-            sensor_1_dist_.store(-1.0f);
-
-            subscription_0_ = this->create_subscription<sensor_msgs::msg::Range>(
-                "/distance/sensor_0", 10,
-                [this](const sensor_msgs::msg::Range::SharedPtr msg) {
-                    sensor_0_dist_.store(msg->range);
-                });
-
-            subscription_1_ = this->create_subscription<sensor_msgs::msg::Range>(
-                "/distance/sensor_1", 10,
-                [this](const sensor_msgs::msg::Range::SharedPtr msg) {
-                    sensor_1_dist_.store(msg->range);
-                });
-        }
-
-        void get_distances(float &dist0, float &dist1)
-        {
-            dist0 = sensor_0_dist_.load();
-            dist1 = sensor_1_dist_.load();
-        }
-
-    private:
-        rclcpp::Subscription<sensor_msgs::msg::Range>::SharedPtr subscription_0_;
-        rclcpp::Subscription<sensor_msgs::msg::Range>::SharedPtr subscription_1_;
-        std::atomic<float> sensor_0_dist_;
-        std::atomic<float> sensor_1_dist_;
-    };
-
     std::string generate_csv_filename()
     {
         auto t = std::time(nullptr);
@@ -80,48 +43,73 @@ private:
     {
         file << std::fixed << std::setprecision(6)
              << result.speed_scale << ","
-             << result.time_to_laser_test << ","
-             << result.time_to_home << ","
+             << result.start_position << ","
              << result.sensor_0_distance << ","
-             << result.sensor_1_distance << "\n" << std::flush; // Flush to ensure data is written immediately
+             << result.sensor_1_distance << "\n" << std::flush;
     }
 
 public:
-
     using Benchmark = mg400_msgs::action::Benchmark;
     using GoalHandleBenchmark = rclcpp_action::ServerGoalHandle<Benchmark>;
     
-    // Using declarations for the laser control action client
     using LaserControlAction = hg_c1030_msgs::action::ControlStreaming;
     using LaserControlClient = rclcpp_action::Client<LaserControlAction>;
 
-
     explicit BenchmarkActionServer(const rclcpp::NodeOptions &options = rclcpp::NodeOptions())
-        : Node("benchmark_action_server", options), goal_active_(false)
+        : Node("benchmark_action_server", options), goal_active_(false), is_moveit_ready_(false)
     {
+        // --- Setup that does NOT depend on shared_from_this() ---
+
+        client_cb_group_ = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+
         // Set up the benchmark action server
         this->action_server_ = rclcpp_action::create_server<Benchmark>(
-            this,
-            "benchmark",
+            this, "benchmark",
             std::bind(&BenchmarkActionServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
             std::bind(&BenchmarkActionServer::handle_cancel, this, std::placeholders::_1),
             std::bind(&BenchmarkActionServer::handle_accepted, this, std::placeholders::_1));
 
-        client_cb_group_ = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
-        
+        // Set up action client for laser control
         this->laser_control_client_ = rclcpp_action::create_client<LaserControlAction>(
-            this, 
-            "/control_streaming", 
-            client_cb_group_);
+            this, "/control_streaming", client_cb_group_);
 
-        RCLCPP_INFO(this->get_logger(), "Benchmark Action Server is ready.");
+        // Set up sensor subscriptions
+        sensor_0_dist_.store(-1.0f);
+        sensor_1_dist_.store(-1.0f);
+
+        subscription_0_ = this->create_subscription<sensor_msgs::msg::Range>(
+            "/distance/sensor_0", 10,
+            [this](const sensor_msgs::msg::Range::SharedPtr msg) { sensor_0_dist_.store(msg->range); });
+
+        subscription_1_ = this->create_subscription<sensor_msgs::msg::Range>(
+            "/distance/sensor_1", 10,
+            [this](const sensor_msgs::msg::Range::SharedPtr msg) { sensor_1_dist_.store(msg->range); });
+
+        // --- NEW: Defer MoveIt initialization using a one-shot timer ---
+        // This timer will fire after the constructor is complete and the node is spinning.
+        setup_timer_ = this->create_wall_timer(100ms, [this]() {
+            this->setup_timer_->cancel(); // Ensure it only runs once
+            this->setup_moveit();
+        });
+
+        RCLCPP_INFO(this->get_logger(), "Benchmark Action Server constructed. Waiting for MoveIt setup...");
     }
 
 private:
-    rclcpp_action::Server<Benchmark>::SharedPtr action_server_;
-    LaserControlClient::SharedPtr laser_control_client_;
-    rclcpp::CallbackGroup::SharedPtr client_cb_group_; 
-    std::atomic<bool> goal_active_;
+    // --- NEW: Method for deferred initialization ---
+    void setup_moveit()
+    {
+        RCLCPP_INFO(this->get_logger(), "Initializing MoveGroupInterface...");
+        const std::string PLANNING_GROUP = "mg400_arm";
+        // Now it's safe to call shared_from_this()
+        move_group_interface_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(shared_from_this(), PLANNING_GROUP);
+        
+        move_group_interface_->setNumPlanningAttempts(10);
+        move_group_interface_->setPlanningTime(10.0);
+        
+        is_moveit_ready_.store(true);
+        RCLCPP_INFO(this->get_logger(), "MoveGroupInterface is initialized. Benchmark server is fully ready.");
+    }
 
     rclcpp_action::GoalResponse handle_goal(
         const rclcpp_action::GoalUUID &uuid,
@@ -129,6 +117,12 @@ private:
     {
         RCLCPP_INFO(this->get_logger(), "Received benchmark goal request for %.2f minutes", goal->duration_minutes);
         (void)uuid;
+
+        // --- NEW: Readiness check ---
+        if (!is_moveit_ready_.load()) {
+            RCLCPP_ERROR(this->get_logger(), "Server is not ready, MoveIt is still initializing. Rejecting goal.");
+            return rclcpp_action::GoalResponse::REJECT;
+        }
 
         if (goal->duration_minutes <= 0)
         {
@@ -201,174 +195,159 @@ private:
         return false;
     }
 
+    void execute(const std::shared_ptr<GoalHandleBenchmark> goal_handle); // Declaration only, definition below
+
+    rclcpp_action::Server<Benchmark>::SharedPtr action_server_;
+    LaserControlClient::SharedPtr laser_control_client_;
+    rclcpp::CallbackGroup::SharedPtr client_cb_group_; 
+    std::atomic<bool> goal_active_;
+
+    // --- Member variables for MoveIt and Sensors ---
+    std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group_interface_;
+    rclcpp::Subscription<sensor_msgs::msg::Range>::SharedPtr subscription_0_;
+    rclcpp::Subscription<sensor_msgs::msg::Range>::SharedPtr subscription_1_;
+    std::atomic<float> sensor_0_dist_;
+    std::atomic<float> sensor_1_dist_;
     
-    void execute(const std::shared_ptr<GoalHandleBenchmark> goal_handle)
+    // --- NEW: Timer and readiness flag ---
+    rclcpp::TimerBase::SharedPtr setup_timer_;
+    std::atomic<bool> is_moveit_ready_;
+};
+
+// --- Definition of execute method outside the class for clarity ---
+void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> goal_handle)
+{
+    auto logger = get_logger();
+    const auto goal = goal_handle->get_goal();
+    auto feedback = std::make_shared<Benchmark::Feedback>();
+    auto result = std::make_shared<Benchmark::Result>();
+    
+    std::string csv_filename = generate_csv_filename();
+    std::ofstream csv_file(csv_filename);
+    if (!csv_file.is_open())
     {
-        auto logger = get_logger();
-        const auto goal = goal_handle->get_goal();
-        auto feedback = std::make_shared<Benchmark::Feedback>();
-        auto result = std::make_shared<Benchmark::Result>();
-        
-        auto sensor_node = std::make_shared<SensorSubscriber>();
-        rclcpp::executors::SingleThreadedExecutor sensor_executor;
-        sensor_executor.add_node(sensor_node);
-        std::thread sensor_thread([&sensor_executor](){ sensor_executor.spin(); });
+        RCLCPP_ERROR(logger, "Failed to open results file: %s", csv_filename.c_str());
+        goal_handle->abort(result);
+        goal_active_.store(false);
+        return;
+    }
+    csv_file << "SpeedAndAccScale,StartPosition,Sensor0_Dist,Sensor1_Dist\n";
+    RCLCPP_INFO(logger, "Logging results to %s", csv_filename.c_str());
 
-        const std::string PLANNING_GROUP = "mg400_arm";
-        moveit::planning_interface::MoveGroupInterface move_group_interface(shared_from_this(), PLANNING_GROUP);
-        
-        std::string csv_filename = generate_csv_filename();
-        std::ofstream csv_file(csv_filename);
-        if (!csv_file.is_open())
-        {
-            RCLCPP_ERROR(logger, "Failed to open results file: %s", csv_filename.c_str());
-            goal_handle->abort(result);
-            goal_active_.store(false);
-            sensor_executor.cancel();
-            if(sensor_thread.joinable()) sensor_thread.join();
-            return;
-        }
-        csv_file << "SpeedScale,TimeToLaser,TimeToHome,Sensor0_Dist,Sensor1_Dist\n";
-        RCLCPP_INFO(logger, "Logging results to %s", csv_filename.c_str());
-
-        // --- Turn on lasers before starting ---
-        if (!setLaserStreamingState(true))
-        {
-            RCLCPP_ERROR(logger, "Failed to turn on lasers. Aborting benchmark.");
-            result->total_runs = 0;
-            result->results_filepath = csv_filename;
-            goal_handle->abort(result);
-            goal_active_.store(false);
-            csv_file.close();
-            sensor_executor.cancel();
-            if(sensor_thread.joinable()) sensor_thread.join();
-            return;
-        }
-
-        // --- Main Benchmark Loop ---
-        const auto benchmark_duration = std::chrono::duration<double>(goal->duration_minutes * 60.0);
-        const auto start_time = std::chrono::steady_clock::now();
-        int run_count = 0;
-        bool was_cancelled = false;
-
-        double prev_distance_x = -1.0;
-        double prev_distance_y = -1.0;
-        double accumulative_error_x = 0.0;
-        double accumulative_error_y = 0.0;
-
-        while (rclcpp::ok() && (std::chrono::steady_clock::now() - start_time < benchmark_duration))
-        {
-            if (goal_handle->is_canceling()) {
-                was_cancelled = true;
-                break;
-            }
-
-            double speed = ((run_count % 10) + 1) / 10.0;
-
-            move_group_interface.setMaxVelocityScalingFactor(speed);
-            move_group_interface.setMaxAccelerationScalingFactor(speed);
-            
-            BenchmarkResult r;
-            r.speed_scale = speed;
-            r.time_to_laser_test = -1.0;
-            r.time_to_home = -1.0;
-            r.sensor_0_distance = -1.0;
-            r.sensor_1_distance = -1.0;
-
-            moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-            bool success;
-
-            // 1) Go home
-            move_group_interface.setNamedTarget("home");
-            if (move_group_interface.move() != moveit::core::MoveItErrorCode::SUCCESS) {
-                RCLCPP_ERROR(logger, "Initial home move failed; skipping run.");
-                std::this_thread::sleep_for(1s);
-                continue;
-            }
-            std::this_thread::sleep_for(500ms);
-
-            // 2) Laser test
-            move_group_interface.setNamedTarget("laser_test");
-            success = (move_group_interface.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-            auto t0 = std::chrono::steady_clock::now();
-            if (success && (move_group_interface.execute(my_plan) == moveit::core::MoveItErrorCode::SUCCESS)) {
-                auto t1 = std::chrono::steady_clock::now();
-                r.time_to_laser_test = std::chrono::duration<double>(t1 - t0).count();
-            } else {
-                RCLCPP_ERROR(logger, "Laser_test move failed; skipping run.");
-                continue;
-            }
-
-            // 3) Sample sensors
-            std::this_thread::sleep_for(5s); // Wait for robot to settle
-            sensor_node->get_distances(r.sensor_0_distance, r.sensor_1_distance);
-            if (r.sensor_0_distance < 0 || r.sensor_1_distance < 0) {
-                RCLCPP_ERROR(logger, "Failed to read sensor distances; skipping run.");
-                continue;
-            }
-            RCLCPP_INFO(logger, "Sensor 0: %.2f, Sensor 1: %.2f", r.sensor_0_distance, r.sensor_1_distance);
-            if (prev_distance_x >= 0 && prev_distance_y >= 0) {
-                accumulative_error_x += std::abs(r.sensor_0_distance - prev_distance_x);
-                accumulative_error_y += std::abs(r.sensor_1_distance - prev_distance_y);
-            }
-            prev_distance_x = r.sensor_0_distance;
-            prev_distance_y = r.sensor_1_distance;
-
-            std::stringstream status_stream;
-            status_stream << "Run " << run_count + 1
-                          << ": Speed=" << std::fixed << std::setprecision(1) << speed
-                          << ", Sensor0=" << std::setprecision(2) << r.sensor_0_distance
-                          << ", Sensor1=" << std::setprecision(2) << r.sensor_1_distance
-                          << ", AccumErr0=" << std::setprecision(4) << accumulative_error_x
-                          << ", AccumErr1=" << std::setprecision(4) << accumulative_error_y;
-            feedback->runs_completed = run_count;
-            feedback->status = status_stream.str();
-            goal_handle->publish_feedback(feedback);
-            RCLCPP_INFO(logger, "%s", feedback->status.c_str());
-            
-            // 4) Back home
-            move_group_interface.setNamedTarget("home");
-            success = (move_group_interface.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-            t0 = std::chrono::steady_clock::now();
-            if (success && (move_group_interface.execute(my_plan) == moveit::core::MoveItErrorCode::SUCCESS)) {
-                auto t2 = std::chrono::steady_clock::now();
-                r.time_to_home = std::chrono::duration<double>(t2 - t0).count();
-            } else {
-                RCLCPP_ERROR(logger, "Return home move failed.");
-            }
-            
-            write_result_to_csv(csv_file, r);
-            run_count++;
-            std::this_thread::sleep_for(1s);
-        }
-
-        RCLCPP_INFO(logger, "Benchmark loop finished. Turning off lasers.");
-        if (!setLaserStreamingState(false)) {
-            RCLCPP_WARN(logger, "Failed to turn off lasers. Please check manually.");
-        }
-
-        result->total_runs = run_count;
+    if (!setLaserStreamingState(true))
+    {
+        RCLCPP_ERROR(logger, "Failed to turn on lasers. Aborting benchmark.");
+        result->total_runs = 0;
         result->results_filepath = csv_filename;
-
-        if (was_cancelled) {
-            goal_handle->canceled(result);
-            RCLCPP_INFO(logger, "Benchmark canceled by client after %d runs.", run_count);
-        } else if (rclcpp::ok()) {
-            goal_handle->succeed(result);
-            RCLCPP_INFO(logger, "Benchmark finished successfully. Completed %d runs. Results in %s", run_count, csv_filename.c_str());
-        } else {
-            goal_handle->abort(result);
-            RCLCPP_ERROR(logger, "Benchmark aborted due to ROS shutdown after %d runs.", run_count);
-        }
-        
+        goal_handle->abort(result);
         goal_active_.store(false);
         csv_file.close();
-        sensor_executor.cancel();
-        if(sensor_thread.joinable()) {
-            sensor_thread.join();
-        }
+        return;
     }
-};
+
+    const auto benchmark_duration = std::chrono::duration<double>(goal->duration_minutes * 60.0);
+    const auto start_time = std::chrono::steady_clock::now();
+    int run_count = 0;
+    bool was_cancelled = false;
+    const std::vector<std::string> arm_start_positions = {"right_test_start", "left_test_start", "max_right_test", "max_left_test", "above_sensor_test"};
+
+    
+
+    while (rclcpp::ok() && (std::chrono::steady_clock::now() - start_time < benchmark_duration))
+    {
+        if (goal_handle->is_canceling()) {
+            was_cancelled = true;
+            break;
+        }
+
+        double speed = ((run_count % 10) + 1) / 10.0;
+        std::string start_position = arm_start_positions[run_count % arm_start_positions.size()];
+        
+        BenchmarkResult r;
+        r.speed_scale = speed;
+        r.start_position = start_position;
+        r.sensor_0_distance = -1.0;
+        r.sensor_1_distance = -1.0;
+
+        moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+
+        move_group_interface_->setMaxVelocityScalingFactor(speed);
+        move_group_interface_->setMaxAccelerationScalingFactor(speed);
+        move_group_interface_->setNamedTarget(start_position);
+        if (move_group_interface_->move() != moveit::core::MoveItErrorCode::SUCCESS) {
+            RCLCPP_ERROR(logger, "Move to start position '%s' failed; skipping run.", start_position.c_str());
+            std::this_thread::sleep_for(1s);
+            continue;
+        }
+        std::this_thread::sleep_for(500ms);
+
+        move_group_interface_->setNamedTarget("laser_test");
+        if (move_group_interface_->plan(my_plan) != moveit::core::MoveItErrorCode::SUCCESS) {
+            RCLCPP_ERROR(logger, "Failed to plan laser test move; skipping run.");
+            continue;
+        }
+        
+        if (move_group_interface_->execute(my_plan) != moveit::core::MoveItErrorCode::SUCCESS) {
+            RCLCPP_ERROR(logger, "Failed to execute laser test move; skipping run.");
+            continue;
+        }
+
+        std::this_thread::sleep_for(5s);
+        
+        r.sensor_0_distance = sensor_0_dist_.load();
+        r.sensor_1_distance = sensor_1_dist_.load();
+
+        if (r.sensor_0_distance < 0 || r.sensor_1_distance < 0) {
+            RCLCPP_WARN(logger, "Failed to read valid sensor distances; skipping run.");
+            continue;
+        }
+
+        std::stringstream status_stream;
+        status_stream << "Run " << run_count + 1
+                      << ": Speed=" << std::fixed << std::setprecision(1) << speed
+                      << ", Sensor0=" << std::setprecision(6) << r.sensor_0_distance
+                      << ", Sensor1=" << std::setprecision(6) << r.sensor_1_distance;
+        feedback->runs_completed = run_count;
+        feedback->status = status_stream.str();
+        goal_handle->publish_feedback(feedback);
+        RCLCPP_INFO(logger, "%s", feedback->status.c_str());
+        
+        write_result_to_csv(csv_file, r);
+        run_count++;
+        std::this_thread::sleep_for(3s);
+    }
+
+    RCLCPP_INFO(logger, "Benchmark loop finished. Turning off lasers.");
+    if (!setLaserStreamingState(false)) {
+        RCLCPP_WARN(logger, "Failed to turn off lasers. Please check manually.");
+    }
+
+    RCLCPP_INFO(logger, "Returning home..");
+    move_group_interface_->setNamedTarget("home");
+    move_group_interface_->setMaxVelocityScalingFactor(1.0);
+    move_group_interface_->setMaxAccelerationScalingFactor(1.0);
+    if (move_group_interface_->move() != moveit::core::MoveItErrorCode::SUCCESS) {
+        RCLCPP_ERROR(logger, "Failed to return home after benchmark.");
+    }
+
+    result->total_runs = run_count;
+    result->results_filepath = csv_filename;
+
+    if (was_cancelled) {
+        goal_handle->canceled(result);
+        RCLCPP_INFO(logger, "Benchmark canceled by client after %d runs.", run_count);
+    } else if (rclcpp::ok()) {
+        goal_handle->succeed(result);
+        RCLCPP_INFO(logger, "Benchmark finished successfully. Completed %d runs. Results in %s", run_count, csv_filename.c_str());
+    } else {
+        goal_handle->abort(result);
+        RCLCPP_ERROR(logger, "Benchmark aborted due to ROS shutdown after %d runs.", run_count);
+    }
+    
+    goal_active_.store(false);
+    csv_file.close();
+}
+
 
 int main(int argc, char **argv)
 {
