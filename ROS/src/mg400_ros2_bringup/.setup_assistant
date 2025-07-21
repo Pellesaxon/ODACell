@@ -7,4 +7,19 @@ moveit_setup_assistant_config:
   package_settings:
     author_name: lt
     author_email: lt@epic.mail
-    generated_timestamp: 1751899796
+    generated_timestamp: 1753087238
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

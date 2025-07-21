@@ -29,7 +29,7 @@
 #define FEEDBACK_PACKET_SIZE 1440
 
 #define NUM_JOINTS 4      // Number of joints in the MG400 robot
-#define COLLISION_LEVEL 4 // Default collision level for fail-safe
+#define COLLISION_LEVEL 2 // Default collision level for fail-safe
 #define GLOBAL_SPEED_ACC_FACTOR 100
 #define CONTINUOUS_PATH_SMOOTHING 10                // Default CP value for continuous path motion
 #define TRAJECTORY_EXECUTION_AUTO_TIMEOUT_MULT 30.0 // Multiplier for trajectory execution timeout (very generous)
@@ -879,7 +879,7 @@ namespace mg400_ros2_bringup
                 {
                     try
                     {
-                        int code = abs(std::stoi(servo_alarm_str));
+                        int code = std::stoi(servo_alarm_str);
                         status_msg.servo_error_codes.push_back(code);
                         const auto &error_info = alarms::getErrorInfo(alarms::Source::Servo, code);
                         std::string msg = "Servo " + std::to_string(i - 1) + ": " + std::string(error_info.en.description);
