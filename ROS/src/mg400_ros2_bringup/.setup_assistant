@@ -5,9 +5,9 @@ moveit_setup_assistant_config:
   srdf:
     relative_path: config/mg400.srdf
   package_settings:
-    author_name: lt
-    author_email: lt@epic.mail
-    generated_timestamp: 1753087238
+    author_name: LT
+    author_email: lukas.lindenthoming.9997@student.uu.se
+    generated_timestamp: 1752847356
   control_xacro:
     command:
       - position

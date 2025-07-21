@@ -32,7 +32,7 @@
     <xacro:property name="j2_xyz" value="0.0435007595118091 -0.0357748756218899 0.118995682641123"/>
     <xacro:property name="j3_xyz" value="-0.0010512570171516 0.0357748756218898 0.175001164344716"/>
     <xacro:property name="j4_1_xyz" value="0.174969784055705 -0.0170000000000335 0.00325187137614585"/>
-    <xacro:property name="j4_xyz" value="0.0659996239003897 0.0170000000000371 0.031000800715573"/>
+    <xacro:property name="j4_3_xyz" value="0.0659996239003897 0.0170000000000371 0.031000800715573"/>
     <xacro:property name="j2_2_xyz" value="0.00452885682964267 -0.0305 0.141500000000001"/>
     <xacro:property name="j2_3_xyz" value="-0.043 0.0 0.0"/>
     <xacro:property name="j3_2_xyz" value="-0.00105049750546494 0.00649999999999986 0.174996846985851"/>
@@ -226,13 +226,11 @@
         </collision>
     </link>
 
-    <joint name="j4" type="revolute">
-        <origin xyz="${j4_xyz}" rpy="0 0 0"/>
+    <joint name="j4_3" type="fixed">
+        <origin xyz="${j4_3_xyz}" rpy="0 0 0"/>
         <parent link="link4_1"/>
         <child link="link5"/>
-        <!-- Axis is almost [0, 0, 1] -->
-        <axis xyz="-1.19408295462994E-05 0 0.999999999928708"/>
-        <limit lower="${j4_lower_limit}" upper="${j4_upper_limit}" effort="100" velocity="${j_velocity_limit}"/>
+        <axis xyz="0 1 0"/>
     </joint>
 
     <!-- Parallel linkage chain -->
@@ -377,5 +375,52 @@
         <axis xyz="0 1 0"/>
         <limit lower="${-PI}" upper="${PI}" effort="0" velocity="${j_velocity_limit}"/>
         <mimic joint="j3"/>
+    </joint>
+
+    <link name="end_effector_mount"/>
+
+    <joint name="j4" type="revolute">
+        <origin xyz="0 0 -0.085" rpy="0 0 0"/>
+        <parent link="link5"/>
+        <child link="end_effector_mount"/>
+        <!-- Axis is almost [0, 0, 1] -->
+        <axis xyz="-1.19408295462994E-05 0 0.999999999928708"/>
+        <limit lower="${j4_lower_limit}" upper="${j4_upper_limit}" effort="100" velocity="${j_velocity_limit}"/>
+    </joint>
+
+
+    <!-- TODO: mass is a guess from thin air -->
+    <link name="end_effector_laser_test">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+            <mass value="0.0012546292985346"/>
+            <inertia ixx="0.000218973873589181" ixy="3.0147933007673E-10" ixz="2.51402553227571E-06" iyy="0.000200510070261609" iyz="-1.41837669904595E-09" izz="3.74316777806776E-05"/>
+        </inertial>
+        <visual>
+            <!-- origin -lenght/2 + 5 -->
+            <origin xyz="0.0 0.0 -0.008" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.008" length="0.026"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.5 0.5 0 1"/>
+            </material>
+        </visual>
+        <!-- [x] 1mm larger diameter -->
+        <collision>
+            <!-- origin -lenght/2 + 5 + 6 -->
+            <origin xyz="0.0 0.0 -0.010" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.009" length="0.038"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- To place it at the end but unsure if that is correct for an end_effector -->
+    <joint name="tool_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="end_effector_mount"/>
+        <child link="end_effector_laser_test"/>
+        <axis xyz="0 0 1"/>
     </joint>
 </robot>
