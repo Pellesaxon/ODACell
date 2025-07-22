@@ -104,7 +104,7 @@ private:
         // Now it's safe to call shared_from_this()
         move_group_interface_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(shared_from_this(), PLANNING_GROUP);
         
-        move_group_interface_->setNumPlanningAttempts(10);
+        move_group_interface_->setNumPlanningAttempts(15);
         move_group_interface_->setPlanningTime(10.0);
         
         is_moveit_ready_.store(true);
