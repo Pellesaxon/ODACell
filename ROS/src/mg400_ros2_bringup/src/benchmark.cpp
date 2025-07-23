@@ -12,6 +12,7 @@
 #include <fstream>
 #include <ctime>
 #include <sstream>
+#include <limits>
 
 #include "mg400_msgs/action/benchmark.hpp"
 #include "hg_c1030_msgs/action/control_streaming.hpp"
@@ -25,6 +26,9 @@ struct BenchmarkResult
     float sensor_0_distance;
     float sensor_1_distance;
     std::string start_position;
+    std::string timestamp;
+    std::vector<double> commanded_joint_positions;
+    std::vector<double> actual_joint_positions;  
 };
 
 class BenchmarkActionServer : public rclcpp::Node
@@ -39,13 +43,60 @@ private:
         return oss.str();
     }
 
+    std::string generate_timestamp()
+    {
+        auto t = std::time(nullptr);
+        auto tm = *std::localtime(&t);
+        std::ostringstream oss;
+        oss << std::put_time(&tm, "%Y-%m-%d_%H-%M-%S");
+        return oss.str();
+    }
+    void write_result_header_to_csv(std::ofstream &file)
+    {
+        file << "Timestamp,"
+             << "SpeedAndAccScale,"
+             << "StartPosition,"
+             << "Sensor0_Dist,"
+             << "Sensor1_Dist,"
+             << "Cmd_J1,"
+             << "Cmd_J2,"
+             << "Cmd_J3,"
+             << "Cmd_J4,"
+             << "Act_J1,"
+             << "Act_J2,"
+             << "Act_J3,"
+             << "Act_J4\n";
+    }
+
     void write_result_to_csv(std::ofstream &file, const BenchmarkResult &result)
     {
-        file << std::fixed << std::setprecision(6)
+        file << result.timestamp << ","
+             << std::fixed << std::setprecision(6)
              << result.speed_scale << ","
              << result.start_position << ","
              << result.sensor_0_distance << ","
-             << result.sensor_1_distance << "\n" << std::flush;
+             << result.sensor_1_distance << ",";
+        
+        // Write commanded joint positions as separate columns
+        for (size_t i = 0; i < 4; ++i) {
+            file << ",";
+            if (i < result.commanded_joint_positions.size()) {
+                file << result.commanded_joint_positions[i];
+            } else {
+                file << "NaN";
+            }
+        }
+        
+        // Write actual joint positions as separate columns
+        for (size_t i = 0; i < 4; ++i) {
+            file << ",";
+            if (i < result.actual_joint_positions.size()) {
+                file << result.actual_joint_positions[i];
+            } else {
+                file << "NaN";
+            }
+        }
+        file << "\n" << std::flush;
     }
 
 public:
@@ -84,8 +135,7 @@ public:
         subscription_1_ = this->create_subscription<sensor_msgs::msg::Range>(
             "/distance/sensor_1", 10,
             [this](const sensor_msgs::msg::Range::SharedPtr msg) { sensor_1_dist_.store(msg->range); });
-
-        // --- NEW: Defer MoveIt initialization using a one-shot timer ---
+        
         // This timer will fire after the constructor is complete and the node is spinning.
         setup_timer_ = this->create_wall_timer(100ms, [this]() {
             this->setup_timer_->cancel(); // Ensure it only runs once
@@ -96,17 +146,16 @@ public:
     }
 
 private:
-    // --- NEW: Method for deferred initialization ---
+
+    const std::string PLANNING_GROUP = "mg400_arm";
     void setup_moveit()
     {
         RCLCPP_INFO(this->get_logger(), "Initializing MoveGroupInterface...");
-        const std::string PLANNING_GROUP = "mg400_arm";
         // Now it's safe to call shared_from_this()
         move_group_interface_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(shared_from_this(), PLANNING_GROUP);
         
         move_group_interface_->setNumPlanningAttempts(15);
         move_group_interface_->setPlanningTime(10.0);
-        
         is_moveit_ready_.store(true);
         RCLCPP_INFO(this->get_logger(), "MoveGroupInterface is initialized. Benchmark server is fully ready.");
     }
@@ -231,7 +280,10 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
         goal_active_.store(false);
         return;
     }
-    csv_file << "SpeedAndAccScale,StartPosition,Sensor0_Dist,Sensor1_Dist\n";
+    
+    // Write CSV header
+    write_result_header_to_csv(csv_file);
+
     RCLCPP_INFO(logger, "Logging results to %s", csv_filename.c_str());
 
     if (!setLaserStreamingState(true))
@@ -260,14 +312,19 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
             break;
         }
 
-        double speed = ((run_count % 10) + 1) / 10.0;
+        // Speed increases when all arm positions have been tested
+        // This is a simple way to cycle through speeds and start positions
+        // Speed is scaled from 0.2 to 1.0 in increments of 0.2
+        int speed_cycle = run_count / arm_start_positions.size();
+        double speed = ((speed_cycle % 5) + 1) / 5.0;
         std::string start_position = arm_start_positions[run_count % arm_start_positions.size()];
         
         BenchmarkResult r;
         r.speed_scale = speed;
         r.start_position = start_position;
-        r.sensor_0_distance = -1.0;
-        r.sensor_1_distance = -1.0;
+        r.sensor_0_distance = std::numeric_limits<float>::quiet_NaN();
+        r.sensor_1_distance = std::numeric_limits<float>::quiet_NaN();
+        r.timestamp = generate_timestamp();
 
         moveit::planning_interface::MoveGroupInterface::Plan my_plan;
 
@@ -276,6 +333,8 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
         move_group_interface_->setNamedTarget(start_position);
         if (move_group_interface_->move() != moveit::core::MoveItErrorCode::SUCCESS) {
             RCLCPP_ERROR(logger, "Move to start position '%s' failed; skipping run.", start_position.c_str());
+            write_result_to_csv(csv_file, r);
+            run_count++;
             std::this_thread::sleep_for(1s);
             continue;
         }
@@ -284,29 +343,83 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
         move_group_interface_->setNamedTarget("laser_test");
         if (move_group_interface_->plan(my_plan) != moveit::core::MoveItErrorCode::SUCCESS) {
             RCLCPP_ERROR(logger, "Failed to plan laser test move; skipping run.");
+            write_result_to_csv(csv_file, r);
+            run_count++;
             continue;
         }
         
         if (move_group_interface_->execute(my_plan) != moveit::core::MoveItErrorCode::SUCCESS) {
             RCLCPP_ERROR(logger, "Failed to execute laser test move; skipping run.");
+            write_result_to_csv(csv_file, r);
+            run_count++;
             continue;
         }
 
         std::this_thread::sleep_for(5s);
+
+
+        // Capture joint positions after execution
+        auto current_state = move_group_interface_->getCurrentState();
         
+        // Get active joint names from MoveIt
+        std::vector<std::string> controllable_joint_names_;
+    
+        if (current_state) {
+            const auto& joint_model_group = current_state->getJointModelGroup(PLANNING_GROUP);
+            controllable_joint_names_ = joint_model_group->getActiveJointModelNames();
+            
+            RCLCPP_INFO(this->get_logger(), "Discovered %zu controllable joints:", controllable_joint_names_.size());
+            for (size_t i = 0; i < controllable_joint_names_.size(); ++i) {
+                RCLCPP_INFO(this->get_logger(), "  [%zu]: %s", i, controllable_joint_names_[i].c_str());
+            }
+        }
+
+        
+        if (current_state && !controllable_joint_names_.empty()) {
+            std::vector<double> joint_values;
+            for (const auto& joint_name : controllable_joint_names_) {
+                joint_values.push_back(current_state->getVariablePosition(joint_name));
+            }
+            r.actual_joint_positions = joint_values;
+        }
+        
+        // Get commanded positions from the executed plan (final waypoint)
+        if (!my_plan.trajectory.joint_trajectory.points.empty()) {
+            r.commanded_joint_positions = my_plan.trajectory.joint_trajectory.points.back().positions;
+        }
+    
+        // Capture sensor distances
         r.sensor_0_distance = sensor_0_dist_.load();
         r.sensor_1_distance = sensor_1_dist_.load();
 
         if (r.sensor_0_distance < 0 || r.sensor_1_distance < 0) {
             RCLCPP_WARN(logger, "Failed to read valid sensor distances; skipping run.");
+            r.sensor_0_distance = std::numeric_limits<float>::quiet_NaN();
+            r.sensor_1_distance = std::numeric_limits<float>::quiet_NaN();
+            write_result_to_csv(csv_file, r);
+            run_count++;
             continue;
         }
 
+        // Successful run - proceed with normal logging
         std::stringstream status_stream;
         status_stream << "Run " << run_count + 1
-                      << ": Speed=" << std::fixed << std::setprecision(1) << speed
+                      << ": Time=" << r.timestamp
+                      << ", Speed=" << std::fixed << std::setprecision(1) << speed
                       << ", Sensor0=" << std::setprecision(6) << r.sensor_0_distance
-                      << ", Sensor1=" << std::setprecision(6) << r.sensor_1_distance;
+                      << ", Sensor1=" << std::setprecision(6) << r.sensor_1_distance
+                      << ", Start_position=" << start_position;
+        
+        // Add joint position info to status
+        if (!r.actual_joint_positions.empty()) {
+            status_stream << ", ActualJoints=[";
+            for (size_t i = 0; i < r.actual_joint_positions.size(); ++i) {
+                status_stream << std::setprecision(3) << r.actual_joint_positions[i];
+                if (i < r.actual_joint_positions.size() - 1) status_stream << ",";
+            }
+            status_stream << "]";
+        }
+
         feedback->runs_completed = run_count;
         feedback->status = status_stream.str();
         goal_handle->publish_feedback(feedback);
