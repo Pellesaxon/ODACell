@@ -158,7 +158,7 @@ bool PrecisionHomingNode::setLaserStreamingState(bool power_on)
         return false;
     }
 
-    // 2. Now wait for the result
+    // Wait for the result
     auto result_future = laser_control_client_->async_get_result(goal_handle);
     if (result_future.wait_for(std::chrono::seconds(10)) != std::future_status::ready)
     {
@@ -469,7 +469,13 @@ void PrecisionHomingNode::execute_homing_skrrrrr(const std::shared_ptr<GoalHandl
         last_known_good_joint_angles = current_joint_angles_;
     }
 
-    double correction_step_deg = 0.5;
+    ///////////////////////////
+    // SKRRRRR correction parameters
+    // These parameters define how the robot will adjust its position based on sensor readings.
+    // They are tuned for the specific robot, sensor and tolerance setup.
+    ///////////////////////////
+
+    double correction_step_deg = 0.005; // Was 0.5
     double correction_step_rad = to_rad(correction_step_deg);
 
     const double target_distance_x = goal->target_distance_x;
@@ -479,8 +485,8 @@ void PrecisionHomingNode::execute_homing_skrrrrr(const std::shared_ptr<GoalHandl
     const int correction_speed = 5; // 5%
     const int correction_acc = 5; // 5%
 
-    const int settle_sleep_ms = 500; // 100 ms settle time after each move to let sensor readings settle.
-
+    const int settle_sleep_ms = 2000; // 100 ms settle time after each move to let sensor readings settle.
+    std::this_thread::sleep_for(std::chrono::milliseconds(settle_sleep_ms));
     while (rclcpp::ok())
     {
         if (goal_handle->is_canceling())
@@ -513,8 +519,8 @@ void PrecisionHomingNode::execute_homing_skrrrrr(const std::shared_ptr<GoalHandl
         double error_x = target_distance_x - dist_x;
         double error_y = target_distance_y - dist_y;
 
-        RCLCPP_INFO(this->get_logger(), "Current distances: X=%.4f m, Y=%.4f m", dist_x, dist_y);
-        RCLCPP_INFO(this->get_logger(), "Current errors: X=%.4f m, Y=%.4f m", error_x, error_y);
+        RCLCPP_INFO(this->get_logger(), "Current distances: X=%.6f m, Y=%.6f m", dist_x, dist_y);
+        RCLCPP_INFO(this->get_logger(), "Current errors: X=%.6f m, Y=%.6f m", error_x, error_y);
 
         // Publish feedback
         feedback->current_distance_x = dist_x;
@@ -535,23 +541,23 @@ void PrecisionHomingNode::execute_homing_skrrrrr(const std::shared_ptr<GoalHandl
         }
 
         std::vector<double> target_joints = local_current_joints;
-        if (error_x > 0)
+        if (error_x > 0 && std::abs(error_x) > tolerance)
         {
-            target_joints[1] += correction_step_rad; // Move J2 forward
+            target_joints[1] -= correction_step_rad; // Move J2 forward
             // Account height for J2 forward move
             target_joints[2] += correction_step_rad; // Adjust J3 to maintain height TODO: Check if this is sensible at all
         }
-        else if (error_x < 0)
+        else if (error_x < 0 && std::abs(error_x) > tolerance)
         {
-            target_joints[1] -= correction_step_rad; // Move J2 backward
+            target_joints[1] += correction_step_rad; // Move J2 backward
             // Account height for J2 backward move
             target_joints[2] -= correction_step_rad; // Adjust J3 to maintain height
         }
-        if (error_y > 0)
+        if (error_y > 0 && std::abs(error_y) > tolerance)
         {
             target_joints[0] -= correction_step_rad; // Move J1 left
         }
-        else if (error_y < 0)
+        else if (error_y < 0 && std::abs(error_y) > tolerance)
         {
             target_joints[0] += correction_step_rad; // Move J1 right
         }
@@ -560,7 +566,10 @@ void PrecisionHomingNode::execute_homing_skrrrrr(const std::shared_ptr<GoalHandl
         std::copy(target_joints.begin(), target_joints.end(), move_goal.joint_angles.begin());
         move_goal.speed_percent = correction_speed;
         move_goal.acc_percent = correction_acc;
-        RCLCPP_INFO(this->get_logger(), "Sending SKRRRRR correction: J1=%.4f, J2=%.4f", to_deg(target_joints[0]), to_deg(target_joints[1]));
+        RCLCPP_INFO(this->get_logger(), "Sending SKRRRRR correction: J1=%.6f, J2=%.6f, J3=%.6f", 
+                                                                        to_deg(target_joints[0]), 
+                                                                        to_deg(target_joints[1]), 
+                                                                        to_deg(target_joints[2]));
 
         auto goal_handle_future = move_to_joint_client_->async_send_goal(move_goal);
         if (goal_handle_future.wait_for(std::chrono::seconds(1)) != std::future_status::ready)
@@ -625,7 +634,7 @@ void PrecisionHomingNode::execute_homing_skrrrrr(const std::shared_ptr<GoalHandl
 
             double dist_x_after_recovery = current_distance_x_.load();
             double dist_y_after_recovery = current_distance_y_.load();
-            RCLCPP_INFO(this->get_logger(), "Post-recovery distances: X=%.4f m, Y=%.4f m", dist_x_after_recovery, dist_y_after_recovery);
+            RCLCPP_INFO(this->get_logger(), "Post-recovery distances: X=%.6f m, Y=%.6f m", dist_x_after_recovery, dist_y_after_recovery);
 
             if (dist_x_after_recovery < 0 || dist_y_after_recovery < 0)
             {

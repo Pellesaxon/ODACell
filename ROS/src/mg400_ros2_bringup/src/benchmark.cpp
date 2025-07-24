@@ -16,6 +16,7 @@
 
 #include "mg400_msgs/action/benchmark.hpp"
 #include "hg_c1030_msgs/action/control_streaming.hpp"
+#include "mg400_msgs/action/precision_homing.hpp"
 
 using namespace std::chrono_literals;
 
@@ -28,7 +29,7 @@ struct BenchmarkResult
     std::string start_position;
     std::string timestamp;
     std::vector<double> commanded_joint_positions;
-    std::vector<double> actual_joint_positions;  
+    std::vector<double> actual_joint_positions;
 };
 
 class BenchmarkActionServer : public rclcpp::Node
@@ -51,6 +52,7 @@ private:
         oss << std::put_time(&tm, "%Y-%m-%d_%H-%M-%S");
         return oss.str();
     }
+
     void write_result_header_to_csv(std::ofstream &file)
     {
         file << "Timestamp,"
@@ -75,34 +77,48 @@ private:
              << result.speed_scale << ","
              << result.start_position << ","
              << result.sensor_0_distance << ","
-             << result.sensor_1_distance << ",";
-        
+             << result.sensor_1_distance;
+
         // Write commanded joint positions as separate columns
-        for (size_t i = 0; i < 4; ++i) {
+        for (size_t i = 0; i < 4; ++i)
+        {
             file << ",";
-            if (i < result.commanded_joint_positions.size()) {
+            if (i < result.commanded_joint_positions.size())
+            {
                 file << result.commanded_joint_positions[i];
-            } else {
-                file << "NaN";
+            }
+            else
+            {
+                file << std::numeric_limits<float>::quiet_NaN();
             }
         }
-        
+
         // Write actual joint positions as separate columns
-        for (size_t i = 0; i < 4; ++i) {
+        for (size_t i = 0; i < 4; ++i)
+        {
             file << ",";
-            if (i < result.actual_joint_positions.size()) {
+            if (i < result.actual_joint_positions.size())
+            {
                 file << result.actual_joint_positions[i];
-            } else {
-                file << "NaN";
+            }
+            else
+            {
+                file << std::numeric_limits<float>::quiet_NaN();;
             }
         }
-        file << "\n" << std::flush;
+        file << "\n"
+             << std::flush;
     }
+
+    using PrecisionHomingAction = mg400_msgs::action::PrecisionHoming;
+    using PrecisionHomingClient = rclcpp_action::Client<PrecisionHomingAction>;
+
+    PrecisionHomingClient::SharedPtr precision_homing_client_;
 
 public:
     using Benchmark = mg400_msgs::action::Benchmark;
     using GoalHandleBenchmark = rclcpp_action::ServerGoalHandle<Benchmark>;
-    
+
     using LaserControlAction = hg_c1030_msgs::action::ControlStreaming;
     using LaserControlClient = rclcpp_action::Client<LaserControlAction>;
 
@@ -124,36 +140,41 @@ public:
         this->laser_control_client_ = rclcpp_action::create_client<LaserControlAction>(
             this, "/control_streaming", client_cb_group_);
 
+        // Set up action client for precision homing
+        this->precision_homing_client_ = rclcpp_action::create_client<PrecisionHomingAction>(
+            this, "/precision_homing", client_cb_group_);
+
         // Set up sensor subscriptions
         sensor_0_dist_.store(-1.0f);
         sensor_1_dist_.store(-1.0f);
 
         subscription_0_ = this->create_subscription<sensor_msgs::msg::Range>(
             "/distance/sensor_0", 10,
-            [this](const sensor_msgs::msg::Range::SharedPtr msg) { sensor_0_dist_.store(msg->range); });
+            [this](const sensor_msgs::msg::Range::SharedPtr msg)
+            { sensor_0_dist_.store(msg->range); });
 
         subscription_1_ = this->create_subscription<sensor_msgs::msg::Range>(
             "/distance/sensor_1", 10,
-            [this](const sensor_msgs::msg::Range::SharedPtr msg) { sensor_1_dist_.store(msg->range); });
-        
+            [this](const sensor_msgs::msg::Range::SharedPtr msg)
+            { sensor_1_dist_.store(msg->range); });
+
         // This timer will fire after the constructor is complete and the node is spinning.
-        setup_timer_ = this->create_wall_timer(100ms, [this]() {
+        setup_timer_ = this->create_wall_timer(100ms, [this]()
+                                               {
             this->setup_timer_->cancel(); // Ensure it only runs once
-            this->setup_moveit();
-        });
+            this->setup_moveit(); });
 
         RCLCPP_INFO(this->get_logger(), "Benchmark Action Server constructed. Waiting for MoveIt setup...");
     }
 
 private:
-
     const std::string PLANNING_GROUP = "mg400_arm";
     void setup_moveit()
     {
         RCLCPP_INFO(this->get_logger(), "Initializing MoveGroupInterface...");
         // Now it's safe to call shared_from_this()
         move_group_interface_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(shared_from_this(), PLANNING_GROUP);
-        
+
         move_group_interface_->setNumPlanningAttempts(15);
         move_group_interface_->setPlanningTime(10.0);
         is_moveit_ready_.store(true);
@@ -168,7 +189,8 @@ private:
         (void)uuid;
 
         // --- NEW: Readiness check ---
-        if (!is_moveit_ready_.load()) {
+        if (!is_moveit_ready_.load())
+        {
             RCLCPP_ERROR(this->get_logger(), "Server is not ready, MoveIt is still initializing. Rejecting goal.");
             return rclcpp_action::GoalResponse::REJECT;
         }
@@ -179,7 +201,8 @@ private:
             return rclcpp_action::GoalResponse::REJECT;
         }
 
-        if (goal_active_.load()) {
+        if (goal_active_.load())
+        {
             RCLCPP_WARN(this->get_logger(), "Benchmark already in progress. Rejecting new goal.");
             return rclcpp_action::GoalResponse::REJECT;
         }
@@ -200,7 +223,7 @@ private:
         goal_active_.store(true);
         std::thread{std::bind(&BenchmarkActionServer::execute, this, std::placeholders::_1), goal_handle}.detach();
     }
-    
+
     bool setLaserStreamingState(bool power_on)
     {
         if (!laser_control_client_->wait_for_action_server(std::chrono::seconds(5)))
@@ -244,11 +267,61 @@ private:
         return false;
     }
 
+    bool callPrecisionHoming(double target_x = 0.03, double target_y = 0.03, double tolerance = 0.01, int timeout_sec = 60)
+    {
+        if (!precision_homing_client_->wait_for_action_server(std::chrono::seconds(5)))
+        {
+            RCLCPP_ERROR(get_logger(), "Precision homing action server not available!");
+            return false;
+        }
+
+        auto goal_msg = PrecisionHomingAction::Goal();
+        goal_msg.target_distance_x = target_x;
+        goal_msg.target_distance_y = target_y;
+        goal_msg.tolerance = tolerance;
+        goal_msg.timeout.sec = timeout_sec;
+        goal_msg.timeout.nanosec = 0;
+
+        RCLCPP_INFO(get_logger(), "Requesting precision homing (target: x=%.6f, y=%.6f, tolerance=%.6f)...",
+                    target_x, target_y, tolerance);
+
+        auto goal_handle_future = precision_homing_client_->async_send_goal(goal_msg);
+        if (goal_handle_future.wait_for(std::chrono::seconds(5)) != std::future_status::ready)
+        {
+            RCLCPP_ERROR(get_logger(), "Failed to get goal handle from precision homing server.");
+            return false;
+        }
+
+        auto goal_handle = goal_handle_future.get();
+        if (!goal_handle)
+        {
+            RCLCPP_ERROR(get_logger(), "Precision homing goal was rejected by server.");
+            return false;
+        }
+
+        auto result_future = precision_homing_client_->async_get_result(goal_handle);
+        if (result_future.wait_for(std::chrono::seconds(timeout_sec + 10)) != std::future_status::ready)
+        {
+            RCLCPP_ERROR(get_logger(), "Failed to get result from precision homing server (timeout).");
+            return false;
+        }
+
+        auto result_wrapper = result_future.get();
+        if (result_wrapper.code == rclcpp_action::ResultCode::SUCCEEDED)
+        {
+            RCLCPP_INFO(get_logger(), "Precision homing succeeded: %s", result_wrapper.result->message.c_str());
+            return result_wrapper.result->success;
+        }
+
+        RCLCPP_ERROR(get_logger(), "Precision homing failed with code %d", static_cast<int>(result_wrapper.code));
+        return false;
+    }
+
     void execute(const std::shared_ptr<GoalHandleBenchmark> goal_handle); // Declaration only, definition below
 
     rclcpp_action::Server<Benchmark>::SharedPtr action_server_;
     LaserControlClient::SharedPtr laser_control_client_;
-    rclcpp::CallbackGroup::SharedPtr client_cb_group_; 
+    rclcpp::CallbackGroup::SharedPtr client_cb_group_;
     std::atomic<bool> goal_active_;
 
     // --- Member variables for MoveIt and Sensors ---
@@ -257,7 +330,7 @@ private:
     rclcpp::Subscription<sensor_msgs::msg::Range>::SharedPtr subscription_1_;
     std::atomic<float> sensor_0_dist_;
     std::atomic<float> sensor_1_dist_;
-    
+
     // --- NEW: Timer and readiness flag ---
     rclcpp::TimerBase::SharedPtr setup_timer_;
     std::atomic<bool> is_moveit_ready_;
@@ -270,7 +343,7 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
     const auto goal = goal_handle->get_goal();
     auto feedback = std::make_shared<Benchmark::Feedback>();
     auto result = std::make_shared<Benchmark::Result>();
-    
+
     std::string csv_filename = generate_csv_filename();
     std::ofstream csv_file(csv_filename);
     if (!csv_file.is_open())
@@ -280,7 +353,7 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
         goal_active_.store(false);
         return;
     }
-    
+
     // Write CSV header
     write_result_header_to_csv(csv_file);
 
@@ -303,11 +376,10 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
     bool was_cancelled = false;
     const std::vector<std::string> arm_start_positions = {"right_test_start", "left_test_start", "max_right_test", "max_left_test", "above_sensor_test"};
 
-    
-
     while (rclcpp::ok() && (std::chrono::steady_clock::now() - start_time < benchmark_duration))
     {
-        if (goal_handle->is_canceling()) {
+        if (goal_handle->is_canceling())
+        {
             was_cancelled = true;
             break;
         }
@@ -318,7 +390,7 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
         int speed_cycle = run_count / arm_start_positions.size();
         double speed = ((speed_cycle % 5) + 1) / 5.0;
         std::string start_position = arm_start_positions[run_count % arm_start_positions.size()];
-        
+
         BenchmarkResult r;
         r.speed_scale = speed;
         r.start_position = start_position;
@@ -331,7 +403,8 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
         move_group_interface_->setMaxVelocityScalingFactor(speed);
         move_group_interface_->setMaxAccelerationScalingFactor(speed);
         move_group_interface_->setNamedTarget(start_position);
-        if (move_group_interface_->move() != moveit::core::MoveItErrorCode::SUCCESS) {
+        if (move_group_interface_->move() != moveit::core::MoveItErrorCode::SUCCESS)
+        {
             RCLCPP_ERROR(logger, "Move to start position '%s' failed; skipping run.", start_position.c_str());
             write_result_to_csv(csv_file, r);
             run_count++;
@@ -341,58 +414,70 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
         std::this_thread::sleep_for(500ms);
 
         move_group_interface_->setNamedTarget("laser_test");
-        if (move_group_interface_->plan(my_plan) != moveit::core::MoveItErrorCode::SUCCESS) {
+        if (move_group_interface_->plan(my_plan) != moveit::core::MoveItErrorCode::SUCCESS)
+        {
             RCLCPP_ERROR(logger, "Failed to plan laser test move; skipping run.");
             write_result_to_csv(csv_file, r);
             run_count++;
             continue;
         }
-        
-        if (move_group_interface_->execute(my_plan) != moveit::core::MoveItErrorCode::SUCCESS) {
+
+        if (move_group_interface_->execute(my_plan) != moveit::core::MoveItErrorCode::SUCCESS)
+        {
             RCLCPP_ERROR(logger, "Failed to execute laser test move; skipping run.");
             write_result_to_csv(csv_file, r);
             run_count++;
             continue;
         }
 
-        std::this_thread::sleep_for(5s);
+        // Call precision homing and wait for completion
+        RCLCPP_INFO(logger, "Executing precision homing...");
+        if (!callPrecisionHoming(0.0321, 0.0288, 0.00002, 60)) {
+            RCLCPP_WARN(logger, "Precision homing failed, but continuing with benchmark...");
+        }
 
+        std::this_thread::sleep_for(2s);
 
         // Capture joint positions after execution
         auto current_state = move_group_interface_->getCurrentState();
-        
+
         // Get active joint names from MoveIt
         std::vector<std::string> controllable_joint_names_;
-    
-        if (current_state) {
-            const auto& joint_model_group = current_state->getJointModelGroup(PLANNING_GROUP);
+
+        if (current_state)
+        {
+            const auto &joint_model_group = current_state->getJointModelGroup(PLANNING_GROUP);
             controllable_joint_names_ = joint_model_group->getActiveJointModelNames();
-            
+
             RCLCPP_INFO(this->get_logger(), "Discovered %zu controllable joints:", controllable_joint_names_.size());
-            for (size_t i = 0; i < controllable_joint_names_.size(); ++i) {
+            for (size_t i = 0; i < controllable_joint_names_.size(); ++i)
+            {
                 RCLCPP_INFO(this->get_logger(), "  [%zu]: %s", i, controllable_joint_names_[i].c_str());
             }
         }
 
-        
-        if (current_state && !controllable_joint_names_.empty()) {
+        if (current_state && !controllable_joint_names_.empty())
+        {
             std::vector<double> joint_values;
-            for (const auto& joint_name : controllable_joint_names_) {
+            for (const auto &joint_name : controllable_joint_names_)
+            {
                 joint_values.push_back(current_state->getVariablePosition(joint_name));
             }
             r.actual_joint_positions = joint_values;
         }
-        
+
         // Get commanded positions from the executed plan (final waypoint)
-        if (!my_plan.trajectory.joint_trajectory.points.empty()) {
+        if (!my_plan.trajectory.joint_trajectory.points.empty())
+        {
             r.commanded_joint_positions = my_plan.trajectory.joint_trajectory.points.back().positions;
         }
-    
+
         // Capture sensor distances
         r.sensor_0_distance = sensor_0_dist_.load();
         r.sensor_1_distance = sensor_1_dist_.load();
 
-        if (r.sensor_0_distance < 0 || r.sensor_1_distance < 0) {
+        if (r.sensor_0_distance < 0 || r.sensor_1_distance < 0)
+        {
             RCLCPP_WARN(logger, "Failed to read valid sensor distances; skipping run.");
             r.sensor_0_distance = std::numeric_limits<float>::quiet_NaN();
             r.sensor_1_distance = std::numeric_limits<float>::quiet_NaN();
@@ -409,13 +494,16 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
                       << ", Sensor0=" << std::setprecision(6) << r.sensor_0_distance
                       << ", Sensor1=" << std::setprecision(6) << r.sensor_1_distance
                       << ", Start_position=" << start_position;
-        
+
         // Add joint position info to status
-        if (!r.actual_joint_positions.empty()) {
+        if (!r.actual_joint_positions.empty())
+        {
             status_stream << ", ActualJoints=[";
-            for (size_t i = 0; i < r.actual_joint_positions.size(); ++i) {
+            for (size_t i = 0; i < r.actual_joint_positions.size(); ++i)
+            {
                 status_stream << std::setprecision(3) << r.actual_joint_positions[i];
-                if (i < r.actual_joint_positions.size() - 1) status_stream << ",";
+                if (i < r.actual_joint_positions.size() - 1)
+                    status_stream << ",";
             }
             status_stream << "]";
         }
@@ -424,14 +512,15 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
         feedback->status = status_stream.str();
         goal_handle->publish_feedback(feedback);
         RCLCPP_INFO(logger, "%s", feedback->status.c_str());
-        
+
         write_result_to_csv(csv_file, r);
         run_count++;
         std::this_thread::sleep_for(3s);
     }
 
     RCLCPP_INFO(logger, "Benchmark loop finished. Turning off lasers.");
-    if (!setLaserStreamingState(false)) {
+    if (!setLaserStreamingState(false))
+    {
         RCLCPP_WARN(logger, "Failed to turn off lasers. Please check manually.");
     }
 
@@ -439,28 +528,33 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
     move_group_interface_->setNamedTarget("home");
     move_group_interface_->setMaxVelocityScalingFactor(1.0);
     move_group_interface_->setMaxAccelerationScalingFactor(1.0);
-    if (move_group_interface_->move() != moveit::core::MoveItErrorCode::SUCCESS) {
+    if (move_group_interface_->move() != moveit::core::MoveItErrorCode::SUCCESS)
+    {
         RCLCPP_ERROR(logger, "Failed to return home after benchmark.");
     }
 
     result->total_runs = run_count;
     result->results_filepath = csv_filename;
 
-    if (was_cancelled) {
+    if (was_cancelled)
+    {
         goal_handle->canceled(result);
         RCLCPP_INFO(logger, "Benchmark canceled by client after %d runs.", run_count);
-    } else if (rclcpp::ok()) {
+    }
+    else if (rclcpp::ok())
+    {
         goal_handle->succeed(result);
         RCLCPP_INFO(logger, "Benchmark finished successfully. Completed %d runs. Results in %s", run_count, csv_filename.c_str());
-    } else {
+    }
+    else
+    {
         goal_handle->abort(result);
         RCLCPP_ERROR(logger, "Benchmark aborted due to ROS shutdown after %d runs.", run_count);
     }
-    
+
     goal_active_.store(false);
     csv_file.close();
 }
-
 
 int main(int argc, char **argv)
 {

@@ -17,7 +17,7 @@
 #include <cstring> // For memcpy
 #include <regex>   // Error parsing
 
-#define AUTO_HOME_ON_INIT false
+#define AUTO_HOME_ON_INIT true // Set to true to auto-home the robot on startup
 
 #define DEFAULT_ROBOT_NAME "mg400"
 #define DEFAULT_ROBOT_IP "192.168.1.6"
@@ -32,12 +32,11 @@
 #define COLLISION_LEVEL 2 // Default collision level for fail-safe
 #define GLOBAL_SPEED_ACC_FACTOR 100
 #define CONTINUOUS_PATH_SMOOTHING 40                // Default CP value for continuous path motion
-#define TRAJECTORY_EXECUTION_AUTO_TIMEOUT_MULT 30.0 // Multiplier for trajectory execution timeout (very generous)
-#define END_POS_DEG_TOLERANCE 0.01                  // Default end position tolerance in degrees
-#define STARTED_MOVING_DEG_TOL 0.05
-
-#define CONTINUOUS_PATH_RATIO 10
 #define NO_PATH_SMOOTHING 0
+#define TRAJECTORY_EXECUTION_AUTO_TIMEOUT_MULT 100.0 // Multiplier for trajectory execution timeout (very generous)
+#define END_POS_DEG_TOLERANCE 0.01                  // Default end position tolerance in degrees
+#define STARTED_MOVING_DEG_TOL 0.01
+
 
 constexpr std::array<const char *, 4> JOINT_NAMES = {"j1", "j2", "j3", "j4"};
 
@@ -209,8 +208,8 @@ namespace mg400_ros2_bringup
         }
 
 #if AUTO_HOME_ON_INIT
-        RCLCPP_INFO(this->get_logger(), "Auto-homing robot on startup...");
-        send_dashboard_command("JointMovJ(0,0,0,0,100,100,10)");
+        RCLCPP_INFO(this->get_logger(), "Sending robot Home on startup...");
+        send_dashboard_command("JointMovJ(0,0,0,0,100,100,0)");
 #endif
 
         RCLCPP_INFO(this->get_logger(), "Startup sequence complete. Driver is running.");
@@ -654,7 +653,7 @@ namespace mg400_ros2_bringup
             cp_value = NO_PATH_SMOOTHING;
         } else {
             // Case 4: An intermediate point. This is where we blend.
-            cp_value = CONTINUOUS_PATH_RATIO;
+            cp_value = CONTINUOUS_PATH_SMOOTHING;
         }
 
         // Format and send the command
