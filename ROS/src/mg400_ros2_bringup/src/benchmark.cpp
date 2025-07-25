@@ -20,6 +20,8 @@
 
 using namespace std::chrono_literals;
 
+#define GOAL_TOLERANCE 0.00002 // Default goal tolerance used for planning
+
 // A struct to hold the results for each run
 struct BenchmarkResult
 {
@@ -177,6 +179,7 @@ private:
 
         move_group_interface_->setNumPlanningAttempts(15);
         move_group_interface_->setPlanningTime(10.0);
+        move_group_interface_->setGoalTolerance(GOAL_TOLERANCE);
         is_moveit_ready_.store(true);
         RCLCPP_INFO(this->get_logger(), "MoveGroupInterface is initialized. Benchmark server is fully ready.");
     }
@@ -403,6 +406,10 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
         move_group_interface_->setMaxVelocityScalingFactor(speed);
         move_group_interface_->setMaxAccelerationScalingFactor(speed);
         move_group_interface_->setNamedTarget(start_position);
+
+        RCLCPP_INFO(logger, "Planning joint tolerance %.6f", move_group_interface_->getGoalJointTolerance());
+        RCLCPP_INFO(logger, "Planning position tolerance %.6f", move_group_interface_->getGoalPositionTolerance());
+
         if (move_group_interface_->move() != moveit::core::MoveItErrorCode::SUCCESS)
         {
             RCLCPP_ERROR(logger, "Move to start position '%s' failed; skipping run.", start_position.c_str());
@@ -432,7 +439,7 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
 
         // Call precision homing and wait for completion
         RCLCPP_INFO(logger, "Executing precision homing...");
-        if (!callPrecisionHoming(0.0321, 0.0288, 0.00002, 60)) {
+        if (!callPrecisionHoming(0.03210, 0.02880, 0.00001, 60)) {
             RCLCPP_WARN(logger, "Precision homing failed, but continuing with benchmark...");
         }
 

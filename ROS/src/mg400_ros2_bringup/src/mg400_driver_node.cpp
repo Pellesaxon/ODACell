@@ -17,7 +17,7 @@
 #include <cstring> // For memcpy
 #include <regex>   // Error parsing
 
-#define AUTO_HOME_ON_INIT true // Set to true to auto-home the robot on startup
+#define AUTO_HOME_ON_INIT false // Set to true to auto-home the robot on startup
 
 #define DEFAULT_ROBOT_NAME "mg400"
 #define DEFAULT_ROBOT_IP "192.168.1.6"
@@ -31,16 +31,17 @@
 #define NUM_JOINTS 4      // Number of joints in the MG400 robot
 #define COLLISION_LEVEL 2 // Default collision level for fail-safe
 #define GLOBAL_SPEED_ACC_FACTOR 100
-#define CONTINUOUS_PATH_SMOOTHING 40                // Default CP value for continuous path motion
-#define NO_PATH_SMOOTHING 0
 #define TRAJECTORY_EXECUTION_AUTO_TIMEOUT_MULT 100.0 // Multiplier for trajectory execution timeout (very generous)
 #define END_POS_DEG_TOLERANCE 0.01                  // Default end position tolerance in degrees
 #define STARTED_MOVING_DEG_TOL 0.01
 
-
+// Smoothing rate used to set global setting
+#define CONTINUOUS_PATH_SMOOTHING 100                // Default CP value for continuous path motion
+#define NO_PATH_SMOOTHING 0
+ 
 constexpr std::array<const char *, 4> JOINT_NAMES = {"j1", "j2", "j3", "j4"};
 
-enum MG400ControllerErrorCodes
+enum MG400ControllerErrorCodes 
 {
     FAILED_TO_START_PATH_EXECUTION = -100,
     MOVED_TOO_SLOW_TIMEOUT = -101,
@@ -161,6 +162,21 @@ namespace mg400_ros2_bringup
                          set_joint_speed_response.protocol_error_id);
             throw std::runtime_error("Failed to set global joint speed or acceleration on startup.");
         }
+
+
+        RCLCPP_INFO(this->get_logger(), "Setting global path smoothing factor...");
+        auto set_CP_response = send_dashboard_command("CP(" + std::to_string(CONTINUOUS_PATH_SMOOTHING) + ")");
+        if (set_CP_response.success)
+        {
+            RCLCPP_INFO(this->get_logger(), "Global path smoothing factor set to %d successfully.", CONTINUOUS_PATH_SMOOTHING);
+        }
+        else
+        {
+            RCLCPP_FATAL(this->get_logger(), "CRITICAL: Failed to set global path smoothing factor. Reason: %s (ID: %d). Driver cannot continue.",
+                         set_CP_response.error_info->en.description.data(), set_CP_response.protocol_error_id);
+            throw std::runtime_error("Failed to set global path smoothing factor on startup.");
+        }
+
 
         RCLCPP_INFO(this->get_logger(), "Clearing any previous errors...");
         auto clear_error_response = send_dashboard_command("ClearError()");
@@ -606,7 +622,6 @@ namespace mg400_ros2_bringup
     auto goal = goal_handle->get_goal();
     auto result = std::make_shared<FollowJointTrajectory::Result>();
 
-    // No changes to this section
     const std::vector<double> max_velocities = {5.23599, 5.23599, 5.23599, 5.23599};
     const std::vector<double> max_accelerations = {10.471975512, 10.471975512, 10.471975512, 10.471975512};
 
@@ -618,7 +633,6 @@ namespace mg400_ros2_bringup
                 to_deg(current_joint_positions[0]), to_deg(current_joint_positions[1]),
                 to_deg(current_joint_positions[2]), to_deg(current_joint_positions[3]));
 
-    // --- START REVISED LOGIC ---
 
     const auto& trajectory_points = goal->trajectory.points;
     const size_t num_points = trajectory_points.size();
@@ -641,12 +655,10 @@ namespace mg400_ros2_bringup
         acceleration_percent = std::max(1.0, std::min(acceleration_percent, 100.0));
 
         // Determine the correct CP value for this point
+        // TODO: THIS DOES NOT WORK, awaiting respons from manifacturer
         int cp_value;
         if (num_points == 1) {
             // Case 1: Trajectory with only one point. Must be non-blended.
-            cp_value = NO_PATH_SMOOTHING;
-        } else if (i == 0) {
-            // Case 2: The very first point of a multi-point trajectory. Must be non-blended.
             cp_value = NO_PATH_SMOOTHING;
         } else if (i == num_points - 1) {
             // Case 3: The very last point. Must be non-blended for accuracy.

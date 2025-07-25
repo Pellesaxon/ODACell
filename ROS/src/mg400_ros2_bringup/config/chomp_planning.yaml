@@ -11,21 +11,35 @@ response_adapters:
   - mg400_ros2_bringup/FastStartSlowEndAdapter
   - default_planning_response_adapters/ValidateSolution
   - default_planning_response_adapters/DisplayMotionPath
-planning_time_limit: 10.0
-max_iterations: 200
-max_iterations_after_collision_free: 5
-smoothness_cost_weight: 0.4
+
+# Timing and iterations - more time for smoother results
+planning_time_limit: 15.0
+max_iterations: 300
+max_iterations_after_collision_free: 15
+
+# Smoothness parameters - higher values = smoother motion
+smoothness_cost_weight: 0.6
+smoothness_cost_velocity: 0.1
+smoothness_cost_acceleration: 0.3
+smoothness_cost_jerk: 0.5
+
+# Obstacle avoidance
 obstacle_cost_weight: 1.0
-learning_rate: 0.01
-smoothness_cost_velocity: 0.0
-smoothness_cost_acceleration: 0.0
-smoothness_cost_jerk: 0.2
-ridge_factor: 0.01
-use_pseudo_inverse: false
-pseudo_inverse_ridge_factor: 0.0001
-joint_update_limit: 0.1
 collision_clearance: 0.2
 collision_threshold: 0.07
+
+# Optimization parameters for stability
+learning_rate: 0.005
+ridge_factor: 0.005
+joint_update_limit: 0.05
+
+# Numerical stability
+use_pseudo_inverse: false
+pseudo_inverse_ridge_factor: 0.01
+
+# Optional: disable stochastic for deterministic smoothness
 use_stochastic_descent: true
+
+# Recovery
 enable_failure_recovery: true
 max_recovery_attempts: 5
