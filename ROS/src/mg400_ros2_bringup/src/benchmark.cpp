@@ -16,11 +16,19 @@
 
 #include "mg400_msgs/action/benchmark.hpp"
 #include "hg_c1030_msgs/action/control_streaming.hpp"
+
+#define USE_PRECISION_HOMING  // Enable precision homing for benchmarking
+
+#ifdef USE_PRECISION_HOMING
 #include "mg400_msgs/action/precision_homing.hpp"
+const double PRECISION_HOMING_TOLERANCE = 0.000015;   // [m] Default Sensor tolerance
+const double PRECISION_HOMING_TIMEOUT = 60;           // [s] Default Sensor tolerance
+const double PRECISION_HOMING_TARGET[2] = {0.03210, 0.02880}; // [m] Default target position for precision homing
+#endif
+
+const double PLANNING_GOAL_TOLERANCE = 0.000020;    // [m/rad]? Default goal tolerance used for planning
 
 using namespace std::chrono_literals;
-
-#define GOAL_TOLERANCE 0.00002 // Default goal tolerance used for planning
 
 // A struct to hold the results for each run
 struct BenchmarkResult
@@ -179,7 +187,7 @@ private:
 
         move_group_interface_->setNumPlanningAttempts(15);
         move_group_interface_->setPlanningTime(10.0);
-        move_group_interface_->setGoalTolerance(GOAL_TOLERANCE);
+        move_group_interface_->setGoalTolerance(PLANNING_GOAL_TOLERANCE);
         is_moveit_ready_.store(true);
         RCLCPP_INFO(this->get_logger(), "MoveGroupInterface is initialized. Benchmark server is fully ready.");
     }
@@ -437,11 +445,16 @@ void BenchmarkActionServer::execute(const std::shared_ptr<GoalHandleBenchmark> g
             continue;
         }
 
+#ifdef USE_PRECISION_HOMING
         // Call precision homing and wait for completion
         RCLCPP_INFO(logger, "Executing precision homing...");
-        if (!callPrecisionHoming(0.03210, 0.02880, 0.00001, 60)) {
+        if (!callPrecisionHoming(PRECISION_HOMING_TARGET[0], 
+                                 PRECISION_HOMING_TARGET[1], 
+                                 PRECISION_HOMING_TOLERANCE, 
+                                 PRECISION_HOMING_TIMEOUT)) {
             RCLCPP_WARN(logger, "Precision homing failed, but continuing with benchmark...");
         }
+#endif
 
         std::this_thread::sleep_for(2s);
 

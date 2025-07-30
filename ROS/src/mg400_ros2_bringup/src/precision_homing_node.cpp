@@ -5,6 +5,8 @@
 
 #define USE_SKRRRRR 1 // Set to 1 to use the skrrrrr method, 0 for PID
 
+const double SKRRRRR_CORRECTION_STEP_DEG = 0.005; // Default correction step in degrees
+
 static double to_rad(double deg) { return deg * M_PI / 180.0; }
 static double to_deg(double rad) { return rad * 180.0 / M_PI; }
 
@@ -77,7 +79,7 @@ void PrecisionHomingNode::sensorXCallback(const sensor_msgs::msg::Range::SharedP
     {
         if (current_distance_x_.load() == -1.0)
         {
-            RCLCPP_INFO(this->get_logger(), "X sensor back in-range, initial distance: %.2f", msg->range);
+            RCLCPP_INFO(this->get_logger(), "X sensor back in-range, initial distance: %.6f", msg->range);
         }
         current_distance_x_.store(msg->range);
     }
@@ -94,7 +96,7 @@ void PrecisionHomingNode::sensorYCallback(const sensor_msgs::msg::Range::SharedP
     {
         if (current_distance_y_.load() == -1.0)
         {
-            RCLCPP_INFO(this->get_logger(), "Y sensor back in-range, initial distance: %.2f", msg->range);
+            RCLCPP_INFO(this->get_logger(), "Y sensor back in-range, initial distance: %.6f", msg->range);
         }
         current_distance_y_.store(msg->range);
     }
@@ -469,14 +471,8 @@ void PrecisionHomingNode::execute_homing_skrrrrr(const std::shared_ptr<GoalHandl
         last_known_good_joint_angles = current_joint_angles_;
     }
 
-    ///////////////////////////
-    // SKRRRRR correction parameters
-    // These parameters define how the robot will adjust its position based on sensor readings.
-    // They are tuned for the specific robot, sensor and tolerance setup.
-    ///////////////////////////
 
-    double correction_step_deg = 0.005; // Was 0.5
-    double correction_step_rad = to_rad(correction_step_deg);
+    double correction_step_rad = to_rad(SKRRRRR_CORRECTION_STEP_DEG);
 
     const double target_distance_x = goal->target_distance_x;
     const double target_distance_y = goal->target_distance_y;
@@ -515,6 +511,15 @@ void PrecisionHomingNode::execute_homing_skrrrrr(const std::shared_ptr<GoalHandl
 
         double dist_x = current_distance_x_.load();
         double dist_y = current_distance_y_.load();
+
+        // This might not be needed as we handle before loop and at the end of loop
+        if (dist_x < 0 || dist_y < 0)
+        {
+            RCLCPP_WARN(this->get_logger(), "Negative distance detected.");
+            RCLCPP_WARN(this->get_logger(), "Waiting for valid sensor data.");
+            std::this_thread::sleep_for(std::chrono::milliseconds(settle_sleep_ms));
+            continue; // Skip this iterati on if sensor data is invalid
+        }
 
         double error_x = target_distance_x - dist_x;
         double error_y = target_distance_y - dist_y;

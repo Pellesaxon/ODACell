@@ -203,7 +203,7 @@ async def handle_dashboard_client(reader, writer, state: RobotState):
                 # Acknowledge toggling digital outputs
                 response_str = "0,{},DoExecute();"
 
-            elif command_name in ["SetCollisionLevel", "SpeedFactor", "SpeedJ", "AccJ"]:
+            elif command_name in ["SetCollisionLevel", "SpeedFactor", "SpeedJ", "AccJ", "CP"]:
                 # Acknowledge startup commands with success
                 pass
             
