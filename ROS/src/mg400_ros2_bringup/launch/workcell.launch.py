@@ -1,10 +1,11 @@
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, SetEnvironmentVariable
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
 from moveit_configs_utils import MoveItConfigsBuilder
 import pprint
 
@@ -13,6 +14,11 @@ MOCK_IP = "127.0.0.1"
 
 DEFAULT_ROBOT_NAME = "mg400"
 DEFAULT_ROBOT_IP = "192.168.1.6"
+
+DEFAULT_PORT = '/dev/ttyACM0'
+DEFAULT_NUM_SENSORS = '2'
+DEFAULT_FRAME_IDS = ["distance_sensor_0", "distance_sensor_1"]
+
 
 def generate_launch_description():
     # Declare arguments for the launch file
@@ -39,6 +45,27 @@ def generate_launch_description():
             description="Name of the robot. Default is 'mg400'."
         )
     )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'port',
+            default_value=DEFAULT_PORT,
+            description='The serial port the Arduino is connected to.'
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'frame_ids',
+            default_value=[str(item) for item in DEFAULT_FRAME_IDS], # Ensure default is list of strings
+            description='A list of TF frame_ids for the sensor readings.'
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'num_sensors',
+            default_value=DEFAULT_NUM_SENSORS,
+            description='The number of sensors to use.'
+        )
+    )
 
     # =================================================================================
     # ===                      MOVEIT CONFIGURATION                                 ===
@@ -57,7 +84,7 @@ def generate_launch_description():
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
         .planning_pipelines(
             # pipelines=["stomp", "chomp", "pilz_industrial_motion_planner", "ompl"]
-            pipelines=["stomp"]
+            pipelines=["chomp"]
         )
         .to_moveit_configs()
     )
@@ -117,9 +144,6 @@ def generate_launch_description():
         executable="robot_state_publisher",
         output="screen",
         parameters=[moveit_config.robot_description],
-        remappings=[
-            ("joint_states", "mg400/joint_states"),
-        ]
     )
 
     # ---- RViz ----
@@ -129,8 +153,8 @@ def generate_launch_description():
         name="rviz2",
         output="log",
         arguments=["-d", PathJoinSubstitution(
-            [FindPackageShare("mg400_ros2_bringup"), "config", "moveit.rviz"]
-        )],
+            [FindPackageShare("mg400_ros2_bringup"), "config", "moveit.rviz"],),
+            "--ros-args", "--log-level", "fatal"],
         parameters=[
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
@@ -149,9 +173,50 @@ def generate_launch_description():
         output="screen",
         parameters=[moveit_config.to_dict(), trajectory_execution, {"use_sim_time": False}],
         condition=UnlessCondition(LaunchConfiguration("driver_only")),
-        remappings=[("joint_states", "mg400/joint_states")],
+    )
+    
+    port = LaunchConfiguration('port')
+    num_sensors = LaunchConfiguration('num_sensors')
+    
+    sensor_node = Node(
+        package='hg_c1030_node',
+        executable='hg_sensor_node',
+        name='hg_sensor_node',
+        output='screen',
+        emulate_tty=True,
+        parameters=[{
+            'port': port,
+            'num_sensors': num_sensors,
+            'frame_ids': DEFAULT_FRAME_IDS
+        }]
+    )
+    
+    precision_homing_node = Node(
+        package='mg400_ros2_bringup',
+        executable='precision_homing_node',
+        output='screen',
     )
 
+    world_creator = Node(
+        package='mg400_ros2_bringup',
+        executable='world_creator',
+        output='screen',
+    )
+
+    benchmark_node = Node(
+        package='mg400_ros2_bringup',
+        executable='benchmark',
+        output='screen',
+        condition=UnlessCondition(LaunchConfiguration("driver_only")),
+        parameters=[
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics,
+            moveit_config.planning_pipelines,
+            moveit_config.joint_limits,
+            {"use_sim_time": False}
+        ]
+    )
 
     # The final list of nodes to launch
     nodes_to_start = [
@@ -161,6 +226,10 @@ def generate_launch_description():
         robot_state_publisher_node,
         rviz_node,
         move_group_node,
+        sensor_node,
+        precision_homing_node,
+        world_creator,
+        benchmark_node
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_start)

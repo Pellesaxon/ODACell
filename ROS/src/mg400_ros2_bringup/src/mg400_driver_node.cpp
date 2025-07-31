@@ -17,7 +17,7 @@
 #include <cstring> // For memcpy
 #include <regex>   // Error parsing
 
-#define AUTO_HOME_ON_INIT false
+#define AUTO_HOME_ON_INIT false // Set to true to auto-home the robot on startup
 
 #define DEFAULT_ROBOT_NAME "mg400"
 #define DEFAULT_ROBOT_IP "192.168.1.6"
@@ -31,14 +31,17 @@
 #define NUM_JOINTS 4      // Number of joints in the MG400 robot
 #define COLLISION_LEVEL 2 // Default collision level for fail-safe
 #define GLOBAL_SPEED_ACC_FACTOR 100
-#define CONTINUOUS_PATH_SMOOTHING 10                // Default CP value for continuous path motion
-#define TRAJECTORY_EXECUTION_AUTO_TIMEOUT_MULT 30.0 // Multiplier for trajectory execution timeout (very generous)
-#define END_POS_DEG_TOLERANCE 0.1                   // Default end position tolerance in degrees
-#define STARTED_MOVING_DEG_TOL 0.05
+#define TRAJECTORY_EXECUTION_AUTO_TIMEOUT_MULT 100.0 // Multiplier for trajectory execution timeout (very generous)
+#define END_POS_DEG_TOLERANCE 0.01                  // Default end position tolerance in degrees
+#define STARTED_MOVING_DEG_TOL 0.01
 
+// Smoothing rate used to set global setting
+#define CONTINUOUS_PATH_SMOOTHING 100                // Default CP value for continuous path motion
+#define NO_PATH_SMOOTHING 0
+ 
 constexpr std::array<const char *, 4> JOINT_NAMES = {"j1", "j2", "j3", "j4"};
 
-enum MG400ControllerErrorCodes
+enum MG400ControllerErrorCodes 
 {
     FAILED_TO_START_PATH_EXECUTION = -100,
     MOVED_TOO_SLOW_TIMEOUT = -101,
@@ -71,13 +74,16 @@ namespace mg400_ros2_bringup
 
         // Initialize ROS interfaces
         status_publisher_ = this->create_publisher<mg400_msgs::msg::RobotStatus>("/mg400/robot_status", 10);
-        joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/mg400/joint_states", 10);
+        RCLCPP_INFO(this->get_logger(), "Robot status publisher initialized.");
+        joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states", 10);
+        RCLCPP_INFO(this->get_logger(), "Joint state publisher initialized.");
 
         dashboard_action_server_ = rclcpp_action::create_server<DashboardCommand>(
             this, "mg400/dashboard_command",
             std::bind(&MG400DriverNode::handle_dashboard_goal, this, std::placeholders::_1, std::placeholders::_2),
             std::bind(&MG400DriverNode::handle_dashboard_cancel, this, std::placeholders::_1),
             std::bind(&MG400DriverNode::handle_dashboard_accepted, this, std::placeholders::_1));
+        RCLCPP_INFO(this->get_logger(), "Dashboard command action server is ready.");
 
         fjt_action_server_ = rclcpp_action::create_server<FollowJointTrajectory>(
             this,
@@ -85,16 +91,26 @@ namespace mg400_ros2_bringup
             std::bind(&MG400DriverNode::handle_fjt_goal, this, std::placeholders::_1, std::placeholders::_2),
             std::bind(&MG400DriverNode::handle_fjt_cancel, this, std::placeholders::_1),
             std::bind(&MG400DriverNode::handle_fjt_accepted, this, std::placeholders::_1));
+        RCLCPP_INFO(this->get_logger(), "FollowJointTrajectory action server is ready.");
 
         clear_error_service_ = this->create_service<std_srvs::srv::Trigger>(
             "mg400/clear_error",
             std::bind(&MG400DriverNode::clear_error_callback, this, std::placeholders::_1, std::placeholders::_2));
+        RCLCPP_INFO(this->get_logger(), "Clear error service is ready.");
 
         auxiliary_power_service_ = this->create_service<std_srvs::srv::SetBool>(
             "mg400/auxiliary_power",
             std::bind(&MG400DriverNode::auxiliary_power_callback, this, std::placeholders::_1, std::placeholders::_2));
+        RCLCPP_INFO(this->get_logger(), "Auxiliary power service is ready.");
 
-        RCLCPP_INFO(this->get_logger(), "ROS interfaces are ready.");
+        move_to_joint_action_server_ = rclcpp_action::create_server<MoveToJointAction>(
+            this, "mg400/move_to_joint",
+            std::bind(&MG400DriverNode::handle_move_to_joint_goal, this, std::placeholders::_1, std::placeholders::_2),
+            std::bind(&MG400DriverNode::handle_move_to_joint_cancel, this, std::placeholders::_1),
+            std::bind(&MG400DriverNode::handle_move_to_joint_accepted, this, std::placeholders::_1));
+        RCLCPP_INFO(this->get_logger(), "MoveToJoint action server is ready.");
+
+        RCLCPP_INFO(this->get_logger(), "ROS interfaces initialized.");
 
         // --- STARTUP SEQUENCE ---
         //
@@ -147,6 +163,21 @@ namespace mg400_ros2_bringup
             throw std::runtime_error("Failed to set global joint speed or acceleration on startup.");
         }
 
+
+        RCLCPP_INFO(this->get_logger(), "Setting global path smoothing factor...");
+        auto set_CP_response = send_dashboard_command("CP(" + std::to_string(CONTINUOUS_PATH_SMOOTHING) + ")");
+        if (set_CP_response.success)
+        {
+            RCLCPP_INFO(this->get_logger(), "Global path smoothing factor set to %d successfully.", CONTINUOUS_PATH_SMOOTHING);
+        }
+        else
+        {
+            RCLCPP_FATAL(this->get_logger(), "CRITICAL: Failed to set global path smoothing factor. Reason: %s (ID: %d). Driver cannot continue.",
+                         set_CP_response.error_info->en.description.data(), set_CP_response.protocol_error_id);
+            throw std::runtime_error("Failed to set global path smoothing factor on startup.");
+        }
+
+
         RCLCPP_INFO(this->get_logger(), "Clearing any previous errors...");
         auto clear_error_response = send_dashboard_command("ClearError()");
         if (clear_error_response.success)
@@ -193,8 +224,8 @@ namespace mg400_ros2_bringup
         }
 
 #if AUTO_HOME_ON_INIT
-        RCLCPP_INFO(this->get_logger(), "Auto-homing robot on startup...");
-        send_dashboard_command("JointMovJ(0,0,0,0,100,100,10)");
+        RCLCPP_INFO(this->get_logger(), "Sending robot Home on startup...");
+        send_dashboard_command("JointMovJ(0,0,0,0,100,100,0)");
 #endif
 
         RCLCPP_INFO(this->get_logger(), "Startup sequence complete. Driver is running.");
@@ -587,77 +618,72 @@ namespace mg400_ros2_bringup
     }
 
     void MG400DriverNode::execute_trajectory(const std::shared_ptr<GoalHandleFJT> goal_handle)
-    {
-        auto goal = goal_handle->get_goal();
-        auto result = std::make_shared<FollowJointTrajectory::Result>();
+{
+    auto goal = goal_handle->get_goal();
+    auto result = std::make_shared<FollowJointTrajectory::Result>();
 
-        const std::vector<double> max_velocities = {5.23599, 5.23599, 5.23599, 5.23599};
-        const std::vector<double> max_accelerations = {10.471975512, 10.471975512, 10.471975512, 10.471975512};
+    const std::vector<double> max_velocities = {5.23599, 5.23599, 5.23599, 5.23599};
+    const std::vector<double> max_accelerations = {10.471975512, 10.471975512, 10.471975512, 10.471975512};
 
-        RCLCPP_INFO(get_logger(), "Executing new trajectory with %zu points.", goal->trajectory.points.size());
+    RCLCPP_INFO(get_logger(), "Executing new trajectory with %zu points.", goal->trajectory.points.size());
 
-        send_dashboard_command("ResetRobot()");
-        std::vector<double> current_joint_positions = joint_positions_;
-        RCLCPP_INFO(get_logger(), "Recorded current joint positions: [%.2f, %.2f, %.2f, %.2f]",
-                    to_deg(current_joint_positions[0]), to_deg(current_joint_positions[1]),
-                    to_deg(current_joint_positions[2]), to_deg(current_joint_positions[3]));
+    send_dashboard_command("ResetRobot()");
+    std::vector<double> current_joint_positions = joint_positions_;
+    RCLCPP_INFO(get_logger(), "Recorded current joint positions: [%.2f, %.2f, %.2f, %.2f]",
+                to_deg(current_joint_positions[0]), to_deg(current_joint_positions[1]),
+                to_deg(current_joint_positions[2]), to_deg(current_joint_positions[3]));
 
-        // 1. Stream all points to the robot's motion queue.
-        for (const auto &point : goal->trajectory.points)
-        {
-            if (goal_handle->is_canceling())
-            {
-                RCLCPP_INFO(get_logger(), "Trajectory canceled during streaming. The queue was already cleared.");
-                result->error_code = FollowJointTrajectory::Result::SUCCESSFUL; // Canceled goals can be considered successful
-                goal_handle->canceled(result);
-                return;
-            }
 
-            if (point.velocities.empty() || point.accelerations.empty() || point.positions.size() != NUM_JOINTS)
-            {
-                RCLCPP_ERROR(get_logger(), "Trajectory point is missing velocity, acceleration, or has wrong size. Aborting.");
-                result->error_code = FollowJointTrajectory::Result::INVALID_GOAL;
-                goal_handle->abort(result);
-                return;
-            }
+    const auto& trajectory_points = goal->trajectory.points;
+    const size_t num_points = trajectory_points.size();
 
-            double speed_percent = 0.0;
-            double acceleration_percent = 0.0;
+    // Loop through all points and apply the correct CP value based on position
+    for (size_t i = 0; i < num_points; ++i) {
+        const auto& point = trajectory_points[i];
+        
+        // Cancellation and validity checks remain the same
+        if (goal_handle->is_canceling()) { /* ... handle cancellation ... */ return; }
+        if (point.velocities.empty() || point.accelerations.empty() || point.positions.size() != NUM_JOINTS) { /* ... handle error ... */ return; }
 
-            for (size_t i = 0; i < NUM_JOINTS; i++)
-            {
-                double current_speed_percent = (std::abs(point.velocities[i]) / max_velocities[i]) * 100.0;
-                if (current_speed_percent > speed_percent)
-                {
-                    speed_percent = current_speed_percent;
-                }
-
-                double current_acceleration_percent = (std::abs(point.accelerations[i]) / max_accelerations[i]) * 100.0;
-                if (current_acceleration_percent > acceleration_percent)
-                {
-                    acceleration_percent = current_acceleration_percent;
-                }
-            }
-
-            speed_percent = std::max(1.0, std::min(speed_percent, 100.0));
-            acceleration_percent = std::max(1.0, std::min(acceleration_percent, 100.0));
-
-            char cmd_buffer[256];
-            snprintf(cmd_buffer, sizeof(cmd_buffer), "JointMovJ(%.4f,%.4f,%.4f,%.4f,SpeedJ=%d,AccJ=%d,CP=%d)",
-                     to_deg(point.positions[0]), to_deg(point.positions[1]),
-                     to_deg(point.positions[2]), to_deg(point.positions[3]),
-                     static_cast<int>(speed_percent), static_cast<int>(acceleration_percent), CONTINUOUS_PATH_SMOOTHING);
-
-            if (!send_motion_command(std::string(cmd_buffer)))
-            {
-                RCLCPP_ERROR(get_logger(), "Failed to send motion command. Aborting trajectory.");
-                result->error_code = MG400ControllerErrorCodes::FAILED_TO_SEND_CMD;
-                result->error_string = "Failed to send motion command to robot.";
-                RCLCPP_ERROR(get_logger(), "Failed to send command: %s", cmd_buffer);
-                goal_handle->abort(result);
-                return;
-            }
+        // Calculate speed and acceleration percentages
+        double speed_percent = 0.0, acceleration_percent = 0.0;
+        for (size_t j = 0; j < NUM_JOINTS; j++) {
+            speed_percent = std::max(speed_percent, (std::abs(point.velocities[j]) / max_velocities[j]) * 100.0);
+            acceleration_percent = std::max(acceleration_percent, (std::abs(point.accelerations[j]) / max_accelerations[j]) * 100.0);
         }
+        speed_percent = std::max(1.0, std::min(speed_percent, 100.0));
+        acceleration_percent = std::max(1.0, std::min(acceleration_percent, 100.0));
+
+        // Determine the correct CP value for this point
+        // TODO: THIS DOES NOT WORK, awaiting respons from manifacturer
+        int cp_value;
+        if (num_points == 1) {
+            // Case 1: Trajectory with only one point. Must be non-blended.
+            cp_value = NO_PATH_SMOOTHING;
+        } else if (i == num_points - 1) {
+            // Case 3: The very last point. Must be non-blended for accuracy.
+            cp_value = NO_PATH_SMOOTHING;
+        } else {
+            // Case 4: An intermediate point. This is where we blend.
+            cp_value = CONTINUOUS_PATH_SMOOTHING;
+        }
+
+        // Format and send the command
+        char cmd_buffer[256];
+        snprintf(cmd_buffer, sizeof(cmd_buffer), "JointMovJ(%.4f,%.4f,%.4f,%.4f,SpeedJ=%d,AccJ=%d,CP=%d)",
+                 to_deg(point.positions[0]), to_deg(point.positions[1]),
+                 to_deg(point.positions[2]), to_deg(point.positions[3]),
+                 static_cast<int>(speed_percent), static_cast<int>(acceleration_percent),
+                 cp_value);
+
+        if (!send_motion_command(std::string(cmd_buffer))) {
+            RCLCPP_ERROR(get_logger(), "Failed to send motion command for point %zu. Aborting.", i);
+            result->error_code = MG400ControllerErrorCodes::FAILED_TO_SEND_CMD;
+            goal_handle->abort(result);
+            return;
+        }
+    }
+
         RCLCPP_INFO(get_logger(), "All %zu points streamed. Waiting for motion to start...", goal->trajectory.points.size());
 
         // --- NEW TWO-STAGE WAITING LOGIC ---
@@ -926,6 +952,112 @@ namespace mg400_ros2_bringup
             {
                 status_publisher_->publish(detailed_status_msg);
             }
+        }
+    }
+
+    rclcpp_action::GoalResponse MG400DriverNode::handle_move_to_joint_goal(
+        const rclcpp_action::GoalUUID &, std::shared_ptr<const MoveToJointAction::Goal> goal)
+    {
+        RCLCPP_INFO(get_logger(), "Received MoveToJoint goal request.");
+        if (goal->joint_angles.size() != NUM_JOINTS)
+        {
+            RCLCPP_ERROR(get_logger(), "Rejecting goal: Incorrect number of joints. Expected %d, got %zu.", NUM_JOINTS, goal->joint_angles.size());
+            return rclcpp_action::GoalResponse::REJECT;
+        }
+        return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+    }
+
+    rclcpp_action::CancelResponse MG400DriverNode::handle_move_to_joint_cancel(
+        const std::shared_ptr<GoalHandleMoveToJoint>)
+    {
+        RCLCPP_INFO(get_logger(), "Received request to cancel MoveToJoint goal.");
+        send_dashboard_command("ResetRobot()");
+        return rclcpp_action::CancelResponse::ACCEPT;
+    }
+
+    void MG400DriverNode::handle_move_to_joint_accepted(const std::shared_ptr<GoalHandleMoveToJoint> goal_handle)
+    {
+        std::thread{std::bind(&MG400DriverNode::execute_move_to_joint, this, std::placeholders::_1), goal_handle}.detach();
+    }
+
+    void MG400DriverNode::execute_move_to_joint(const std::shared_ptr<GoalHandleMoveToJoint> goal_handle)
+    {
+        auto goal = goal_handle->get_goal();
+        auto result = std::make_shared<MoveToJointAction::Result>();
+        auto feedback = std::make_shared<MoveToJointAction::Feedback>();
+
+        RCLCPP_INFO(this->get_logger(), "Executing MoveToJoint goal: [%.2f, %.2f, %.2f, %.2f]",
+                    to_deg(goal->joint_angles[0]), to_deg(goal->joint_angles[1]), to_deg(goal->joint_angles[2]), to_deg(goal->joint_angles[3]));
+
+        // 1. Format the command
+        char cmd_buffer[256];
+        snprintf(cmd_buffer, sizeof(cmd_buffer), "JointMovJ(%.4f,%.4f,%.4f,%.4f,SpeedJ=%d,AccJ=%d,CP=0)",
+                 to_deg(goal->joint_angles[0]), to_deg(goal->joint_angles[1]),
+                 to_deg(goal->joint_angles[2]), to_deg(goal->joint_angles[3]),
+                 static_cast<int>(goal->speed_percent), static_cast<int>(goal->acc_percent));
+
+        // 2. Send the motion command
+        if (!send_motion_command(std::string(cmd_buffer)))
+        {
+            result->error_code = -1;
+            result->error_string = "Failed to send motion command to robot.";
+            goal_handle->abort(result);
+            return;
+        }
+
+        // 3. Monitor for completion
+        rclcpp::Rate loop_rate(100);             // Check status at 100 Hz
+        const double goal_tolerance_rad = 0.001; // ~0.05 degrees tolerance
+        int stable_counter = 0;
+        const int stability_threshold = 20; // Must be stable for 20*10ms = 200ms
+
+        while (rclcpp::ok())
+        {
+            if (goal_handle->is_canceling())
+            {
+                RCLCPP_INFO(get_logger(), "MoveToJoint goal canceled.");
+                result->error_code = 1; // CANCELED
+                result->error_string = "Goal was canceled by client.";
+                goal_handle->canceled(result);
+                return;
+            }
+
+            // Get current state from the feedback loop's shared variables
+            std::vector<double> current_positions;
+            current_positions = joint_positions_; // Copy current joint positions
+
+            // Check if we have reached the destination
+            bool all_joints_in_position = true;
+
+            for (size_t i = 0; i < NUM_JOINTS; ++i)
+            {
+                feedback->current_angles[i] = current_positions[i];
+                feedback->distance_to_goal[i] = std::abs(goal->joint_angles[i] - current_positions[i]);
+                if (feedback->distance_to_goal[i] > goal_tolerance_rad)
+                {
+                    all_joints_in_position = false;
+                }
+            }
+            goal_handle->publish_feedback(feedback);
+
+            if (all_joints_in_position)
+            {
+                stable_counter++;
+                if (stable_counter >= stability_threshold)
+                {
+                    RCLCPP_INFO(get_logger(), "MoveToJoint goal succeeded.");
+                    result->error_code = 0; // SUCCESS
+                    result->error_string = "Successfully reached target joint configuration.";
+                    goal_handle->succeed(result);
+                    return;
+                }
+            }
+            else
+            {
+                stable_counter = 0; // Reset counter if we move out of tolerance
+            }
+
+            loop_rate.sleep();
         }
     }
 

@@ -15,6 +15,10 @@ find_package(std_srvs REQUIRED)
 find_package(control_msgs REQUIRED)
 find_package(moveit_core REQUIRED)
 find_package(moveit_ros_planning REQUIRED)
+find_package(moveit_ros_planning_interface REQUIRED)
+find_package(hg_c1030_msgs REQUIRED)
+find_package(geometric_shapes REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 # --- Plugin Library (fast_start_slow_end_adapter) ---
 add_library(fast_start_slow_end_adapter_lib SHARED
@@ -32,6 +36,60 @@ target_include_directories(fast_start_slow_end_adapter_lib PUBLIC
 )
 pluginlib_export_plugin_description_file(moveit_core fast_start_slow_end_plugin.xml)
 
+# --- Precision Homing Node Executable ---
+add_executable(precision_homing_node src/precision_homing_node.cpp)
+ament_target_dependencies(precision_homing_node
+  rclcpp
+  rclcpp_action
+  moveit_ros_planning_interface
+  sensor_msgs
+  std_srvs
+  control_msgs
+  hg_c1030_msgs
+  mg400_msgs
+)
+target_include_directories(precision_homing_node PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
+install(TARGETS
+  precision_homing_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+# -- Install World Creator Node ---
+add_executable(world_creator src/world_creator.cpp)
+ament_target_dependencies(world_creator
+    rclcpp
+    moveit_ros_planning_interface
+    geometric_shapes
+    ament_index_cpp
+)
+target_link_libraries(world_creator
+    ${moveit_ros_planning_interface_LIBRARIES}
+    ${geometric_shapes_LIBRARIES}
+)
+install(TARGETS
+    world_creator
+    DESTINATION lib/${PROJECT_NAME}
+)
+
+# -- Benchmarking Node Executable ---
+add_executable(benchmark src/benchmark.cpp)
+ament_target_dependencies(
+  benchmark
+  rclcpp
+  sensor_msgs
+  moveit_ros_planning_interface
+  mg400_msgs
+  hg_c1030_msgs
+)
+
+install(
+  TARGETS benchmark
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 # --- Driver Node Executable ---
 add_executable(mg400_driver_node src/mg400_driver_node.cpp)
 ament_target_dependencies(mg400_driver_node
@@ -41,13 +99,13 @@ ament_target_dependencies(mg400_driver_node
   std_srvs
   control_msgs
   pluginlib
-  moveit_core
-  moveit_ros_planning
+  #moveit_core
+  #moveit_ros_planning
 )
 target_include_directories(mg400_driver_node PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
-# Link against the real-time library for shared memory
+# Link against the real-time library (TODO: don't think we need this anymore)
 target_link_libraries(mg400_driver_node rt)
 
 # --- Install Rules ---

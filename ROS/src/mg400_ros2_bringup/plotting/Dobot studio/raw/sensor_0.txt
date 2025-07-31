@@ -1,0 +1,9096 @@
+header:
+  stamp:
+    sec: 1753374033
+    nanosec: 582034263
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374034
+    nanosec: 614070110
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374035
+    nanosec: 646321829
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374036
+    nanosec: 686598615
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374037
+    nanosec: 739322567
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031954001635313034
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374038
+    nanosec: 791889319
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03200500085949898
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374039
+    nanosec: 844286630
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03203300014138222
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374040
+    nanosec: 900955035
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032033998519182205
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374041
+    nanosec: 949559380
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374042
+    nanosec: 981803191
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374044
+    nanosec: 14000582
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374045
+    nanosec: 45961232
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374046
+    nanosec: 82385363
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374047
+    nanosec: 114431316
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374048
+    nanosec: 146560788
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374049
+    nanosec: 178754973
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374050
+    nanosec: 210956633
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374051
+    nanosec: 242993914
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374052
+    nanosec: 295475818
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374053
+    nanosec: 348335814
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0321200005710125
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374054
+    nanosec: 400972823
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032148998230695724
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374055
+    nanosec: 453451382
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03214799985289574
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374056
+    nanosec: 506273140
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374057
+    nanosec: 538455999
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374058
+    nanosec: 570309081
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374059
+    nanosec: 602560700
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374060
+    nanosec: 634439577
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374061
+    nanosec: 683344988
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374062
+    nanosec: 735815206
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031895000487565994
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374063
+    nanosec: 792336809
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03192000091075897
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374064
+    nanosec: 845338739
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031922001391649246
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374065
+    nanosec: 897934276
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031922999769449234
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374066
+    nanosec: 930041612
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374067
+    nanosec: 966126098
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374068
+    nanosec: 998499600
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374070
+    nanosec: 30522739
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374071
+    nanosec: 62809669
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374072
+    nanosec: 94883717
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374073
+    nanosec: 126883922
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374074
+    nanosec: 159044967
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374075
+    nanosec: 195335823
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374076
+    nanosec: 247820768
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374077
+    nanosec: 300599834
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03185399994254112
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374078
+    nanosec: 353076502
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031877998262643814
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374079
+    nanosec: 405554409
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188500180840492
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374080
+    nanosec: 454413935
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374081
+    nanosec: 490328363
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374082
+    nanosec: 522785008
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374083
+    nanosec: 575264502
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031954001635313034
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374084
+    nanosec: 627930167
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031980000436306
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374085
+    nanosec: 680323069
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032010000199079514
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374086
+    nanosec: 737391158
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032009001821279526
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374087
+    nanosec: 785908418
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374088
+    nanosec: 817930660
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374089
+    nanosec: 850297954
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374090
+    nanosec: 882268911
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374091
+    nanosec: 918511796
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374092
+    nanosec: 971211733
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03206900134682655
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374094
+    nanosec: 23772580
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03210199996829033
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374095
+    nanosec: 80406711
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03211100026965141
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374096
+    nanosec: 133312588
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03210899978876114
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374097
+    nanosec: 177445598
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374098
+    nanosec: 209797009
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374099
+    nanosec: 241733769
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374100
+    nanosec: 290151007
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374101
+    nanosec: 346972686
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031897999346256256
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374102
+    nanosec: 399662482
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031950999051332474
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374103
+    nanosec: 452542234
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03195900097489357
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374104
+    nanosec: 504963895
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374105
+    nanosec: 536891456
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374106
+    nanosec: 569139764
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374107
+    nanosec: 605411560
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374108
+    nanosec: 637343104
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374109
+    nanosec: 689999671
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03184099867939949
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374110
+    nanosec: 746900174
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03186799958348274
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374111
+    nanosec: 799538476
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0318869985640049
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374112
+    nanosec: 852212698
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0318869985640049
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374113
+    nanosec: 900857001
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374114
+    nanosec: 932917403
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374115
+    nanosec: 973173182
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374117
+    nanosec: 25851171
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03192799910902977
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374118
+    nanosec: 78289599
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03198599815368652
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374119
+    nanosec: 130742847
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03200399875640869
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374120
+    nanosec: 187647725
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032003000378608704
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374121
+    nanosec: 228054482
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374122
+    nanosec: 260310341
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374123
+    nanosec: 292395486
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374124
+    nanosec: 328729655
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374125
+    nanosec: 381353833
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032058000564575195
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374126
+    nanosec: 433854170
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03208399936556816
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374127
+    nanosec: 486374788
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03209500014781952
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374128
+    nanosec: 543223749
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03209200128912926
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374129
+    nanosec: 587555164
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374130
+    nanosec: 619838611
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374131
+    nanosec: 656031216
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374132
+    nanosec: 708617366
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188600018620491
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374133
+    nanosec: 761369728
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031922001391649246
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374134
+    nanosec: 813884019
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03195900097489357
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374135
+    nanosec: 870452352
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031932998448610306
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374136
+    nanosec: 914885813
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374137
+    nanosec: 951325330
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374138
+    nanosec: 983185598
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374140
+    nanosec: 15518361
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374141
+    nanosec: 64186722
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374142
+    nanosec: 120677334
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031853001564741135
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374143
+    nanosec: 173450726
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03189900144934654
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374144
+    nanosec: 225940317
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03191100060939789
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374145
+    nanosec: 278784657
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374146
+    nanosec: 310859019
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374147
+    nanosec: 347063718
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374148
+    nanosec: 399617253
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03196199983358383
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374149
+    nanosec: 456325957
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03196299821138382
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374150
+    nanosec: 508945228
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031964000314474106
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374151
+    nanosec: 561756508
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031964000314474106
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374152
+    nanosec: 606123187
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374153
+    nanosec: 638165140
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374154
+    nanosec: 670307298
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374155
+    nanosec: 710833360
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374156
+    nanosec: 763214211
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03203900158405304
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374157
+    nanosec: 815975706
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03207400068640709
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374158
+    nanosec: 872475086
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03207999840378761
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374159
+    nanosec: 925272221
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0320810005068779
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374160
+    nanosec: 965510831
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374161
+    nanosec: 997518181
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374163
+    nanosec: 38033043
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374164
+    nanosec: 94713478
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03186900168657303
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374165
+    nanosec: 148526699
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03194500133395195
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374166
+    nanosec: 200170436
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03194599971175194
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374167
+    nanosec: 256460060
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03193200007081032
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374168
+    nanosec: 297182461
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374169
+    nanosec: 329153296
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374170
+    nanosec: 361264163
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374171
+    nanosec: 401415004
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374172
+    nanosec: 458416507
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031853001564741135
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374173
+    nanosec: 511046321
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031863998621702194
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374174
+    nanosec: 563735031
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03189900144934654
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374175
+    nanosec: 620340047
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03189999982714653
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374176
+    nanosec: 656532584
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374177
+    nanosec: 688880606
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374178
+    nanosec: 741357162
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374179
+    nanosec: 793894298
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0319489985704422
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374180
+    nanosec: 846367675
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03195299953222275
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374181
+    nanosec: 903177529
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031950999051332474
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374182
+    nanosec: 952025189
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374183
+    nanosec: 983899728
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374185
+    nanosec: 16260153
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374186
+    nanosec: 52317989
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374187
+    nanosec: 109168847
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031989000737667084
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374188
+    nanosec: 161554468
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0320420004427433
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374189
+    nanosec: 214288474
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03207699954509735
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374190
+    nanosec: 266736809
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03205699846148491
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374191
+    nanosec: 311279987
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374192
+    nanosec: 343454120
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374193
+    nanosec: 383842295
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374194
+    nanosec: 436497207
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031853001564741135
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374195
+    nanosec: 493234930
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031922999769449234
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374196
+    nanosec: 545836457
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03193200007081032
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374197
+    nanosec: 598327984
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031902000308036804
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374198
+    nanosec: 642965644
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374199
+    nanosec: 675165135
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374200
+    nanosec: 707304093
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374201
+    nanosec: 751724640
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374202
+    nanosec: 808328566
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031846001744270325
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374203
+    nanosec: 861125669
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031897999346256256
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374204
+    nanosec: 913670462
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031897999346256256
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374205
+    nanosec: 970013311
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031888000667095184
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374207
+    nanosec: 2378722
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374208
+    nanosec: 34747907
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374209
+    nanosec: 66828558
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374210
+    nanosec: 102929812
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374211
+    nanosec: 155556208
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031904999166727066
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374212
+    nanosec: 212378774
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031982000917196274
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374213
+    nanosec: 264987879
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03198700025677681
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374214
+    nanosec: 317385199
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031984999775886536
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374215
+    nanosec: 362121986
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374216
+    nanosec: 394040539
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374217
+    nanosec: 430258950
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374218
+    nanosec: 462320792
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374219
+    nanosec: 494808750
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374220
+    nanosec: 526697018
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374221
+    nanosec: 559120792
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374222
+    nanosec: 591020281
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374223
+    nanosec: 623206913
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374224
+    nanosec: 659437605
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374225
+    nanosec: 712241476
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03211300075054169
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374226
+    nanosec: 764495511
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03211100026965141
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374227
+    nanosec: 821361035
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03210999816656113
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374228
+    nanosec: 874174179
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032106999307870865
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374229
+    nanosec: 918428419
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374230
+    nanosec: 950349275
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374231
+    nanosec: 982832557
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374233
+    nanosec: 19030151
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374234
+    nanosec: 51051396
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374235
+    nanosec: 103687126
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374236
+    nanosec: 156469383
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188500180840492
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374237
+    nanosec: 209144647
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188199922442436
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374238
+    nanosec: 265796922
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188500180840492
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374239
+    nanosec: 314416723
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374240
+    nanosec: 346431860
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374241
+    nanosec: 378449886
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374242
+    nanosec: 410756147
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374243
+    nanosec: 442760949
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374244
+    nanosec: 474957165
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374245
+    nanosec: 511135865
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374246
+    nanosec: 543297880
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374247
+    nanosec: 575448778
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374248
+    nanosec: 611720285
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374249
+    nanosec: 664328891
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03180300071835518
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374250
+    nanosec: 721231788
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031870998442173004
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374251
+    nanosec: 773857704
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188300132751465
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374252
+    nanosec: 826238226
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188199922442436
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374253
+    nanosec: 870742518
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374254
+    nanosec: 902749703
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374255
+    nanosec: 943167987
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374256
+    nanosec: 995870607
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03191699832677841
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374258
+    nanosec: 48428640
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03199800103902817
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374259
+    nanosec: 101009243
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032003000378608704
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374260
+    nanosec: 157653847
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032003000378608704
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374261
+    nanosec: 198226811
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374262
+    nanosec: 230222376
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374263
+    nanosec: 266374833
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374264
+    nanosec: 298755623
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374265
+    nanosec: 339197958
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374266
+    nanosec: 391803826
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03206299990415573
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374267
+    nanosec: 444190543
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032099999487400055
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374268
+    nanosec: 496751911
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03211100026965141
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374269
+    nanosec: 553644873
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03210800141096115
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374270
+    nanosec: 593689857
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374271
+    nanosec: 626037948
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374272
+    nanosec: 658303032
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374273
+    nanosec: 710884277
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031870998442173004
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374274
+    nanosec: 767478852
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031895000487565994
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374275
+    nanosec: 820179015
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03191699832677841
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374276
+    nanosec: 872687062
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031915001571178436
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374277
+    nanosec: 921216970
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374278
+    nanosec: 953361096
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374279
+    nanosec: 985773394
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374281
+    nanosec: 17838254
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374282
+    nanosec: 58072153
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374283
+    nanosec: 110758029
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0318790003657341
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374284
+    nanosec: 163251926
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031838998198509216
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374285
+    nanosec: 220163756
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03184099867939949
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374286
+    nanosec: 272727198
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031874001026153564
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374287
+    nanosec: 313011323
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374288
+    nanosec: 344921549
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374289
+    nanosec: 389705618
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374290
+    nanosec: 442158135
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03192099928855896
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374291
+    nanosec: 498998205
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031978998333215714
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374292
+    nanosec: 551381391
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031991999596357346
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374293
+    nanosec: 604195027
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031991999596357346
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374294
+    nanosec: 640407124
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374295
+    nanosec: 676708977
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374296
+    nanosec: 708734889
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374297
+    nanosec: 744990241
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374298
+    nanosec: 801701462
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03206700086593628
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374299
+    nanosec: 854402143
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03206700086593628
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374300
+    nanosec: 907140930
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03209099918603897
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374301
+    nanosec: 959653254
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03209400177001953
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374303
+    nanosec: 4001746
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374304
+    nanosec: 36186447
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374305
+    nanosec: 72271923
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374306
+    nanosec: 125001398
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031870000064373016
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374307
+    nanosec: 181667802
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031915999948978424
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374308
+    nanosec: 234354759
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03191699832677841
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374309
+    nanosec: 287149756
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03191699832677841
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374310
+    nanosec: 331648226
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374311
+    nanosec: 363675131
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374312
+    nanosec: 395747592
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374313
+    nanosec: 427818173
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374314
+    nanosec: 484699943
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03184200078248978
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374315
+    nanosec: 537226856
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03184499964118004
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374316
+    nanosec: 589907487
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188899904489517
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374317
+    nanosec: 646426203
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188899904489517
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374318
+    nanosec: 691075813
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374319
+    nanosec: 722934829
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374320
+    nanosec: 767601864
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374321
+    nanosec: 820550975
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031957000494003296
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374322
+    nanosec: 872934250
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031954001635313034
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374323
+    nanosec: 925298213
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031954001635313034
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374324
+    nanosec: 978046795
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03195299953222275
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374326
+    nanosec: 18343571
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374327
+    nanosec: 54435851
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374328
+    nanosec: 86694545
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374329
+    nanosec: 127078134
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374330
+    nanosec: 179562620
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03205199912190437
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374331
+    nanosec: 232210134
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03205600008368492
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374332
+    nanosec: 289018985
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03207100182771683
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374333
+    nanosec: 341602343
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03207499906420708
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374334
+    nanosec: 381991123
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374335
+    nanosec: 414076732
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374336
+    nanosec: 454617871
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374337
+    nanosec: 506961677
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031870000064373016
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374338
+    nanosec: 563984073
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031936999410390854
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374339
+    nanosec: 616580342
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031936999410390854
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374340
+    nanosec: 669146019
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03193499892950058
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374341
+    nanosec: 709410194
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374342
+    nanosec: 741428135
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374343
+    nanosec: 773524454
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374344
+    nanosec: 818077674
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374345
+    nanosec: 870503492
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03184499964118004
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374346
+    nanosec: 927346823
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03185499832034111
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374347
+    nanosec: 979871725
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03189300000667572
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374349
+    nanosec: 32709999
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03189399838447571
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374350
+    nanosec: 69128376
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374351
+    nanosec: 101001657
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374352
+    nanosec: 153773853
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031936999410390854
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374353
+    nanosec: 210395911
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03194500133395195
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374354
+    nanosec: 263191466
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03194599971175194
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374355
+    nanosec: 315725074
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031943999230861664
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374356
+    nanosec: 364195700
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374357
+    nanosec: 396349850
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374358
+    nanosec: 432677476
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374359
+    nanosec: 468791263
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374360
+    nanosec: 521393566
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03202899917960167
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374361
+    nanosec: 578150357
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032030001282691956
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374362
+    nanosec: 630902491
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03203099966049194
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374363
+    nanosec: 683440622
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03204600140452385
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374364
+    nanosec: 723722952
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374365
+    nanosec: 760011141
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374366
+    nanosec: 800262502
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374367
+    nanosec: 852817322
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03185800090432167
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374368
+    nanosec: 909479247
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03190699964761734
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374369
+    nanosec: 962164134
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031904999166727066
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374371
+    nanosec: 14968375
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031957000494003296
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374372
+    nanosec: 55067992
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374373
+    nanosec: 87412232
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374374
+    nanosec: 119685044
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374375
+    nanosec: 168181515
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374376
+    nanosec: 224728071
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188500180840492
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374377
+    nanosec: 277347915
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188600018620491
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374378
+    nanosec: 330076031
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188300132751465
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374379
+    nanosec: 382640488
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374380
+    nanosec: 414983305
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374381
+    nanosec: 447070945
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374382
+    nanosec: 479133992
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374383
+    nanosec: 519577989
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374384
+    nanosec: 572068021
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031957000494003296
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374385
+    nanosec: 624753032
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03196699917316437
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374386
+    nanosec: 681421814
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03199400007724762
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374387
+    nanosec: 734010265
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03199300169944763
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374388
+    nanosec: 774008138
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374389
+    nanosec: 806396542
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374390
+    nanosec: 842623685
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374391
+    nanosec: 875049740
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374392
+    nanosec: 907034243
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374393
+    nanosec: 939173145
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374394
+    nanosec: 971197653
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374396
+    nanosec: 3535078
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374397
+    nanosec: 35442628
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374398
+    nanosec: 76148408
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374399
+    nanosec: 128445767
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03210600093007088
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374400
+    nanosec: 181153456
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032124001532793045
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374401
+    nanosec: 233682185
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032138001173734665
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374402
+    nanosec: 290416971
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032134998589754105
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374403
+    nanosec: 330631480
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374404
+    nanosec: 362999901
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374405
+    nanosec: 395048331
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374406
+    nanosec: 431266500
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374407
+    nanosec: 463586226
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374408
+    nanosec: 520159526
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031897999346256256
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374409
+    nanosec: 572954360
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031897999346256256
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374410
+    nanosec: 625465022
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03189700096845627
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374411
+    nanosec: 677981006
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03189700096845627
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374412
+    nanosec: 726627651
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374413
+    nanosec: 758805162
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374414
+    nanosec: 791056083
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374415
+    nanosec: 822866142
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374416
+    nanosec: 855009167
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374417
+    nanosec: 887244934
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374418
+    nanosec: 923631671
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374419
+    nanosec: 955645569
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374420
+    nanosec: 988004276
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374422
+    nanosec: 28192723
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374423
+    nanosec: 80717501
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03182300180196762
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374424
+    nanosec: 137422341
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03186099976301193
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374425
+    nanosec: 190173523
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031870000064373016
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374426
+    nanosec: 242830118
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03186900168657303
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374427
+    nanosec: 283151652
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374428
+    nanosec: 315266399
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374429
+    nanosec: 359502332
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374430
+    nanosec: 412249464
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031915999948978424
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374431
+    nanosec: 464994746
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03199100121855736
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374432
+    nanosec: 517286902
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03199800103902817
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374433
+    nanosec: 574238849
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03199800103902817
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374434
+    nanosec: 610420531
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374435
+    nanosec: 642379973
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374436
+    nanosec: 674741129
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374437
+    nanosec: 706535066
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374438
+    nanosec: 755611089
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374439
+    nanosec: 808060502
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0320729985833168
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374440
+    nanosec: 860495160
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03210199996829033
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374441
+    nanosec: 913242507
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03210299834609032
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374442
+    nanosec: 969950082
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03210100159049034
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374444
+    nanosec: 2145331
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374445
+    nanosec: 34232527
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374446
+    nanosec: 74798336
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374447
+    nanosec: 127236059
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031876999884843826
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374448
+    nanosec: 179978144
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031904999166727066
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374449
+    nanosec: 236640412
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0319180004298687
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374450
+    nanosec: 289238477
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0319180004298687
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374451
+    nanosec: 333481125
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374452
+    nanosec: 365708402
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374453
+    nanosec: 397997805
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374454
+    nanosec: 430105271
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374455
+    nanosec: 474616824
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374456
+    nanosec: 527214734
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031831998378038406
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374457
+    nanosec: 579785096
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0318790003657341
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374458
+    nanosec: 632348466
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0318790003657341
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374459
+    nanosec: 689031236
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0318790003657341
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374460
+    nanosec: 725365311
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374461
+    nanosec: 757336256
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374462
+    nanosec: 806044316
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374463
+    nanosec: 858566299
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03192000091075897
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374464
+    nanosec: 915231712
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03200099989771843
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374465
+    nanosec: 968010215
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03200099989771843
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374467
+    nanosec: 20672682
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374468
+    nanosec: 52548447
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374469
+    nanosec: 84698981
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374470
+    nanosec: 116977907
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374471
+    nanosec: 161288008
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374472
+    nanosec: 214057196
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03207699954509735
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374473
+    nanosec: 270719467
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03209000080823898
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374474
+    nanosec: 323607972
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03210899978876114
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374475
+    nanosec: 376170713
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03210800141096115
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374476
+    nanosec: 412195264
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374477
+    nanosec: 444545095
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374478
+    nanosec: 488948906
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374479
+    nanosec: 541507751
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03189200162887573
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374480
+    nanosec: 594137000
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0319180004298687
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374481
+    nanosec: 646658937
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031932998448610306
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374482
+    nanosec: 703361928
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03193100169301033
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374483
+    nanosec: 743866648
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374484
+    nanosec: 775954454
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374485
+    nanosec: 808064648
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374486
+    nanosec: 844301098
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374487
+    nanosec: 896857325
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03183100000023842
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374488
+    nanosec: 953806083
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031870000064373016
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374490
+    nanosec: 6439469
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03187600150704384
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374491
+    nanosec: 58524345
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03187499940395355
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374492
+    nanosec: 103436037
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374493
+    nanosec: 135346813
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374494
+    nanosec: 179836814
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374495
+    nanosec: 232575606
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03195599839091301
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374496
+    nanosec: 289225413
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03195599839091301
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374497
+    nanosec: 341990065
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031957000494003296
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374498
+    nanosec: 394316695
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031954001635313034
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374499
+    nanosec: 430866078
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374500
+    nanosec: 463036199
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374501
+    nanosec: 495004600
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374502
+    nanosec: 543486746
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374503
+    nanosec: 596215401
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032072000205516815
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374504
+    nanosec: 648934405
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032072000205516815
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374505
+    nanosec: 701227565
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0320729985833168
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374506
+    nanosec: 758138035
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03206999972462654
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374507
+    nanosec: 790261257
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374508
+    nanosec: 822226060
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374509
+    nanosec: 870957655
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374510
+    nanosec: 923377825
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03187600150704384
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374511
+    nanosec: 976137227
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03193200007081032
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374513
+    nanosec: 33019013
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03193100169301033
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374514
+    nanosec: 85465660
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031932998448610306
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374515
+    nanosec: 117459723
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374516
+    nanosec: 153976085
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374517
+    nanosec: 186065361
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374518
+    nanosec: 234572860
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374519
+    nanosec: 287202590
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0318479984998703
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374520
+    nanosec: 339730055
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188600018620491
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374521
+    nanosec: 396555725
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03189900144934654
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374522
+    nanosec: 449216509
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374523
+    nanosec: 481404045
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374524
+    nanosec: 517714217
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374525
+    nanosec: 570190079
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031950000673532486
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374526
+    nanosec: 626915383
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03195299953222275
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374527
+    nanosec: 679605045
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031950999051332474
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374528
+    nanosec: 732457630
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031950999051332474
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374529
+    nanosec: 776580843
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374530
+    nanosec: 808896996
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374531
+    nanosec: 841041641
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374532
+    nanosec: 885294004
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374533
+    nanosec: 937926727
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03201200067996979
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374534
+    nanosec: 990623766
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032065000385046005
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374536
+    nanosec: 43078593
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03206700086593628
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374537
+    nanosec: 99694443
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.032065000385046005
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374538
+    nanosec: 136214956
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374539
+    nanosec: 168246179
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374540
+    nanosec: 216910804
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374541
+    nanosec: 269354982
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031853001564741135
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374542
+    nanosec: 322062369
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031922999769449234
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374543
+    nanosec: 374566918
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03192799910902977
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374544
+    nanosec: 431435936
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03192000091075897
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374545
+    nanosec: 463588291
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374546
+    nanosec: 499797164
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374547
+    nanosec: 531951079
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374548
+    nanosec: 584306796
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374549
+    nanosec: 637182970
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03186500072479248
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374550
+    nanosec: 689539074
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0318869985640049
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374551
+    nanosec: 746590830
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03188600018620491
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374552
+    nanosec: 794949687
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374553
+    nanosec: 827184695
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374554
+    nanosec: 859444818
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374555
+    nanosec: 891594262
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374556
+    nanosec: 935970942
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374557
+    nanosec: 988319711
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.0319410003721714
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374559
+    nanosec: 41231719
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03198599815368652
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374560
+    nanosec: 93815640
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.03198400139808655
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374561
+    nanosec: 146131439
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: 0.031984999775886536
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374562
+    nanosec: 186851489
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374563
+    nanosec: 218797933
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374564
+    nanosec: 250952185
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374565
+    nanosec: 283113223
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374566
+    nanosec: 319299662
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374567
+    nanosec: 351604133
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374568
+    nanosec: 383846350
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374569
+    nanosec: 415930738
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374570
+    nanosec: 448075940
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374571
+    nanosec: 480138457
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374572
+    nanosec: 512016644
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374573
+    nanosec: 544049309
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374574
+    nanosec: 580544342
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374575
+    nanosec: 612731406
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374576
+    nanosec: 645068071
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374577
+    nanosec: 677130888
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374578
+    nanosec: 709182429
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374579
+    nanosec: 741415239
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374580
+    nanosec: 773220275
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374581
+    nanosec: 805622574
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374582
+    nanosec: 841831737
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374583
+    nanosec: 873748424
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374584
+    nanosec: 906162136
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374585
+    nanosec: 938414842
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374586
+    nanosec: 970513948
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374588
+    nanosec: 2525674
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374589
+    nanosec: 34585104
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374590
+    nanosec: 66887539
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374591
+    nanosec: 103037909
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374592
+    nanosec: 135190126
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374593
+    nanosec: 167342855
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374594
+    nanosec: 199407875
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374595
+    nanosec: 231467528
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374596
+    nanosec: 263940356
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374597
+    nanosec: 295855864
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374598
+    nanosec: 328007494
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374599
+    nanosec: 364276112
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374600
+    nanosec: 396492722
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374601
+    nanosec: 428809793
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374602
+    nanosec: 460581053
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374603
+    nanosec: 492978923
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374604
+    nanosec: 525016763
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374605
+    nanosec: 557143182
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374606
+    nanosec: 589026638
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374607
+    nanosec: 621225898
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374608
+    nanosec: 657504330
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374609
+    nanosec: 689834920
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374610
+    nanosec: 722008778
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374611
+    nanosec: 754147044
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374612
+    nanosec: 786467530
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374613
+    nanosec: 818465980
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374614
+    nanosec: 850552480
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374615
+    nanosec: 882784586
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374616
+    nanosec: 919053106
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374617
+    nanosec: 950903123
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374618
+    nanosec: 983387544
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374620
+    nanosec: 15502825
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374621
+    nanosec: 47516161
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374622
+    nanosec: 79835953
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374623
+    nanosec: 111832426
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374624
+    nanosec: 143867621
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374625
+    nanosec: 180184845
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374626
+    nanosec: 212463102
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374627
+    nanosec: 244520412
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374628
+    nanosec: 276793664
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374629
+    nanosec: 308603633
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374630
+    nanosec: 340691856
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374631
+    nanosec: 373061144
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374632
+    nanosec: 405168870
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374633
+    nanosec: 441436171
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374634
+    nanosec: 473421139
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374635
+    nanosec: 505762457
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374636
+    nanosec: 537574292
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374637
+    nanosec: 570021475
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374638
+    nanosec: 602197301
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374639
+    nanosec: 634043539
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374640
+    nanosec: 666191326
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374641
+    nanosec: 702797433
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374642
+    nanosec: 734892993
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374643
+    nanosec: 766983017
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374644
+    nanosec: 799156355
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374645
+    nanosec: 831381145
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374646
+    nanosec: 863518162
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374647
+    nanosec: 895493953
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374648
+    nanosec: 927677970
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374649
+    nanosec: 963918755
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374650
+    nanosec: 996107742
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374652
+    nanosec: 28064352
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374653
+    nanosec: 60546136
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374654
+    nanosec: 92550298
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374655
+    nanosec: 124766026
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374656
+    nanosec: 156510115
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374657
+    nanosec: 189007999
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374658
+    nanosec: 225176903
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374659
+    nanosec: 257421273
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374660
+    nanosec: 289492960
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374661
+    nanosec: 321754305
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374662
+    nanosec: 353841845
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374663
+    nanosec: 385740459
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374664
+    nanosec: 418006136
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374665
+    nanosec: 450168257
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374666
+    nanosec: 486436233
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374667
+    nanosec: 518462388
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374668
+    nanosec: 550868823
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374669
+    nanosec: 582932317
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374670
+    nanosec: 615052512
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374671
+    nanosec: 647189539
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374672
+    nanosec: 679357663
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374673
+    nanosec: 711467500
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374674
+    nanosec: 747592235
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374675
+    nanosec: 779840454
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374676
+    nanosec: 811979691
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374677
+    nanosec: 844074435
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374678
+    nanosec: 876572334
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374679
+    nanosec: 908454714
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374680
+    nanosec: 940477037
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374681
+    nanosec: 972760076
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374683
+    nanosec: 8857836
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374684
+    nanosec: 41013549
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374685
+    nanosec: 73350762
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374686
+    nanosec: 105426728
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374687
+    nanosec: 137468498
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374688
+    nanosec: 169532608
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374689
+    nanosec: 201656812
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374690
+    nanosec: 233833709
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374691
+    nanosec: 270071058
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374692
+    nanosec: 302350951
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374693
+    nanosec: 334572658
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374694
+    nanosec: 366687468
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374695
+    nanosec: 398734096
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374696
+    nanosec: 430919084
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374697
+    nanosec: 462752024
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374698
+    nanosec: 495169175
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374699
+    nanosec: 531453225
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374700
+    nanosec: 563382684
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374701
+    nanosec: 596396440
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374702
+    nanosec: 627870620
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374703
+    nanosec: 660000685
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374704
+    nanosec: 692168572
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374705
+    nanosec: 724351384
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374706
+    nanosec: 756456747
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374707
+    nanosec: 792457819
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374708
+    nanosec: 824569827
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374709
+    nanosec: 856943756
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374710
+    nanosec: 889002350
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374711
+    nanosec: 921326316
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374712
+    nanosec: 953282757
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374713
+    nanosec: 985412352
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374715
+    nanosec: 17738860
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374716
+    nanosec: 53799040
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374717
+    nanosec: 86023573
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374718
+    nanosec: 118331302
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374719
+    nanosec: 150146472
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374720
+    nanosec: 182396577
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374721
+    nanosec: 214740686
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374722
+    nanosec: 246729916
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374723
+    nanosec: 278838636
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374724
+    nanosec: 314948705
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374725
+    nanosec: 347381297
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374726
+    nanosec: 379415191
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374727
+    nanosec: 411356003
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374728
+    nanosec: 443794096
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374729
+    nanosec: 475701903
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374730
+    nanosec: 507924021
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374731
+    nanosec: 539910445
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374732
+    nanosec: 576381487
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374733
+    nanosec: 608453949
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374734
+    nanosec: 640744247
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374735
+    nanosec: 672781104
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374736
+    nanosec: 704986987
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374737
+    nanosec: 737254128
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374738
+    nanosec: 769307981
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374739
+    nanosec: 801354068
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374740
+    nanosec: 837357538
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374741
+    nanosec: 869608217
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374742
+    nanosec: 901726130
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374743
+    nanosec: 933904197
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374744
+    nanosec: 966314202
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374745
+    nanosec: 998298659
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374747
+    nanosec: 30431818
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374748
+    nanosec: 62449914
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374749
+    nanosec: 94649631
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374750
+    nanosec: 130856957
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374751
+    nanosec: 163320995
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374752
+    nanosec: 195394684
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374753
+    nanosec: 227474999
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374754
+    nanosec: 259387838
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374755
+    nanosec: 291465375
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374756
+    nanosec: 323689551
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374757
+    nanosec: 355933206
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374758
+    nanosec: 392044856
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374759
+    nanosec: 424353498
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374760
+    nanosec: 456666723
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374761
+    nanosec: 488717844
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374762
+    nanosec: 520954312
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374763
+    nanosec: 552813389
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374764
+    nanosec: 584924882
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374765
+    nanosec: 616932266
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374766
+    nanosec: 653372378
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374767
+    nanosec: 685452002
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374768
+    nanosec: 717799468
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374769
+    nanosec: 749939018
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374770
+    nanosec: 782199509
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374771
+    nanosec: 814331392
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374772
+    nanosec: 846229665
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374773
+    nanosec: 878367992
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374774
+    nanosec: 914713007
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374775
+    nanosec: 946841328
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374776
+    nanosec: 978868141
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374778
+    nanosec: 10979991
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374779
+    nanosec: 43147059
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374780
+    nanosec: 75272916
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374781
+    nanosec: 107353790
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374782
+    nanosec: 139506069
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374783
+    nanosec: 175936203
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374784
+    nanosec: 208253020
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374785
+    nanosec: 240229989
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374786
+    nanosec: 272342485
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374787
+    nanosec: 304700636
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374788
+    nanosec: 336466321
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374789
+    nanosec: 368836713
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374790
+    nanosec: 400878999
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374791
+    nanosec: 437010170
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374792
+    nanosec: 469351210
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374793
+    nanosec: 501347472
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374794
+    nanosec: 533587471
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374795
+    nanosec: 565815215
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374796
+    nanosec: 598002782
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374797
+    nanosec: 630020288
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374798
+    nanosec: 662149855
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374799
+    nanosec: 698301420
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374800
+    nanosec: 730444446
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374801
+    nanosec: 762672195
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374802
+    nanosec: 794955040
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374803
+    nanosec: 826986340
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374804
+    nanosec: 859372342
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374805
+    nanosec: 891357992
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374806
+    nanosec: 923384979
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374807
+    nanosec: 959508096
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374808
+    nanosec: 991828688
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374810
+    nanosec: 23951966
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374811
+    nanosec: 55989364
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374812
+    nanosec: 88351424
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374813
+    nanosec: 120595905
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374814
+    nanosec: 152654219
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374815
+    nanosec: 184478337
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374816
+    nanosec: 220876921
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374817
+    nanosec: 252945343
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374818
+    nanosec: 285405316
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374819
+    nanosec: 317448376
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374820
+    nanosec: 349586552
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---
+header:
+  stamp:
+    sec: 1753374821
+    nanosec: 381341104
+  frame_id: distance_sensor_0
+radiation_type: 1
+field_of_view: 0.0
+min_range: 0.02500000037252903
+max_range: 0.03500000014901161
+range: .inf
+variance: 0.0
+---

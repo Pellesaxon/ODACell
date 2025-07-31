@@ -89,6 +89,8 @@ private:
   // Map of publishers by sensor ID, e.g. 0, 1, 2, etc.
   std::map<int, rclcpp::Publisher<sensor_msgs::msg::Range>::SharedPtr> publishers_;
   rclcpp_action::Server<ControlStreaming>::SharedPtr action_server_;
+  std::shared_ptr<GoalHandleControlStreaming> active_goal_handle_;
+  std::mutex goal_handle_mutex_;
 
   // Service to control laser power
   rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr aux_power_client_;

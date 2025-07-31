@@ -45,7 +45,7 @@ HGSensorNode::HGSensorNode(const rclcpp::NodeOptions &options)
     : Node("hg_sensor_node", options), serial_fd_(-1), is_streaming_(false)
 {
 
-  this->declare_parameter<std::string>("port", "/dev/ttyACM0");
+  this->declare_parameter<std::string>("port", "/dev/ttyACM1");
   this->declare_parameter<int>("baud_rate", 115200);
   this->declare_parameter<int>("num_sensors", 2);
   this->declare_parameter<std::string>("topic_prefix", "distance");
@@ -76,10 +76,8 @@ HGSensorNode::HGSensorNode(const rclcpp::NodeOptions &options)
 
   if (!connect_to_device())
   {
-    RCLCPP_ERROR(this->get_logger(), "Failed to connect to device. Shutting down.");
-    this->create_timer(1ms, []()
-                       { rclcpp::shutdown(); });
-    return;
+    RCLCPP_FATAL(this->get_logger(), "Failed to connect to device. Node cannot start.");
+    throw std::runtime_error("Failed to connect to device.");
   }
 
   action_server_ = rclcpp_action::create_server<ControlStreaming>(
@@ -389,7 +387,8 @@ void HGSensorNode::read_loop()
 
         if (distance < SENSOR_MIN_RANGE || distance > SENSOR_MAX_RANGE)
         {
-          RCLCPP_WARN(this->get_logger(), "Sensor %d: Received out-of-range or error distance: %.4f m", sensor_id, distance);
+          RCLCPP_WARN_THROTTLE(this->get_logger(), *(this->get_clock()), 5000,
+                               "Sensor ID %d reported out-of-range value: %.3f m. Publishing infinity.", sensor_id, distance);
           msg->range = std::numeric_limits<float>::infinity();
         }
         else
@@ -418,6 +417,16 @@ void HGSensorNode::read_loop()
 
 rclcpp_action::GoalResponse HGSensorNode::handle_goal(const rclcpp_action::GoalUUID &, std::shared_ptr<const ControlStreaming::Goal> goal)
 {
+  std::lock_guard<std::mutex> lock(goal_handle_mutex_);
+  if (active_goal_handle_)
+  {
+    if (active_goal_handle_->is_active())
+    {
+      RCLCPP_WARN(this->get_logger(), "A goal is already active. Rejecting new goal.");
+      return rclcpp_action::GoalResponse::REJECT;
+    }
+  }
+
   RCLCPP_INFO(this->get_logger(), "Received goal request to %s streaming", goal->start_streaming ? "START" : "STOP");
   return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
 }
@@ -430,7 +439,9 @@ rclcpp_action::CancelResponse HGSensorNode::handle_cancel(const std::shared_ptr<
 
 void HGSensorNode::handle_accepted(const std::shared_ptr<GoalHandleControlStreaming> goal_handle)
 {
+  std::lock_guard<std::mutex> lock(goal_handle_mutex_);
   std::thread{std::bind(&HGSensorNode::execute_goal, this, std::placeholders::_1), goal_handle}.detach();
+  active_goal_handle_ = goal_handle;
 }
 
 void HGSensorNode::execute_goal(const std::shared_ptr<GoalHandleControlStreaming> goal_handle)
@@ -444,6 +455,10 @@ void HGSensorNode::execute_goal(const std::shared_ptr<GoalHandleControlStreaming
     result->message = "Goal canceled.";
     goal_handle->canceled(result);
     RCLCPP_INFO(this->get_logger(), "%s", result->message.c_str());
+    {
+      std::lock_guard<std::mutex> lock(goal_handle_mutex_);
+      active_goal_handle_.reset();
+    }
     return;
   }
 
@@ -468,6 +483,10 @@ void HGSensorNode::execute_goal(const std::shared_ptr<GoalHandleControlStreaming
           result->message = "ERROR: Failed to turn on auxiliary power (laser).";
           RCLCPP_ERROR(this->get_logger(), "%s", result->message.c_str());
           goal_handle->abort(result);
+          {
+            std::lock_guard<std::mutex> lock(goal_handle_mutex_);
+            active_goal_handle_.reset();
+          }
           return;
         }
       }
@@ -500,6 +519,8 @@ void HGSensorNode::execute_goal(const std::shared_ptr<GoalHandleControlStreaming
     goal_handle->abort(result);
     RCLCPP_ERROR(this->get_logger(), "Action Aborted: %s", result->message.c_str());
   }
+  std::lock_guard<std::mutex> lock(goal_handle_mutex_);
+  active_goal_handle_.reset();
 }
 
 int main(int argc, char **argv)

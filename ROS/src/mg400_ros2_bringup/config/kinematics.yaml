@@ -1,6 +1,6 @@
 mg400_arm:
-  kinematics_solver: mg400_analytical_ik/MG400KinematicsPlugin
-  # kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  #kinematics_solver: mg400_analytical_ik/MG400KinematicsPlugin
+  kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
   kinematics_solver_joint_names:
     - j1
     - j2

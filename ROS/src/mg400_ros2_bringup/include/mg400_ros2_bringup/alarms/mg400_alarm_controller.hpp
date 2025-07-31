@@ -7,7 +7,8 @@
 namespace alarms::controller {
 
 // Data from alarm_controller.json
-constexpr std::array<ErrorInfo, 183> data = {{
+constexpr std::array<ErrorInfo, 184> data = {{
+    {-2, 0, {"Collision detected", "", ""}},
     {0, 0, {"No error", "", ""}},
     {16, 5, {"Inverse kinematics error with singularity", "", ""}},
     {17, 5, {"Inverse kinematics error with no solution", "", ""}},

@@ -1,0 +1,12 @@
+# Goal: The target joint angles in radians
+float64[4] joint_angles
+float32 speed_percent # Speed percentage (1-100)
+float32 acc_percent   # Acceleration percentage (1-100)
+---
+# Result: Final status
+int32 error_code
+string error_string
+---
+# Feedback: Current distance from target
+float64[4] current_angles
+float64[4] distance_to_goal

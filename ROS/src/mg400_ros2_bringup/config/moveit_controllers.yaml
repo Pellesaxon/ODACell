@@ -3,7 +3,7 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 moveit_simple_controller_manager:
 
   ros__parameters:
-      joint_state_topic: /mg400/joint_states
+      joint_state_topic: joint_states
       allowed_start_tolerance: 1
 
   controller_names:
