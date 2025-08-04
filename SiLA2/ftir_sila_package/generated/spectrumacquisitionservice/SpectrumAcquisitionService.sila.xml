@@ -1,0 +1,230 @@
+<Feature xmlns="http://www.sila-standard.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Category="analysis.ftir" FeatureVersion="0.2" MaturityLevel="Draft" Originator="se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry" SiLA2Version="1.1" xsi:schemaLocation="http://www.sila-standard.org https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd">
+  <Identifier>SpectrumAcquisitionService</Identifier>
+  <DisplayName>Spectrum Acquisition Service</DisplayName>
+  <Description>SiLA 2 Device Spectrum Acquisition feature - Provides control and data access for 
+        FTIR spectral measurements. It enables execution of spectrum analysis of samples with 
+        configuration of parameters such as spectral range, resolution and scan count. It also 
+        provides retrieval of spectral data in the form of wavenumber-absorbance pairs for previous
+        measurements.
+
+        This feature separates scan configuration and calibration from execution. A client must 
+        first call 'ConfigureScanAndRunBackgroundScan' to set the measurement parameters and perform 
+        a background scan. Afterward, 'RunScan' can be called to acquire a sample spectrum using the 
+        active configuration.
+
+        This feature is intended to be used with the LockController feature. Intended usecase in 
+        automated analytical workflows involving FTIR instrumentation with only one sample 
+        holder and only requires data collection but does further analysis later in the workflow.</Description>
+  <!-- Commands -->
+  <Command>
+    <Identifier>ConfigureScanAndRunBackground</Identifier>
+    <DisplayName>Configure Scan And Run Background</DisplayName>
+    <Description>Sets the configuration for subsequent scans and initiates a background scan. Before the 
+            command is called a cleaning procedure should be performed on the FTIR instrument to 
+            avoid contamination of data. This command must be successfully completed before 'RunScan' 
+            can be called.</Description>
+    <Observable>Yes</Observable>
+    <Parameter>
+      <Identifier>ScanConfiguration</Identifier>
+      <DisplayName>Scan Configuration</DisplayName>
+      <Description>The desired configuration for the scan.</Description>
+      <DataType>
+        <DataTypeIdentifier>ScanConfiguration</DataTypeIdentifier>
+      </DataType>
+    </Parameter>
+    <DefinedExecutionErrors>
+      <Identifier>InvalidConfiguration</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <Command>
+    <Identifier>RunScan</Identifier>
+    <DisplayName>Run Scan</DisplayName>
+    <Description>Initiates a scan of the currently inserted sample using the active configuration set by
+            'ConfigureScanAndRunBackground'. Retrieves the resulting spectrum data as a list of 
+            wavenumber-absorbance pairs. The server should be locked before calling this command.</Description>
+    <Observable>Yes</Observable>
+    <Response>
+      <Identifier>SampleSpectrum</Identifier>
+      <DisplayName>Sample Spectrum</DisplayName>
+      <Description>Result of the scan operation, containing the spectrum data as a list of 
+                wavenumber-Absorbance pairs.</Description>
+      <DataType>
+        <List>
+          <DataType>
+            <Structure>
+              <Element>
+                <Identifier>Wavenumber</Identifier>
+                <DisplayName>Wavenumber</DisplayName>
+                <Description>The wavenumber of the spectrum point.</Description>
+                <DataType>
+                  <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+                </DataType>
+              </Element>
+              <Element>
+                <Identifier>Absorbance</Identifier>
+                <DisplayName>Absorbance</DisplayName>
+                <Description>The absorbance at the specified wavenumber.</Description>
+                <DataType>
+                  <Constrained>
+                    <DataType>
+                      <Basic>Real</Basic>
+                    </DataType>
+                    <Constraints>
+                      <Unit>
+                        <Label>AU</Label>
+                        <Factor>1</Factor>
+                        <Offset>0</Offset>
+                        <UnitComponent>
+                          <SIUnit>Dimensionless</SIUnit>
+                          <Exponent>1</Exponent>
+                        </UnitComponent>
+                      </Unit>
+                    </Constraints>
+                  </Constrained>
+                </DataType>
+              </Element>
+            </Structure>
+          </DataType>
+        </List>
+      </DataType>
+    </Response>
+    <DefinedExecutionErrors>
+      <Identifier>ConfigurationNotSet</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <!-- Properties -->
+  <Property>
+    <Identifier>CurrentScanConfiguration</Identifier>
+    <DisplayName>Current Scan Configuration</DisplayName>
+    <Description>The currently active configuration that will be used by the 'RunScan' command.</Description>
+    <Observable>Yes</Observable>
+    <DataType>
+      <DataTypeIdentifier>ScanConfiguration</DataTypeIdentifier>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>MaximumSupportedWavenumber</Identifier>
+    <DisplayName>Maximum Supported Wavenumber</DisplayName>
+    <Description>Maximum supported wavenumber for a scan</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>MinimumSupportedWavenumber</Identifier>
+    <DisplayName>Minimum Supported Wavenumber</DisplayName>
+    <Description>Minimum supported wavenumber for a scan</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>SupportedResolutions</Identifier>
+    <DisplayName>Supported Resolutions</DisplayName>
+    <Description>Supported measurement resolutions for a scan</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <List>
+        <DataType>
+          <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+        </DataType>
+      </List>
+    </DataType>
+  </Property>
+  <!-- DataTypeDefinitions -->
+  <DataTypeDefinition>
+    <Identifier>Wavenumber</Identifier>
+    <DisplayName>Wavenumber</DisplayName>
+    <Description>Unit of measurement used in spectroscopy, representing the number of wave cycles in a 
+            unit distance. The unit is here represented in reciprocal centimeters (cm-1), which 
+            is commonly used in FTIR spectroscopy.</Description>
+    <DataType>
+      <Constrained>
+        <DataType>
+          <Basic>Real</Basic>
+        </DataType>
+        <Constraints>
+          <Unit>
+            <Label>cm-1</Label>
+            <Factor>0.01</Factor>
+            <Offset>0</Offset>
+            <UnitComponent>
+              <SIUnit>Meter</SIUnit>
+              <Exponent>-1</Exponent>
+            </UnitComponent>
+          </Unit>
+          <MinimalExclusive>0</MinimalExclusive>
+        </Constraints>
+      </Constrained>
+    </DataType>
+  </DataTypeDefinition>
+  <DataTypeDefinition>
+    <Identifier>ScanConfiguration</Identifier>
+    <DisplayName>Scan Configuration</DisplayName>
+    <Description>A structure holding all configuration settings for a scan operation.</Description>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>UpperWavenumber</Identifier>
+          <DisplayName>Upper Wavenumber</DisplayName>
+          <Description>The maximum wavenumber of the spectral range to be measured. Upper Wavenumber must be 
+                        greater than or equal to the Lower Wavenumber. Upper Wavenumber must be less than or 
+                        equal to Maximum Supported Wavenumber (see property).</Description>
+          <DataType>
+            <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>LowerWavenumber</Identifier>
+          <DisplayName>Lower Wavenumber</DisplayName>
+          <Description>The minimum wavenumber of the spectral range to be measured. Lower Wavenumber must be
+                        less than or equal to the Upper Wavenumber. Lower Wavenumber must be greater than or
+                        equal to Minimum Supported Wavenumber (see property).</Description>
+          <DataType>
+            <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Resolution</Identifier>
+          <DisplayName>Resolution</DisplayName>
+          <Description>Measurement resolution in wavenumbers. 
+                        Must be in the set of Supported Resolutions (see property).</Description>
+          <DataType>
+            <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>SampleScans</Identifier>
+          <DisplayName>Sample Scans</DisplayName>
+          <Description>Number of scans to average for the sample.</Description>
+          <DataType>
+            <Constrained>
+              <DataType>
+                <Basic>Integer</Basic>
+              </DataType>
+              <Constraints>
+                <MinimalInclusive>1</MinimalInclusive>
+                <MaximalInclusive>32</MaximalInclusive>
+              </Constraints>
+            </Constrained>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </DataTypeDefinition>
+  <!-- DefinedExecutionErrors -->
+  <DefinedExecutionError>
+    <Identifier>ConfigurationNotSet</Identifier>
+    <DisplayName>Configuration Not Set</DisplayName>
+    <Description>The 'RunScan' command was called before a scan configuration was successfully set by the
+            'ConfigureScanAndRunBackground' command.</Description>
+  </DefinedExecutionError>
+  <DefinedExecutionError>
+    <Identifier>InvalidConfiguration</Identifier>
+    <DisplayName>Invalid Configuration</DisplayName>
+    <Description>The provided scan configuration parameters are not valid or supported by the device.
+            Check the supported value ranges provided by the feature's properties.</Description>
+  </DefinedExecutionError>
+</Feature>

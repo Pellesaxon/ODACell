@@ -44,7 +44,9 @@
                 <DataTypeIdentifier>ScanConfiguration</DataTypeIdentifier>
             </DataType>
         </Parameter>
-        <DefinedExecutionError>InvalidConfiguration</DefinedExecutionError>
+        <DefinedExecutionErrors>
+            <Identifier>InvalidConfiguration</Identifier>
+        </DefinedExecutionErrors>
     </Command>
     <Command>
         <Identifier>RunScan</Identifier>
@@ -102,7 +104,9 @@
                 </List>
             </DataType>
         </Response>
-        <DefinedExecutionError>ConfigurationNotSet</DefinedExecutionError>
+        <DefinedExecutionErrors>
+            <Identifier>ConfigurationNotSet</Identifier>
+        </DefinedExecutionErrors>
     </Command>
     <!-- Properties -->
     <Property>
@@ -171,6 +175,7 @@
                             <Exponent>-1</Exponent>
                         </UnitComponent>
                     </Unit>
+                    <MinimalExclusive>0</MinimalExclusive>
                 </Constraints>
             </Constrained>
         </DataType>
