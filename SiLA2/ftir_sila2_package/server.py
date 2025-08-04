@@ -18,17 +18,16 @@ class Server(SilaServer):
         name: Optional[str] = None,
         description: Optional[str] = None,
     ):
-        # TODO: fill in your server information
         if name is None:
-            name = "TODO"
+            name = "Agilent Cary 630 FTIR"
         if description is None:
-            description = "TODO"
+            description = "SiLA2 server for Agilent Cary 630 FTIR spectrometer. It can be used to take FTIR spectra and control the instrument."
         super().__init__(
             server_name=name,
             server_description=description,
-            server_type="TODO",
+            server_type="AgilentCary630FTIR",
             server_version="0.1",
-            server_vendor_url="https://gitlab.com/SiLA2/sila_python",
+            server_vendor_url="https://gitlab.com/TODO:",
             server_uuid=server_uuid if server_uuid is not None else uuid4(),
         )
 

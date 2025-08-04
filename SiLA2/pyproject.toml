@@ -1,5 +1,5 @@
 [project]
-name = "ftir_sila_package"
+name = "ftir_sila2_package"
 version = "0.0.0"
 requires-python = ">=3.8"
 dependencies = [
@@ -12,10 +12,10 @@ requires = ["setuptools>=61.0.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["ftir_sila_package*"]
+include = ["ftir_sila2_package*"]
 
 [tool.setuptools.package-data]
-"ftir_sila_package.generated" = [
+"ftir_sila2_package.generated" = [
     "*/*.sila.xml",
     "*/*.proto",
 ]
