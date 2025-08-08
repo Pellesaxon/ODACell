@@ -3,20 +3,35 @@ from __future__ import annotations
 
 from datetime import timedelta
 from typing import TYPE_CHECKING, List
+import logging
+from threading import Lock
 
 from sila2.server import MetadataDict, ObservableCommandInstance
+from sila2.framework import CommandExecutionNotAccepted
 
 from ..generated.spectrumacquisitionservice import (
     ConfigureScanAndRunBackground_Responses,
     RunScan_Responses,
     ScanConfiguration,
+    SpectrumAcquisitionServiceFeature,
     SpectrumAcquisitionServiceBase,
     Wavenumber,
+    ConfigurationNotSet,
+    InvalidConfiguration,
 )
+from sila2.framework import FullyQualifiedIdentifier
 
 if TYPE_CHECKING:
     from ..server import Server
 
+unlocked_commands: List[FullyQualifiedIdentifier] = [
+    SpectrumAcquisitionServiceFeature["SupportedResolutions"],
+    SpectrumAcquisitionServiceFeature["MinimumSupportedWavenumber"],
+    SpectrumAcquisitionServiceFeature["MaximumSupportedWavenumber"],
+    SpectrumAcquisitionServiceFeature["CurrentScanConfiguration"],
+]
+
+logger = logging.getLogger(__name__)
 
 class SpectrumAcquisitionServiceImpl(SpectrumAcquisitionServiceBase):
     def __init__(self, parent_server: Server) -> None:
@@ -27,26 +42,58 @@ class SpectrumAcquisitionServiceImpl(SpectrumAcquisitionServiceBase):
         # datetime.timedelta: Command instance is deleted after this duration, can be increased during command runtime
         self.ConfigureScanAndRunBackground_default_lifetime_of_execution = timedelta(minutes=30)
         self.RunScan_default_lifetime_of_execution = timedelta(minutes=30)
+        self.execution_lock = Lock()
+        
 
     def get_MaximumSupportedWavenumber(self, *, metadata: MetadataDict) -> Wavenumber:
-        raise NotImplementedError  # TODO
+        return 4000.0
 
     def get_MinimumSupportedWavenumber(self, *, metadata: MetadataDict) -> Wavenumber:
-        raise NotImplementedError  # TODO
+        return 650.0
 
     def get_SupportedResolutions(self, *, metadata: MetadataDict) -> List[Wavenumber]:
-        raise NotImplementedError  # TODO
+        return [2.0, 4.0, 8.0, 16.0]
 
     def ConfigureScanAndRunBackground(
         self, ScanConfiguration: ScanConfiguration, *, metadata: MetadataDict, instance: ObservableCommandInstance
     ) -> ConfigureScanAndRunBackground_Responses:
-        # set execution status from `waiting` to `running`
+        
+        if not self.execution_lock.acquire(blocking=False):
+            raise CommandExecutionNotAccepted("Another command is currently running, please try again later.")
+        
         instance.begin_execution()
+        
+        try:
+            # Check arguments
+            if (not ScanConfiguration.SampleScans >= 1
+                or not ScanConfiguration.Resolution in self.get_SupportedResolutions()
+                or not ScanConfiguration.LowerWavenumber >= self.get_MinimumSupportedWavenumber()
+                or not ScanConfiguration.UpperWavenumber <= self.get_MaximumSupportedWavenumber()):
+                raise InvalidConfiguration(
+                    f"Invalid scan configuration: SampleScans must be >= 1, Resolution must be supported, LowerWavenumber must be >= {self.get_MinimumSupportedWavenumber()} , UpperWavenumber must be <= {self.get_MaximumSupportedWavenumber()}")
 
-        raise NotImplementedError  # TODO
+            # Set config in backend and application
+            self.update_CurrentScanConfiguration(ScanConfiguration)
+
+
+        except TypeError as e:
+            raise InvalidConfiguration(f"Invalid configuration: {e}")
+
+        finally:
+            self.execution_lock.release()
 
     def RunScan(self, *, metadata: MetadataDict, instance: ObservableCommandInstance) -> RunScan_Responses:
-        # set execution status from `waiting` to `running`
-        instance.begin_execution()
+        
+        if not self.execution_lock.acquire(blocking=False):
+            raise CommandExecutionNotAccepted("Another command is currently running, please try again later.")
+        try:
+            t = self.current_CurrentScanConfiguration
+            # set execution status from `waiting` to `running`
+            raise InvalidConfiguration  # TODO
+            instance.begin_execution() 
 
-        raise NotImplementedError  # TODO
+        except AttributeError:
+            raise ConfigurationNotSet("No scan configuration is set. Please call 'ConfigureScanAndRunBackground' first.")
+        
+        finally:
+            self.execution_lock.release()

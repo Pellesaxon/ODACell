@@ -2,6 +2,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Any, List, Optional, Union
+import logging
 
 from sila2.features.lockcontroller import (
     InvalidLockIdentifier,
@@ -12,10 +13,23 @@ from sila2.features.lockcontroller import (
     ServerNotLocked,
     UnlockServer_Responses,
 )
+
 from sila2.framework import Command, Feature, FullyQualifiedIdentifier, Property
 from sila2.server import MetadataInterceptor, SilaServer
 from sila2.server.metadata_dict import MetadataDict
 
+from .spectrumacquisitionservice_impl import (
+    unlocked_commands as spectrum_unlocked_commands
+)
+
+unlocked_commands: List[Union[FullyQualifiedIdentifier, Command, Property]] = [
+    LockControllerFeature["LockServer"],
+    LockControllerFeature["UnlockServer"],
+    LockControllerFeature["IsLocked"],
+]
+unlocked_commands.extend(spectrum_unlocked_commands)
+
+logger = logging.getLogger(__name__)
 
 @dataclass
 class Lock:
@@ -25,6 +39,8 @@ class Lock:
 
     @property
     def is_expired(self):
+        if self.timeout_duration == timedelta(seconds=0):
+            return False
         return (datetime.now() - self.timeout_duration) > self.last_usage
 
 
@@ -65,12 +81,33 @@ class LockControllerImpl(LockControllerBase):
         return UnlockServer_Responses()
 
     def get_calls_affected_by_LockIdentifier(self) -> List[Union[Feature, Command, Property, FullyQualifiedIdentifier]]:
-        return [
-            feature
-            for feature in self.parent_server.features.values()
-            if feature._identifier not in ("SiLAService", "LockController")
-        ]
+        # Create a set of unlocked FQIs for efficient lookup
+        unlocked_set = {
+            item.fully_qualified_identifier if hasattr(item, "fully_qualified_identifier") else item
+            for item in unlocked_commands
+        }
 
+        affected_calls = []
+        for feature in self.parent_server.features.values():
+            # The core SiLAService feature should never be locked
+            if feature._identifier == "SiLAService":
+                continue
+
+            # Combine all commands and properties from the feature into one list
+            all_callables = (
+                list(feature._observable_commands.values())
+                + list(feature._unobservable_commands.values())
+                + list(feature._observable_properties.values())
+                + list(feature._unobservable_properties.values())
+            )
+
+            # Add any callable to the affected list if it's not in the unlocked set
+            for call in all_callables:
+                if call.fully_qualified_identifier not in unlocked_set:
+                    affected_calls.append(call)
+            
+            logger.debug("Affected calls: %s", affected_calls)
+        return affected_calls
 
 class LockControllerInterceptor(MetadataInterceptor):
     def __init__(self, lockcontroller_impl: LockControllerImpl):
@@ -78,6 +115,12 @@ class LockControllerInterceptor(MetadataInterceptor):
         self.lockcontroller_impl = lockcontroller_impl
 
     def intercept(self, parameters: Any, metadata: MetadataDict, target_call: FullyQualifiedIdentifier) -> None:
+        if not self.lockcontroller_impl.is_locked:
+            return
+        
         token: str = metadata[LockControllerFeature["LockIdentifier"]]
+        logger.debug("Intercepting locked call %s with LockIdentifier: %s", target_call, token)
+
         if token != self.lockcontroller_impl.lock.token:
-            raise InvalidLockIdentifier
+            raise InvalidLockIdentifier("The provided LockIdentifier is not valid.")
+        
