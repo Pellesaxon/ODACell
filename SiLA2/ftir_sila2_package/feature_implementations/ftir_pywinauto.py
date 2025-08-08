@@ -4,15 +4,24 @@ import time
 import logging
 import os
 import pathlib
+import collections
 
 logger = logging.getLogger(__name__)
 method_name = "__pywinauto_method__"
 reuslt_folder_name = "pywinauto" # folder extension from base result folder
+main_window = None
 
 app = None
 
+ScanConfiguration = collections.namedtuple(
+    "ScanConfiguration", ["SampleScans", "Resolution", "LowerWavenumber", "UpperWavenumber"]
+)
+default_scan_configuration = ScanConfiguration(
+    SampleScans=16, Resolution="4", LowerWavenumber="650", UpperWavenumber="4000"
+)
+
 def start_and_login():
-    global app
+    global app, main_window
 
     # Start the application 
     app = Application(backend="uia").start(r"C:\Program Files (x86)\Agilent\MicroLab PC\MicroLabPC.exe")
@@ -39,19 +48,8 @@ def start_and_login():
         app.kill()
         exit(-1)
 
-# def thread_connect_to_window():
-#     try:
-#         logger = logging.getLogger(__name__)
-#         confirm = app.window(title_re=".*MicroLab.*") 
-#         confirm.wait('visible', timeout=1)
-#         logger.debug("Thread conected to window")
-
-#     except Exception as e:
-#         logger.error("Dialog handling failed: %s", e)
-#         app.kill()
-#         exit(-1)
-            
-def configure_scan(main_window):
+def configure_scan(scan_configuration=default_scan_configuration):
+    global app, main_window
     main_window.set_focus()
     ### HOME MENU BUTTON MAPPINGS
     # main_window.Button1: close?
@@ -140,16 +138,16 @@ def configure_scan(main_window):
     logger.debug("Spectral range - 'Full' checkbox state after: %s", full_spectrum_checkbox.get_toggle_state())
 
     # Edit spectral range
-    main_window.SpectralRangeEdit.type_keys("1200") # High
-    main_window.toEdit.type_keys("800")             # Low
-
+    main_window.SpectralRangeEdit.type_keys(scan_configuration.UpperWavenumber) # High
+    main_window.toEdit.type_keys(scan_configuration.LowerWavenumber)             # Low
+    
     # Edit sample scans
-    main_window.SampleScansEdit.type_keys("4") # High
+    main_window.SampleScansEdit.type_keys(scan_configuration.SampleScans) # Sample scans
 
     # Edit resolution
     resolution_combobox = main_window.resolution_combobox.wrapper_object()
     logger.debug("Resolution combobox object: %s", resolution_combobox)
-    resolution_combobox.select("8")
+    resolution_combobox.select(scan_configuration.Resolution) # Select resolution
 
     ### EDIT SUBMENU BUTTON MAPPINGS (only tested from Instrument tab)
     # main_window.button3 : methods
@@ -173,7 +171,8 @@ def configure_scan(main_window):
     
     ### Entering home menue
     
-def run_background(main_window):
+def run_background_scan():
+    global app, main_window
     main_window.set_focus()
     logger.info("Running background scan")
     main_window.Button6.click_input() #Start
@@ -193,7 +192,8 @@ def run_background(main_window):
         logger.warning("Background scan already ran for selected method")
     main_window.Button4.click_input() # Home
 
-def run_scan(main_window):
+def run_scan():
+    global app, main_window
     main_window.set_focus()
     logger.info("Running scan")
     main_window.Button6.click_input() # Start
@@ -258,8 +258,10 @@ def run_scan(main_window):
 
     return(path_and_filename)
 
-
-
+def kill_app():
+    global app, main_window
+    if app:
+        app.kill()
 
 
 def main():
@@ -271,21 +273,21 @@ def main():
 
     logger.info('Started ftir_pywinauto.py main method')
     try:
-        main_window = start_and_login()
+        start_and_login()
 
-        # configure_scan(main_window)
+        # configure_scan()
 
-        configure_scan(main_window)
-        run_background(main_window)
+        configure_scan()
+        run_background_scan()
 
-        run_background(main_window)
+        run_background_scan()
 
-        spectrum_data_path=run_scan(main_window)
+        spectrum_data_path=run_scan()
         logger.info("Spectrum data stored at: %s", spectrum_data_path)
 
     except Exception as e:
-        print(f"Error interacting with UI: {e}")
-        app.kill()
+        logger.error("Error interacting with UI: %s", e)
+        kill_app()
         exit()
 
     logger.info('Finished ftir_pywinauto.py main method')

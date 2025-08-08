@@ -5,6 +5,8 @@ from datetime import timedelta
 from typing import TYPE_CHECKING, List
 import logging
 from threading import Lock
+import collections
+import csv
 
 from sila2.server import MetadataDict, ObservableCommandInstance
 from sila2.framework import CommandExecutionNotAccepted
@@ -20,6 +22,8 @@ from ..generated.spectrumacquisitionservice import (
     InvalidConfiguration,
 )
 from sila2.framework import FullyQualifiedIdentifier
+
+from .ftir_pywinauto import start_and_login, configure_scan, run_background_scan, run_scan
 
 if TYPE_CHECKING:
     from ..server import Server
@@ -43,8 +47,8 @@ class SpectrumAcquisitionServiceImpl(SpectrumAcquisitionServiceBase):
         self.ConfigureScanAndRunBackground_default_lifetime_of_execution = timedelta(minutes=30)
         self.RunScan_default_lifetime_of_execution = timedelta(minutes=30)
         self.execution_lock = Lock()
+        start_and_login() # Start the FTIR application and log in
         
-
     def get_MaximumSupportedWavenumber(self, *, metadata: MetadataDict) -> Wavenumber:
         return 4000.0
 
@@ -55,26 +59,33 @@ class SpectrumAcquisitionServiceImpl(SpectrumAcquisitionServiceBase):
         return [2.0, 4.0, 8.0, 16.0]
 
     def ConfigureScanAndRunBackground(
-        self, ScanConfiguration: ScanConfiguration, *, metadata: MetadataDict, instance: ObservableCommandInstance
-    ) -> ConfigureScanAndRunBackground_Responses:
+        self, ScanConfiguration: ScanConfiguration, *, 
+        metadata: MetadataDict, instance: ObservableCommandInstance
+        ) -> ConfigureScanAndRunBackground_Responses:
         
         if not self.execution_lock.acquire(blocking=False):
             raise CommandExecutionNotAccepted("Another command is currently running, please try again later.")
         
-        instance.begin_execution()
-        
         try:
+            instance.begin_execution()
             # Check arguments
             if (not ScanConfiguration.SampleScans >= 1
                 or not ScanConfiguration.Resolution in self.get_SupportedResolutions()
                 or not ScanConfiguration.LowerWavenumber >= self.get_MinimumSupportedWavenumber()
                 or not ScanConfiguration.UpperWavenumber <= self.get_MaximumSupportedWavenumber()):
-                raise InvalidConfiguration(
-                    f"Invalid scan configuration: SampleScans must be >= 1, Resolution must be supported, LowerWavenumber must be >= {self.get_MinimumSupportedWavenumber()} , UpperWavenumber must be <= {self.get_MaximumSupportedWavenumber()}")
+                raise InvalidConfiguration()
 
             # Set config in backend and application
             self.update_CurrentScanConfiguration(ScanConfiguration)
-
+            instance.progress = 0.1
+            configure_scan(ScanConfiguration)
+            instance.progress = 0.5
+            
+            # Run background scan
+            run_background_scan(ScanConfiguration)
+            instance.progress = 1.0
+            
+            return ConfigureScanAndRunBackground_Responses()
 
         except TypeError as e:
             raise InvalidConfiguration(f"Invalid configuration: {e}")
@@ -87,13 +98,31 @@ class SpectrumAcquisitionServiceImpl(SpectrumAcquisitionServiceBase):
         if not self.execution_lock.acquire(blocking=False):
             raise CommandExecutionNotAccepted("Another command is currently running, please try again later.")
         try:
-            t = self.current_CurrentScanConfiguration
+            if self.current_CurrentScanConfiguration == None:
+                raise ConfigurationNotSet()
+            
             # set execution status from `waiting` to `running`
-            raise InvalidConfiguration  # TODO
             instance.begin_execution() 
-
-        except AttributeError:
-            raise ConfigurationNotSet("No scan configuration is set. Please call 'ConfigureScanAndRunBackground' first.")
+            
+            instance.progress = 0.1
+            spectrum_data_path = run_scan(self.current_CurrentScanConfiguration)
+            instance.progress = 0.5
+            
+            # Retrieve the spectrum data
+            # Retrieve the spectrum data
+            SpectrumPoint = collections.namedtuple("SpectrumPoint", ["Wavenumber", "Absorbance"])
+            spectrum_data = []
+            with open(spectrum_data_path, 'r', newline='') as csvfile:
+                reader = csv.reader(csvfile)
+                next(reader)  # Skip header row
+                for row in reader:
+                    if row: # ensure row is not empty
+                        wavenumber = float(row[0])
+                        absorbance = float(row[1])
+                        spectrum_data.append(SpectrumPoint(Wavenumber=wavenumber, Absorbance=absorbance))
+            
+            instance.progress = 1.0
+            return RunScan_Responses(SampleSpectrum=spectrum_data)
         
         finally:
             self.execution_lock.release()
