@@ -7,6 +7,7 @@ import logging
 from threading import Lock
 import collections
 import csv
+import atexit
 
 from sila2.server import MetadataDict, ObservableCommandInstance
 from sila2.framework import CommandExecutionNotAccepted
@@ -23,7 +24,7 @@ from ..generated.spectrumacquisitionservice import (
 )
 from sila2.framework import FullyQualifiedIdentifier
 
-from .ftir_pywinauto import start_and_login, configure_scan, run_background_scan, run_scan
+from .ftir_pywinauto import start_and_login, configure_scan, run_background_scan, run_scan, kill_app
 
 if TYPE_CHECKING:
     from ..server import Server
@@ -48,6 +49,8 @@ class SpectrumAcquisitionServiceImpl(SpectrumAcquisitionServiceBase):
         self.RunScan_default_lifetime_of_execution = timedelta(minutes=30)
         self.execution_lock = Lock()
         start_and_login() # Start the FTIR application and log in
+
+        atexit.register(kill_app)
         
     def get_MaximumSupportedWavenumber(self, *, metadata: MetadataDict) -> Wavenumber:
         return 4000.0
@@ -70,19 +73,21 @@ class SpectrumAcquisitionServiceImpl(SpectrumAcquisitionServiceBase):
             instance.begin_execution()
             # Check arguments
             if (not ScanConfiguration.SampleScans >= 1
-                or not ScanConfiguration.Resolution in self.get_SupportedResolutions()
-                or not ScanConfiguration.LowerWavenumber >= self.get_MinimumSupportedWavenumber()
-                or not ScanConfiguration.UpperWavenumber <= self.get_MaximumSupportedWavenumber()):
+                or not ScanConfiguration.Resolution in self.get_SupportedResolutions(metadata=MetadataDict)
+                or not ScanConfiguration.LowerWavenumber >= self.get_MinimumSupportedWavenumber(metadata=MetadataDict)
+                or not ScanConfiguration.UpperWavenumber <= self.get_MaximumSupportedWavenumber(metadata=MetadataDict)):
                 raise InvalidConfiguration()
 
             # Set config in backend and application
-            self.update_CurrentScanConfiguration(ScanConfiguration)
             instance.progress = 0.1
             configure_scan(ScanConfiguration)
             instance.progress = 0.5
             
             # Run background scan
-            run_background_scan(ScanConfiguration)
+            run_background_scan()
+            instance.progress = 0.9
+
+            self.update_CurrentScanConfiguration(ScanConfiguration)
             instance.progress = 1.0
             
             return ConfigureScanAndRunBackground_Responses()
@@ -105,10 +110,10 @@ class SpectrumAcquisitionServiceImpl(SpectrumAcquisitionServiceBase):
             instance.begin_execution() 
             
             instance.progress = 0.1
-            spectrum_data_path = run_scan(self.current_CurrentScanConfiguration)
+            spectrum_data_path = run_scan()
             instance.progress = 0.5
+            logger.info("Spectrum data stored at: %s", spectrum_data_path)
             
-            # Retrieve the spectrum data
             # Retrieve the spectrum data
             SpectrumPoint = collections.namedtuple("SpectrumPoint", ["Wavenumber", "Absorbance"])
             spectrum_data = []
