@@ -5,6 +5,7 @@ requires-python = ">=3.8"
 dependencies = [
     "sila2",
     "typer",
+    "pywinauto",
 ]
 
 [build-system]
