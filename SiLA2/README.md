@@ -5,7 +5,7 @@
 ### Install FTIR server
 
 Navigate to `SiLA2` folder and run `pip install -e .`
-It is advised to use a python virtual environment.
+It is advised to use a python virtual environment for just this server installed the `requirements.txt`
 
 ### Start FTIR server
 IP address 0.0.0.0 listens on all addresses improving auto discovery. Port might have to be changed if multiple servers run on the same computer.
