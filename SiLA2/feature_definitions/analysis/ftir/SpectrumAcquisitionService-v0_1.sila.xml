@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Feature SiLA2Version="1.1" FeatureVersion="0.1" MaturityLevel="Draft" Originator="TODO.TODO" Category="analysis.ftir"
+        xmlns="http://www.sila-standard.org"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sila-standard.org https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd">
+    <Identifier>SpectrumAcquisitionService</Identifier>
+    <DisplayName>Spectrum Acquisition Service</DisplayName>
+    <Description>
+        SiLA 2 Device Spectrum Acquisition feature - Provides control and data access for 
+        FTIR spectral measurements. It enables execution of spectrum analysis of samples with 
+        configuration of parameters such as spectral range, resolution and scan count. It also 
+        provides retrieval of spectral data in the form of wavenumber-absorbance pairs for previous
+        measurements.
+        
+        Intended for use in automated analytical workflows involving FTIR instrumentation which only 
+        has one sample holder and only requires data collection but does further analysis later in 
+        the workflow.
+    </Description>
+    <!-- Commands -->
+    <Command>
+        <Identifier>RunScan</Identifier>
+        <DisplayName>Run Scan</DisplayName>
+        <Description>
+            Initiates a scan of the currently inserted sample and retrieves the resulting spectrum data.
+        </Description>
+        <Observable>Yes</Observable>
+        <Parameter>
+            <Identifier>UpperWavenumber</Identifier>
+            <DisplayName>Upper Wavenumber</DisplayName>
+            <Description>
+                The maximum wavenumber of the spectral range to be measured. Upper Wavenumber must be 
+                greater than or equal to the Lower Wavenumber. Upper Wavenumber must be less than or 
+                equal to Maximum Supported Wavenumber (see property).
+            </Description>
+            <DataType>
+                <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+            </DataType>
+        </Parameter>
+        <Parameter>
+            <Identifier>LowerWavenumber</Identifier>
+            <DisplayName>Lower Wavenumber</DisplayName>
+            <Description>
+                The minimum wavenumber of the spectral range to be measured. Lower Wavenumber must be
+                less than or equal to the Upper Wavenumber. Lower Wavenumber must be greater than or
+                equal to Minimum Supported Wavenumber (see property).
+            </Description>
+            <DataType>
+                <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+            </DataType>
+        </Parameter>
+        <Parameter>
+            <Identifier>Resolution</Identifier>
+            <DisplayName>Resolution</DisplayName>
+            <Description>
+                Measurement resolution in wavenumbers. 
+                Must be in the set of Supported Resolutions (see property).
+            </Description>
+            <DataType>
+                <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+            </DataType>
+        </Parameter>
+        <Parameter>
+            <Identifier>SampleScans</Identifier>
+            <DisplayName>Sample Scans</DisplayName>
+            <Description>
+                Number of scans to average for the sample.
+            </Description>
+            <DataType>
+                <Constrained>
+                    <DataType>
+                        <Basic>Integer</Basic>
+                    </DataType>
+                    <Constraints>
+                        <MinimalInclusive>1</MinimalInclusive>
+                        <MaximalInclusive>64</MaximalInclusive>
+                    </Constraints>
+                </Constrained>
+            </DataType>
+        </Parameter>
+        <Response>
+            <Identifier>SampleSpectrum</Identifier>
+            <DisplayName>SampleSpectrum</DisplayName>
+            <Description>
+                Result of the scan operation, containing the spectrum data as a list of wavenumber-Absorbance pairs.
+            </Description>
+            <DataType>
+                <List>
+                    <DataType>
+                        <Structure>
+                            <Element>
+                                <Identifier>Wavenumber</Identifier>
+                                <DisplayName>Wavenumber</DisplayName>
+                                <Description>The wavenumber of the spectrum point.</Description>
+                                <DataType>
+                                    <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+                                </DataType>
+                            </Element>
+                            <Element>
+                                <Identifier>Absorbance</Identifier>
+                                <DisplayName>Absorbance</DisplayName>
+                                <Description>The absorbance at the specified wavenumber.</Description>
+                                <DataType>
+                                    <Constrained>
+                                        <DataType>
+                                            <Basic>Real</Basic>
+                                        </DataType>
+                                        <Constraints>
+                                            <Unit>
+                                                <Label>AU</Label>
+                                                <Factor>1</Factor>
+                                                <Offset>0</Offset>
+                                                <UnitComponent>
+                                                    <SIUnit>Dimensionless</SIUnit>
+                                                    <Exponent>1</Exponent>
+                                                </UnitComponent>
+                                            </Unit>
+                                        </Constraints>
+                                    </Constrained>
+                                </DataType>
+                            </Element>
+                        </Structure>
+                    </DataType>
+                </List>
+            </DataType>
+        </Response>
+    </Command>
+    <!-- Properties -->
+    <Property>
+        <Identifier>MaximumSupportedWavenumber</Identifier>
+        <DisplayName>Maximum Supported Wavenumber</DisplayName>
+        <Description>Maximum supported wavenumber for the RunScan command</Description>
+        <Observable>No</Observable>
+        <DataType>
+            <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+        </DataType>
+    </Property>
+    <Property>
+        <Identifier>MinimumSupportedWavenumber</Identifier>
+        <DisplayName>Minimum Supported Wavenumber</DisplayName>
+        <Description>Minimum supported wavenumber for the RunScan command</Description>
+        <Observable>No</Observable>
+        <DataType>
+            <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+        </DataType>
+    </Property>
+    <Property>
+        <Identifier>SupportedResolutions</Identifier>
+        <DisplayName>Supported Resolutions</DisplayName>
+        <Description>Supported measurement resolutions for the RunScan command</Description>
+        <Observable>No</Observable>
+        <DataType>
+            <List>
+                <DataType>
+                    <DataTypeIdentifier>Wavenumber</DataTypeIdentifier>
+                </DataType>
+            </List>
+        </DataType>
+    </Property>
+    <!-- DataTypeDefinitions -->
+    <DataTypeDefinition>
+        <Identifier>Wavenumber</Identifier>
+        <DisplayName>Wavenumber</DisplayName>
+        <Description>
+            Unit of measurement used in spectroscopy, representing the number of wave cycles in a unit distance. 
+            The unit is here represented in reciprocal centimeters (cm-1), which is commonly used in FTIR spectroscopy.
+        </Description>
+        <DataType>
+            <Constrained>
+                <DataType>
+                    <Basic>Real</Basic>
+                </DataType>
+                <Constraints>
+                    <Unit>
+                        <Label>cm-1</Label>
+                        <Factor>0.01</Factor>
+                        <Offset>0</Offset>
+                        <UnitComponent>
+                            <SIUnit>Meter</SIUnit>
+                            <Exponent>-1</Exponent>
+                        </UnitComponent>
+                    </Unit>
+                </Constraints>
+            </Constrained>
+        </DataType>
+    </DataTypeDefinition>
+</Feature>

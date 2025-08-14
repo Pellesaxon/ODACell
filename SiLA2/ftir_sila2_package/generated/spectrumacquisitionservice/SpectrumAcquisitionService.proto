@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+import "SiLAFramework.proto";
+
+package sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0;
+
+/* SiLA 2 Device Spectrum Acquisition feature - Provides control and data access for FTIR spectral measurements. It enables execution of spectrum analysis of samples with configuration of parameters such as spectral range, resolution and scan count. It also provides retrieval of spectral data in the form of wavenumber-absorbance pairs for previous measurements. This feature separates scan configuration and calibration from execution. A client must first call 'ConfigureScanAndRunBackgroundScan' to set the measurement parameters and perform a background scan. Afterward, 'RunScan' can be called to acquire a sample spectrum using the active configuration. This feature is intended to be used with the LockController feature. Intended usecase in automated analytical workflows involving FTIR instrumentation with only one sample holder and only requires data collection but does further analysis later in the workflow. */
+service SpectrumAcquisitionService {
+  /* 
+            Sets the configuration for subsequent scans and initiates a background scan. Before the 
+            command is called a cleaning procedure should be performed on the FTIR instrument to 
+            avoid contamination of data. This command must be successfully completed before 'RunScan' 
+            can be called.
+         */
+  rpc ConfigureScanAndRunBackground (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.ConfigureScanAndRunBackground_Parameters) returns (sila2.org.silastandard.CommandConfirmation) {}
+  /* Monitor the state of ConfigureScanAndRunBackground */
+  rpc ConfigureScanAndRunBackground_Info (sila2.org.silastandard.CommandExecutionUUID) returns (stream sila2.org.silastandard.ExecutionInfo) {}
+  /* Retrieve result of ConfigureScanAndRunBackground */
+  rpc ConfigureScanAndRunBackground_Result(sila2.org.silastandard.CommandExecutionUUID) returns (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.ConfigureScanAndRunBackground_Responses) {}
+  /* 
+            Initiates a scan of the currently inserted sample using the active configuration set by
+            'ConfigureScanAndRunBackground'. Retrieves the resulting spectrum data as a list of 
+            wavenumber-absorbance pairs. The server should be locked before calling this command.
+         */
+  rpc RunScan (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.RunScan_Parameters) returns (sila2.org.silastandard.CommandConfirmation) {}
+  /* Monitor the state of RunScan */
+  rpc RunScan_Info (sila2.org.silastandard.CommandExecutionUUID) returns (stream sila2.org.silastandard.ExecutionInfo) {}
+  /* Retrieve result of RunScan */
+  rpc RunScan_Result(sila2.org.silastandard.CommandExecutionUUID) returns (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.RunScan_Responses) {}
+  /* 
+            The currently active configuration that will be used by the 'RunScan' command.
+         */
+  rpc Subscribe_CurrentScanConfiguration (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.Subscribe_CurrentScanConfiguration_Parameters) returns (stream sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.Subscribe_CurrentScanConfiguration_Responses) {}
+  /* Maximum supported wavenumber for a scan */
+  rpc Get_MaximumSupportedWavenumber (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.Get_MaximumSupportedWavenumber_Parameters) returns (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.Get_MaximumSupportedWavenumber_Responses) {}
+  /* Minimum supported wavenumber for a scan  */
+  rpc Get_MinimumSupportedWavenumber (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.Get_MinimumSupportedWavenumber_Parameters) returns (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.Get_MinimumSupportedWavenumber_Responses) {}
+  /* Supported measurement resolutions for a scan */
+  rpc Get_SupportedResolutions (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.Get_SupportedResolutions_Parameters) returns (sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.Get_SupportedResolutions_Responses) {}
+}
+
+/* 
+            Unit of measurement used in spectroscopy, representing the number of wave cycles in a 
+            unit distance. The unit is here represented in reciprocal centimeters (cm-1), which 
+            is commonly used in FTIR spectroscopy.
+         */
+message DataType_Wavenumber {
+  sila2.org.silastandard.Real Wavenumber = 1;  /* Unit of measurement used in spectroscopy, representing the number of wave cycles in a unit distance. The unit is here represented in reciprocal centimeters (cm-1), which is commonly used in FTIR spectroscopy. */
+}
+
+/* 
+            A structure holding all configuration settings for a scan operation.
+         */
+message DataType_ScanConfiguration {
+  message ScanConfiguration_Struct {
+    sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.DataType_Wavenumber UpperWavenumber = 1;  /* The maximum wavenumber of the spectral range to be measured. Upper Wavenumber must be greater than or equal to the Lower Wavenumber. Upper Wavenumber must be less than or equal to Maximum Supported Wavenumber (see property). */
+    sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.DataType_Wavenumber LowerWavenumber = 2;  /* The minimum wavenumber of the spectral range to be measured. Lower Wavenumber must be less than or equal to the Upper Wavenumber. Lower Wavenumber must be greater than or equal to Minimum Supported Wavenumber (see property). */
+    sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.DataType_Wavenumber Resolution = 3;  /* Measurement resolution in wavenumbers. Must be in the set of Supported Resolutions (see property). */
+    sila2.org.silastandard.Integer SampleScans = 4;  /* Number of scans to average for the sample. */
+  }
+  sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.DataType_ScanConfiguration.ScanConfiguration_Struct ScanConfiguration = 1;  /* A structure holding all configuration settings for a scan operation. */
+}
+
+/* Parameters for ConfigureScanAndRunBackground */
+message ConfigureScanAndRunBackground_Parameters {
+  sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.DataType_ScanConfiguration ScanConfiguration = 1;  /* The desired configuration for the scan. */
+}
+
+/* Responses of ConfigureScanAndRunBackground */
+message ConfigureScanAndRunBackground_Responses {
+}
+
+/* Parameters for RunScan */
+message RunScan_Parameters {
+}
+
+/* Responses of RunScan */
+message RunScan_Responses {
+  message SampleSpectrum_Struct {
+    sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.DataType_Wavenumber Wavenumber = 1;  /* The wavenumber of the spectrum point. */
+    sila2.org.silastandard.Real Absorbance = 2;  /* The absorbance at the specified wavenumber. */
+  }
+  repeated sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.RunScan_Responses.SampleSpectrum_Struct SampleSpectrum = 1;  /* Result of the scan operation, containing the spectrum data as a list of wavenumber-Absorbance pairs. */
+}
+
+/* Parameters for CurrentScanConfiguration */
+message Subscribe_CurrentScanConfiguration_Parameters {
+}
+
+/* Responses of CurrentScanConfiguration */
+message Subscribe_CurrentScanConfiguration_Responses {
+  sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.DataType_ScanConfiguration CurrentScanConfiguration = 1;  /* The currently active configuration that will be used by the 'RunScan' command. */
+}
+
+/* Parameters for MaximumSupportedWavenumber */
+message Get_MaximumSupportedWavenumber_Parameters {
+}
+
+/* Responses of MaximumSupportedWavenumber */
+message Get_MaximumSupportedWavenumber_Responses {
+  sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.DataType_Wavenumber MaximumSupportedWavenumber = 1;  /* Maximum supported wavenumber for a scan */
+}
+
+/* Parameters for MinimumSupportedWavenumber */
+message Get_MinimumSupportedWavenumber_Parameters {
+}
+
+/* Responses of MinimumSupportedWavenumber */
+message Get_MinimumSupportedWavenumber_Responses {
+  sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.DataType_Wavenumber MinimumSupportedWavenumber = 1;  /* Minimum supported wavenumber for a scan */
+}
+
+/* Parameters for SupportedResolutions */
+message Get_SupportedResolutions_Parameters {
+}
+
+/* Responses of SupportedResolutions */
+message Get_SupportedResolutions_Responses {
+  repeated sila2.se.uu.en.departmentchemistryangstromlaboratory.research.structuralchemistry.analysis.ftir.spectrumacquisitionservice.v0.DataType_Wavenumber SupportedResolutions = 1;  /* Supported measurement resolutions for a scan */
+}

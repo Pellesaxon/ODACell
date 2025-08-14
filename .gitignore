@@ -4,3 +4,6 @@ ROS/install/**
 ROS/build/**
 __pycache__
 .vscode/**
+.venv/ 
+*.pyc
+*.egg-info
