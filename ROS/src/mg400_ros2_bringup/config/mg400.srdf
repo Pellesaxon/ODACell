@@ -59,6 +59,19 @@
         <joint name="j3" value="0"/>
         <joint name="j4" value="0"/>
     </group_state>
+    
+    <group_state name="printer_start" group="mg400_arm">
+        <joint name="j1" value="-0.01745"/>
+        <joint name="j2" value="0.75049"/>
+        <joint name="j3" value="0.99483"/>
+        <joint name="j4" value="0"/>
+    </group_state>
+    <group_state name="printer_done" group="mg400_arm">
+        <joint name="j1" value="-0.01745"/>
+        <joint name="j2" value="0.90757"/>
+        <joint name="j3" value="0.82030"/>
+        <joint name="j4" value="0"/>
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="tool" parent_link="end_effector_mount" group="tool" parent_group="mg400_arm"/>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->

@@ -52,27 +52,16 @@ int main(int argc, char **argv)
     // Set pose (position and orientation) of the collision object
     geometry_msgs::msg::Pose sensor_pose;
 
-    // Offset for sensor_assembly.dae assembly
-    //// Object position in respect to robot (which is at the origin)
-    //sensor_pose.position.x = 0.38;
-    //sensor_pose.position.y = 0.09;
-    //sensor_pose.position.z = -0.04;
-    //// Rotate 45 degrees around the Z-axis (Should probably flip the model)
-    //sensor_pose.orientation.w = 0.7071; // cos(45/2)
-    //sensor_pose.orientation.x = 0.0;
-    //sensor_pose.orientation.y = 0.0;
-    //sensor_pose.orientation.z = 0.7071; // sin(45/2)
-
     // Offset for sensor_assembly.stl assembly
     // Object position in respect to robot (which is at the origin)
-    sensor_pose.position.x = 0.0;
+    sensor_pose.position.x = 0.005;
     sensor_pose.position.y = 0.0;
-    sensor_pose.position.z = -0.04;
-    // Rotate 45 degrees around the Z-axis (Should probably flip the model)
-    sensor_pose.orientation.w = 0.0; // cos(45/2)
+    sensor_pose.position.z = -0.0405;
+   
+    sensor_pose.orientation.w = 0.0; 
     sensor_pose.orientation.x = 0.0;
     sensor_pose.orientation.y = 0.0;
-    sensor_pose.orientation.z = 0.0; // sin(45/2)
+    sensor_pose.orientation.z = 0.0;
 
 
     collision_object.mesh_poses.push_back(sensor_pose);
@@ -90,6 +79,41 @@ int main(int argc, char **argv)
     planning_scene_interface.applyCollisionObject(collision_object, object_color);
 
     RCLCPP_INFO(node->get_logger(), "Successfully added collision object '%s' to the planning scene.", collision_object.id.c_str());
+
+
+    // PRINTER 
+    // --- Add printer as a large rectangle ---
+    moveit_msgs::msg::CollisionObject printer_object;
+    printer_object.header.frame_id = "base_link";
+    printer_object.id = "AnserSPH";
+
+    // Define the primitive and its dimensions (a box)
+    shape_msgs::msg::SolidPrimitive primitive;
+    primitive.type = primitive.BOX;
+    primitive.dimensions.resize(3);
+    double printer_x_dim = 0.1;
+    double printer_y_dim = 0.1;
+    double printer_z_dim = 0.25;
+    primitive.dimensions[primitive.BOX_X] = printer_x_dim;
+    primitive.dimensions[primitive.BOX_Y] = printer_y_dim;
+    primitive.dimensions[primitive.BOX_Z] = printer_z_dim;
+
+    // Define the pose of the printer. The pose is for the center of the object.
+    // We calculate the center based on the "starting" XZ position.
+    geometry_msgs::msg::Pose printer_pose;
+    printer_pose.position.x = 0.391 + (printer_x_dim / 2.0); // Starts at 391mm and extends in +x
+    printer_pose.position.y = 0.0;                           // Centered on the y-axis
+    printer_pose.position.z = 0.2085 + (printer_z_dim / 2.0); // bottom surface is at 208mm
+    printer_pose.orientation.w = 1.0;
+
+    printer_object.primitives.push_back(primitive);
+    printer_object.primitive_poses.push_back(printer_pose);
+    printer_object.operation = moveit_msgs::msg::CollisionObject::ADD;
+
+    // Add the printer to the scene
+    planning_scene_interface.applyCollisionObject(printer_object);
+    RCLCPP_INFO(node->get_logger(), "Successfully added collision object '%s' to the planning scene.", printer_object.id.c_str());
+
 
     rclcpp::shutdown();
     return 0;

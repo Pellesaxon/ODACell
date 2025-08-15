@@ -6,7 +6,7 @@
     <!-- =================================================================================== -->
     <!-- BEFORE INCLUDING THIS IN A NEW URDF REMOVE MACRO CALL FROM BOTTOM OF FILE -->
     
-    <xacro:macro name="mg400" params="prefix:=''">
+    <xacro:macro name="mg400" params="prefix:='' BASE_PATH:='package://mg400_ros2_bringup/urdf/meshes'">
 
         <!-- =================================================================================== -->
         <!-- |                                  PROPERTIES                                     | -->
@@ -15,9 +15,6 @@
         <!-- Constants -->
         <xacro:property name="PI" value="3.1415926535897931"/>
         <xacro:property name="deg_to_rad" value="${PI / 180.0}"/>
-
-        <!-- Base path for mesh files -->
-        <xacro:property name="BASE_PATH" value="package://mg400_ros2_bringup/urdf/meshes"/>
 
         <!-- Joint Limits from Manual (Appendix A, page 41) -->
         <!-- Position Limits (rad) -->
@@ -383,6 +380,15 @@
             <mimic joint="${prefix}j3"/>
         </joint>
 
+        <link name="${prefix}end_fixture_mount"/>
+
+        <joint name="${prefix}j4_4" type="fixed">
+            <origin xyz="0 0 -0.073" rpy="0 0 0"/>
+            <parent link="${prefix}link5"/>
+            <child link="${prefix}end_fixture_mount"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+
         <link name="${prefix}end_effector_mount"/>
 
         <joint name="${prefix}j4" type="revolute">
@@ -399,6 +405,7 @@
     <!-- |                     REMOVE or TRANSFER BEFORE IMPORT                            | -->
     <!-- =================================================================================== -->
     
+    <xacro:property name="BASE_PATH" value="package://mg400_ros2_bringup/urdf/meshes"/>
     <xacro:property name="r1_prefix" value=''/>
     <xacro:mg400 prefix="${r1_prefix}"/>
 
@@ -434,6 +441,38 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <parent link="${r1_prefix}end_effector_mount"/>
         <child link="${r1_prefix}end_effector_laser_test"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+    
+    <link name="${r1_prefix}end_battery_cell_jig">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+            <mass value="0.0012546292985346"/>
+            <inertia ixx="0.000218973873589181" ixy="3.0147933007673E-10" ixz="2.51402553227571E-06" iyy="0.000200510070261609" iyz="-1.41837669904595E-09" izz="3.74316777806776E-05"/>
+        </inertial>
+        <visual>
+            <!-- Rotate 90 degrees around Z axis -->
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 1.5707963"/>
+            <geometry>
+                <mesh filename="${BASE_PATH}/battery_cell_jig_assembly.dae"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.5 0.5 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <!-- Rotate 90 degrees around Z axis -->
+            <origin xyz="0.0 0.0 0" rpy="0 0 1.5707963"/>
+            <geometry>
+                <mesh filename="${BASE_PATH}/battery_cell_jig_assembly.dae"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="${r1_prefix}fixture_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="${r1_prefix}end_fixture_mount"/>
+        <child link="${r1_prefix}end_battery_cell_jig"/>
         <axis xyz="0 0 1"/>
     </joint>
 

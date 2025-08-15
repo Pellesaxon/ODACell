@@ -1,0 +1,25 @@
+MovJ((P1))
+Sync()
+start_time = Systime()
+
+Sync()
+MovL((P2), {SpeedL=10, AccL=10})
+Sync()
+elapsed_time = ((Systime()
+)-start_time)/1000
+Sync()
+print('Time:')
+Sync()
+print(elapsed_time)
+Sync()
+print('Distance[mm]:')
+distance = (P2.coordinate[1]
+)-(P1.coordinate[1]
+)
+Sync()
+print(distance)
+Sync()
+print('meter/min:')
+Sync()
+print(((distance/1000)/(elapsed_time/60)))
+MovJ((P1))

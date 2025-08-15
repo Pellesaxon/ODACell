@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources date="2022-01-19" product="NEX" utime="1642573711" vendor="ANSER" time="14:28:31" family="U2" fontname="Arial_300DPI.TPF" version="6.3.3" ExtData="1" >
+<AnserHead direction="0" delay="0" printouts="0" msgno="0" StrExcelCnt="0" height="150" repeat="0" numOfColorGroup="1" name="test6.xml" width="114" delaySwitch="0" row="0" upsidedown="0" FullText="0" numOfPrints="0" FixedWidth="114" refInkSize="150" />
+<message name="Line1 - MSG01" >
+<rastermessage direct="0" name="M1-1" lines="0" >
+<objects>
+<OBJ borderType="0" mirror="0" fontSpacing="100" barcodeType="32" barcodeSubCount="1" fontsize="36" fontStretching="100" separatorHeight="6" fontname="Noto Sans CJK TC" groupColorCode="0" space="0" posx="8" offsetX="0" posy="10" barWhitespace="15" offsetY="0" fontstyle="0" borderWidth="3" reversColor="0" height="69" barTextSize="0" symbolSize="0" degree="0" widthlevel="7" variableDPI="0" groupIndex="0" zoomy="1.0" zoomx="1.0" iEdge="1" isHide="0" Type="Barcode" width="105" modeText="1" >
+ <OBJ Type="String" FilePath="/home/anser/apps/db/default-EN.ini" stringLength="0" stringNO="0" stringSrc="2"/>
+</OBJ>
+<OBJ mirror="0" fontSpacing="107" fontsize="6" fontStretching="100" fontname="Noto Sans CJK TC" groupColorCode="0" space="0" posx="22" offsetX="0" posy="112" offsetY="0" fontstyle="0" reversColor="0" stringLength="0" height="36.07" FilePath="/home/anser/apps/db/default-EN.ini" fontType="36" stringSrc="2" degree="0" variableDPI="0" groupIndex="0" zoomy="1.0" zoomx="1.0" isHide="0" stringNO="0" Type="String" width="91.86" />
+</objects>
+<resource/></rastermessage>
+</message>
+</resources>
